@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title> {% block title %}Joyride{% endblock %} </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/css/style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;700&display=swap" rel="stylesheet">  
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@100&family=Pacifico&display=swap" rel="stylesheet">
+
+    {% block head %}{% endblock %}
+  </head>
+  <body class = "body">
+
+    {% block navbar %}
+        <!---Start Navigation-->
+        <nav class="navbar navbar-expand-md fixed-top navbar-custom">
+          <div class="container">
+            <a class="navbar-brand" href="#">Joyride</a>
+    
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item">
+                <a href="search" class="btn navbar-btn shadow-none">Search</a>
+              </li>
+              <li class="nav-item">
+                <a href="post" class="btn navbar-btn shadow-none">Post</a>
+              </li>
+            </ul>
+    
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <div class="dropdown">
+                  <button class="btn dropdown-toggle shadow-none" type="button" id="#" data-toggle="dropdown">
+                    My Rides
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Current Rides</a>
+                    <a class="dropdown-item" href="#">Past Rides</a>
+                  </div>
+                </div>
+              </li>
+              <li class="nav-item">
+                <a href="/logout" class="btn navbar-btn shadow-none">Log Out</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+    {% endblock %}
+
+
+    {% for msg in get_flashed_messages() %}
+      <p class="flash-msg">
+        {{ msg }}
+      </p>
+    {% endfor %}
+
+    {% block body %}
+    
+    {% endblock %}
+
+    <!-- Footer -->
+    <footer class= "footer">
+        <div class="container"> 
+          <!-- Copyright -->
+          <div class="row">
+            <div class="col-md-6">
+              <p id="app-name"> Joyride</p>
+              &copy; 2020 Tiffany Luu
+            </div>
+            <div class="col-md-3">
+              <p>
+                <i class="fas fa-envelope fa-2x mr-1" data-fa-transform="left-2 down-4"></i>
+                tiffanyell1@gmail.com
+              </p>
+              <p>
+                <i class="fab fa-linkedin fa-2x mr-2" data-fa-transform="down-3"></i>
+                <a href="https://www.linkedin.com/in/tiffany-luu-088b07143/" target="_blank">Click here</a>
+              </p>
+              <p><i class="fab fa-github fa-2x mr-1" data-fa-transform="down-3 left-2"></i>
+                <a href="https://github.com/telle1" target="_blank">Click here</a>
+              </p>
+            </div>
+            <div class="col-md-3">
+              <h3>About Us</h3>
+              <p>Joyride was created in November 2020 by <a href="https://www.linkedin.com/in/tiffany-luu-088b07143/" target="_blank">Tiffany Luu</a>, 
+                a student of Hackbright Academy, with the aim of increasing affordability for long-distance travel.
+              </p>
+            </div>
+          </div>  
+        </div>  
+      </footer>
+ 
+  
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/releases/v5.5.0/js/all.js"></script>
+
+    {% block script %}{% endblock %}
+  <!--- End Script Files --->
+  </body>
+</html>

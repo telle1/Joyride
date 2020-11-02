@@ -1,0 +1,92 @@
+.body {
+    padding-top: 100px;
+}
+
+footer {
+    margin-top: 50px;
+    bottom: 0;
+    position: fixed;
+    width: 100%;
+}
+
+/*Undo the padding from flash msgs in style.css*/
+.flash-msg{
+    padding-top: 0px;
+}
+
+/*My rides page---My rides page---My rides page---My rides page---My rides page---*/
+/*TABLE*/
+h3 {
+    color: #eba92a;
+    font-weight: bold;
+}
+
+/*Post ride page---Post ride page---Post ride page---Post ride page---Post ride page---*/
+
+form {
+    background-color: #ECECEC;
+    border-radius: 10px;
+    padding: 20px;
+    }
+    
+form h3 {
+    color: #eba92a;
+    font-weight: bold;
+}
+
+#map {
+    height: 525px;
+}
+  
+/*Search ride---Search ride---Search ride---Search ride---Search ride---*/
+
+
+/*Profile page---Profile page---Profile page---Profile page---Profile page---Profile page---*/
+.inner {
+    border-radius: 20px;
+    padding: 10px;
+    height: 150px;
+    color: white;
+}
+
+.inner-0 {
+    background-color: #eba92a;
+}
+
+
+.inner-1 {
+    background-color: #388087;
+}
+
+
+.inner-2 {
+    background-color: #eba92a;
+}
+
+.inner-3 {
+    background-color: #388087;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.inner h1 {
+    font-size: 70px;
+    text-shadow: 0 0 3px #F5D5C8, 0 0 8px #F5D5C8;
+}
+
+.bio {
+    border: 1px solid red;
+    height: 525px;
+    padding: 10x;
+}
+

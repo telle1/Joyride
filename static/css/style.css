@@ -1,0 +1,54 @@
+body {
+    overflow-x: hidden;
+    color: black;
+    font-family: 'Karla', sans-serif;
+  }
+
+.btn-theme {
+    color: white;
+    background-color: #388087;
+}
+
+.flash-msg{
+  padding-top: 70px;
+  text-align: center;
+  font-weight: bold;
+}
+
+  
+/*NAVBAR---NAVBAR---NAVBAR---NAVBAR---NAVBAR---NAVBAR---NAVBAR---*/
+.navbar-custom {
+    background-color: #388087;
+    opacity: 0.8;
+  }
+  
+  .navbar-custom .navbar-brand,
+  .navbar-custom .navbar-nav .btn {
+    color: white;
+  }
+  
+  .navbar-brand{
+    font-family: 'Pacifico', cursive;
+    font-weight: 500;
+    font-size: 20px;
+  }
+
+/*FOOTER---FOOTER---FOOTER---FOOTER---FOOTER---FOOTER---FOOTER---FOOTER---FOOTER---*/
+footer {
+    background-color: #388087;
+    color: white;
+    padding: 50px;
+  }
+  
+  footer h3 {
+    color: white;
+  }
+  
+  footer a {
+    color: #eba92a;
+  }
+  
+  #app-name{
+    font-family: 'Pacifico', cursive;
+    font-size: 30px;
+  }

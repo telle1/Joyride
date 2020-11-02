@@ -1,0 +1,219 @@
+span {
+  color: #eba92a;
+  font-weight: bold;
+}
+
+h3 {
+  font-weight: 700;
+  color: black;
+  font-size: 1.3rem;
+}
+
+h3.heading {
+  font-size: 50px;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #777777;
+}
+
+.heading-underline {
+  width: 3rem;
+  height: 0.2rem;
+  background-color: #777777;
+  margin: 0 auto;
+}
+
+
+/*LANDING PAGE---LANDING PAGE---LANDING PAGE---LANDING PAGE--- */
+#homesection {
+  background: url('../images/van-2.jpg') no-repeat center
+  center/ cover;
+  height: 100vh;
+}
+
+#homesection h1, #homesection span {
+  font-size: 100px;
+  letter-spacing: 0.2rem;
+  
+}
+#homesection h1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  text-align: center;
+  font-weight: 500;
+  text-shadow: 0 0 3px #eba92a, 0 0 8px #d1971b;
+  color: white;
+}
+
+#homesection span {
+  color: #eba92a;
+  text-shadow: none;
+  font-weight: bolder;
+}
+
+/* What 1 row page---What 1 row page---What 1 row page---What 1 row page---What 1 row page---What 1 row page---*/
+#what-row .heading-underline {
+  background-color: #eba92a;
+  width: 3rem;
+  height: 0.3rem;
+  margin: 0 0;
+}
+
+#what-row h3 {
+  font-size: 50px;
+  margin-top: 15px;
+}
+
+#what-row .row {
+  padding: 3px 0px;
+}
+
+#what-row .what {
+  height: 500px;
+  border-radius: 5px;
+  padding: 0 2px;
+}
+
+.col-left,
+.col-right {
+  background: url('../images/beach.png') no-repeat
+    center bottom/cover;
+  height: 500px;
+  border-radius: 7px;
+  padding: 50px 50px;
+}
+
+.col-right {
+  background: url('../images/mountain.jpg') no-repeat center
+    center/ cover;
+}
+
+
+
+/* Why 3 features page---Why 3 features page---Why 3 features page---Why 3 features page---*/
+#why {
+  padding: 2rem 0rem;
+}
+
+.feature {
+  height: 350px;
+}
+
+.feature:hover {
+  transform: translateY(-30px);
+  transform: scale(1.2);
+  background-color: #eba92a;
+  box-shadow: 0 0 3px 5px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+.feature:hover h3,
+.feature:hover p {
+  color: white;
+}
+
+.feature h3 {
+  color: #eba92a;
+}
+.feature p {
+  padding: 1rem 1rem;
+  font-size: 20px;
+}
+
+
+/*How it works---How it works---How it works---How it works---How it works---How it works---*/
+#how {
+  padding: 2rem 0 3.5rem;
+  height: 700px;
+  background: url('../images/car_pic_filter.jpg') no-repeat
+    center center/cover;
+}
+
+#how h3.heading {
+  color: #2b2d2f;
+}
+
+#how .heading-underline {
+  background-color: #2b2d2f;
+}
+
+.how-step {
+  display: flex;
+  align-items: center;
+  margin-left: 50px;
+}
+
+/*Testimonials---Testimonials---Testimonials---Testimonials---Testimonials---Testimonials---*/
+#carousel-slider {
+  padding: 2rem 0rem 3.5rem;
+}
+
+#carousel-slider .row {
+  margin-top: 100px;
+  overflow: visible;
+}
+
+.carousel-control-next,
+.carousel-control-prev {
+  filter: invert(100%);
+  top: 90px;
+
+}
+
+.profile {
+  background-color: #f4f4f4;
+  padding: 70px 10px 10px;
+  height: 350px;
+}
+
+.profile img {
+  width: 140px;
+  height: 140px;
+  top: -60px;
+  position: absolute;
+  right: 120px;
+  border-radius: 50%;
+  box-shadow: 2px 2px 5px rgb(0, 0, 0, 0.5);
+}
+
+.profile h3 {
+  color: #eba92a;
+}
+
+blockquote {
+  border-left: 10px solid #388087;
+  margin: 1.5em 10px;
+  padding: 0.5em 10px;
+}
+blockquote:before {
+  content: open-quote;
+  color: #388087;
+  font-size: 4em;
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
+
+blockquote:after {
+  content: close-quote;
+  color: #388087;
+  font-size: 4em;
+  line-height: 0.1em;
+  margin-right: 0.2em;
+  vertical-align: -0.4em;
+}
+
+/*MODAL*/
+.modal .btn {
+  border-radius: 20px;
+  height: 50px;
+  font-size: 20px;
+}
+
+
+
