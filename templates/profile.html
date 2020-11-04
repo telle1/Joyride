@@ -7,30 +7,34 @@
 
 {% block body %}
 <div class="container">
+  
+    <div class="text-center text-header animated bounce">
+        <h1>WHERE TO NEXT, {{user.first_name}}?</h1>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-3 stats">
                     <div class="inner inner-0">
-                        <h1 class = "text-center">10</h1>
+                        <h1 class = "text-center count">10</h1>
                         <p class= "text-center">destinations discovered.</p>
                     </div>
                 </div>
                 <div class="col-md-3 stats">
                     <div class="inner inner-1">
-                        <h1 class = "text-center">15</h1>
+                        <h1 class = "text-center count">15</h1>
                         <p class= "text-center">new adventurers met.</p>
                     </div>
                 </div>
                 <div class="col-md-3 stats">
                     <div class="inner inner-2">
-                        <h1 class = "text-center">245</h1>
+                        <h1 class = "text-center count">245</h1>
                         <p class = "text-center">total miles travelled.</p>
                     </div>
                 </div>
                 <div class="col-md-3 stats">
                     <div class="inner inner-3">
-                        <h1 class = "text-center">$1500</h1>
+                        <h1 class = "text-center count inline">1500</h1>
                         <p class = "text-center">hard-earned money saved.</p>
                     </div>
                 </div>
@@ -40,7 +44,9 @@
     <div class="row mt-4">
         <div class="col-md-3">
             <div class="bio">
-                <p>hi</p>
+                <p class="text-center">Enter image here</p>
+                <p class="font-weight-bold">Location</p>
+                <p class="font-weight-bold">Enter brief description here....</p>
             </div>
         </div>
         <div class="col-md-9">
@@ -58,5 +64,19 @@
   src="https://maps.googleapis.com/maps/api/js?key={GOOGLE_API_KEY}&callback=initMap&libraries=places&v=weekly"
   defer
 ></script> 
+
+<script> //Animate numbers
+    $('.count').each(function () {
+        $(this).prop('Counter', 0).animate({
+            Counter: $(this).text()
+        }, {
+            duration: 3000,
+            easing: 'linear',
+            step: function (now) {
+                $(this).text(Math.ceil(now));
+            }
+        });
+    });
+</script>
 
 {% endblock %}

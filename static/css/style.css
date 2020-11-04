@@ -37,7 +37,8 @@ body {
 footer {
     background-color: #388087;
     color: white;
-    padding: 50px;
+    padding: 20px;
+    opacity: 0.8;
   }
   
   footer h3 {

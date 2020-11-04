@@ -11,14 +11,14 @@
   <div class="container post-ride">
     <div class="row">
       <div class="col-md-5">
-        <form action="/post-complete" method="post">
+        <form action="/post-complete" method="post" class="f-grey">
           <h3 class="mb-3"> Post a Ride</h3>
           <div class="form-group row">
             <div class = "col-md-3 col-form-label">
               <label for="#">From</label>
             </div>
             <div class="col-sm-9">
-              <input type="text" class="form-control" name="from_input" id="from_input" placeholder="Start Location">
+              <input type="text" class="form-control" name="from_input" id="from_input" placeholder="Start Location" required>
             </div>
           </div>
           <div class="form-group row">
@@ -26,7 +26,7 @@
               <label for="#">To</label>
             </div>
             <div class="col-sm-9">
-              <input type="text" class="form-control" name="to_input" id="to_input" placeholder="End Location">
+              <input type="text" class="form-control" name="to_input" id="to_input" placeholder="End Location" required>
             </div> 
           </div>
           <div class="form-group row">
@@ -34,7 +34,7 @@
               <label for="#">Date</label>
             </div>
             <div class="col-sm-9">
-              <input type="datetime-local" class="form-control" name="date">
+              <input type="date" class="form-control" name="date" id="date">
             </div> 
           </div>
           <div class="form-group row">
@@ -47,6 +47,14 @@
           </div>
           <div class="form-group row">
             <div class = "col-md-3 col-form-label">
+              <label for="#">Price</label>
+            </div>
+            <div class="col-sm-9">
+              <input type="number" class="form-control" name="price" placeholder="0" min="0">
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class = "col-md-3 col-form-label">
               <label for="#">Comments</label>
             </div>
             <div class="col-sm-9">
@@ -54,8 +62,9 @@
             </div>
           </div>
           <div class="row">
-          <button type="submit" class="btn btn-theme ml-auto mr-3">Submit</button>
+          <button type="submit" class="btn btn-theme ml-auto mr-3" id= "submit-button">Submit</button>
           </div>
+          <p id = "alert" class='text-center'></p>
         </form>
       </div>
       <div class="col-md-7">
@@ -68,7 +77,23 @@
 {% block script %}
 <script src="../static/js/maps.js"></script> <!--Map script tag-->
 <script
-  src="https://maps.googleapis.com/maps/api/js?key={GOOGLE_API_KEY}&callback=initMap&libraries=places&v=weekly"
+  src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap&libraries=places&v=weekly"
   defer
 ></script>  <!--Map script tag-->  
+<script>
+  $('#date').change(function(){
+    let dateAsString = document.getElementById('date').value
+    // console.log(dateAsString)
+    // console.log(typeof(dateAsString))
+    let dateAsDate = new Date(dateAsString);
+    let currentDate = new Date();
+    if (dateAsDate < currentDate){
+      $('#submit-button').prop( "disabled", true)
+      $('#alert').html('Date cannot be in the past.')
+    } else {
+      $('#submit-button').prop( "disabled", false)
+      $('#alert').hide();
+    }
+  });
+</script>
 {% endblock %}

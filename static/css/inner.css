@@ -1,5 +1,5 @@
 .body {
-    padding-top: 100px;
+    padding-top: 85px;
 }
 
 footer {
@@ -21,9 +21,13 @@ h3 {
     font-weight: bold;
 }
 
+.nav-tabs a {
+    color: black;
+}
+
 /*Post ride page---Post ride page---Post ride page---Post ride page---Post ride page---*/
 
-form {
+.f-grey {
     background-color: #ECECEC;
     border-radius: 10px;
     padding: 20px;
@@ -39,7 +43,11 @@ form h3 {
 }
   
 /*Search ride---Search ride---Search ride---Search ride---Search ride---*/
-
+.msg{
+    font-weight: bold;
+    padding: 10px;
+    display: inline-block;
+}
 
 /*Profile page---Profile page---Profile page---Profile page---Profile page---Profile page---*/
 .inner {
@@ -49,34 +57,13 @@ form h3 {
     color: white;
 }
 
-.inner-0 {
+.inner-0, .inner-2 {
     background-color: #eba92a;
 }
 
 
-.inner-1 {
+.inner-1, .inner-3 {
     background-color: #388087;
-}
-
-
-.inner-2 {
-    background-color: #eba92a;
-}
-
-.inner-3 {
-    background-color: #388087;
-}
-
-@keyframes gradient {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
 }
 
 .inner h1 {
@@ -90,3 +77,28 @@ form h3 {
     padding: 10x;
 }
 
+.text-header h1{
+    font-weight: bold;
+    font-size: 80px;
+    color: white;
+    text-shadow: 0 0 3px #388087, 0 0 8px #388087;
+
+}
+
+/*Bounce animation - courtesy of https://codepen.io/levineuland*/
+
+.animated {
+    animation-duration: 5s;
+    animation-timing-function: linear;
+    animation-iteration-count: 1;
+  }
+  
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+    30% {transform: translateY(-30px);}
+    60% {transform: translateY(-15px);}
+  }
+
+  .bounce {
+    animation-name: bounce;
+  }

@@ -1,86 +1,137 @@
 {% extends 'base.html' %}
 
 {% block title %}Current Trips{% endblock %}
-{% block head %} 
-<link rel="stylesheet" href="../static/css/inner.css" />
 
+{% block head %} 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="../static/css/inner.css" />
 {% endblock %}
 
 {% block body %}
-  
-      <!---Start Table 1-->
-      <div class="container">
-          <h3>DRIVING</h3>
-          <table class="table table-bordered table-striped">
-              <thead>
-              <tr>
-                  <th scope="col">Date</th>
-                  <th scope="col">From</th>
-                  <th scope="col">To</th>
-                  <th scope="col">Passengers</th>
-                  <th scope="col">Charge</th>
-                  <th scope="col">Status</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                  <th scope="row">1</th>
-                  <td>Test</td>
-                  <td>Test</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                  <td>
-                    <button type="button" class="btn btn-theme" data-toggle="modal" data-target="#check_status">Check</button>
-                  </td>
-              </tr>
-              </tbody>
-          </table>
-  
-        <!---Start Table 2-->
-          <h3>RIDING</h3>
-          <table class="table table-bordered table-striped">
-              <thead>
-              <tr>
-                  <th scope="col">Date</th>
-                  <th scope="col">From</th>
-                  <th scope="col">To</th>
-                  <th scope="col">Driver</th>
-                  <th scope="col">Cost</th>
-                  <th scope="col">Status</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                  <th scope="row">1</th>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-                  <td>@mdo</td>
-              </tr>
-              </tbody>
-          </table>
-      </div>
-  
-  
-      <!--modals-->
-      <div class="modal" role="dialog" id="check_status">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Modal title</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <p>Modal body text goes here.</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary">Save changes</button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
+<div class="container">
+
+  <ul class="nav nav-tabs">
+    <li class="mr-2">
+      <a data-toggle="tab" href="#driving">Driving</a>
+    </li>
+    <li>
+      <a data-toggle="tab" href="#riding">Riding</a>
+    </li>
+  </ul>  
+
+
+  <!---DRIVING TABLE-->
+  <div class="tab-content">
+    <div id="driving" class="tab-pane fade in active">
+      <h3>DRIVING</h3>
+      <table class="table table-bordered table-striped">
+          <thead>
+          <tr>
+              <th scope="col">Date</th>
+              <th scope="col">From</th>
+              <th scope="col">To</th>
+              <th scope="col">Seats</th>
+              <th scope="col">Price</th>
+              <th scope="col">Status</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for rides in user_drives %}
+          <tr>
+              <th scope="row">{{rides.date}}</th>
+              <td>{{rides.start_loc}}</td>
+              <td>{{rides.end_loc}}</td>
+              <td id ="row-seats">{{rides.seats}}</td>
+              <td>{{rides.price}}</td>
+              <td>
+                {% for req in rides.request %}
+                  {% if req.approved != 'approved' or req.approved != 'denied' %}
+                <form action="/confirm-rides.json" id="confirm-rides-{{req.request_id}}" method="post">
+                <span>Rider id {{req.rider_id}} ride id {{req.ride_id}}</span>
+                <input type="hidden" value = {{req.rider_id}} id = 'rider_id' name = 'rider_id'>
+                <input type="hidden" value = {{req.request_id}} id = 'request_id' name = 'request_id'>
+                <input type="radio" id="approved" name="request_status" value="approved">
+                <label for="Approved">Approve</label>
+                <input type="radio" id="denied" name="request_status" value="denied">
+                <label for="Denied">Deny</label>
+                <button type="submit" class="btn btn-theme">Confirm</button>
+                <br>
+                <br>
+                </form>
+                  {% endif %}
+                {% endfor %}
+              </td>  
+
+          </tr>
+          {% endfor %}
+          </tbody>
+      </table>
+  </div>
+
+<!---RIDING TABLE-->
+<div id="riding" class="tab-pane">
+  <h3>RIDING</h3>
+  <table class="table table-bordered table-striped">
+      <thead>
+      <tr>
+          <th scope="col">Date</th>
+          <th scope="col">From</th>
+          <th scope="col">To</th>
+          <th scope="col">Driver</th>
+          <th scope="col">Cost</th>
+          <th scope="col">Status</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for req in user_rides %}
+      <tr>
+        <th scope="row">{{req.ride.date}}</th>
+        <td>{{req.ride.start_loc}}</td>
+        <td>{{req.ride.end_loc}}</td>
+        <td>{{req.ride.driver_id}}</td>
+        <td>{{req.ride.price}}</td>
+        <td>Approved or disapproved</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+  </table>
+</div>
+</div>
+</div>
 {% endblock %}  
+
+
+
+
+
+{% block script %}
+
+{% for rides in user_drives %}
+{% for req in rides.request %}
+<script>
+  $(document).ready(function () {
+  function confirmRequests(evt){
+    evt.preventDefault();
+    let url = '/confirm-rides.json';
+    let formData = {
+      "rider_id": $('#rider_id').val(),
+      "request_id": $('#request_id').val(),
+      "ride_id": $('#ride_id').val(),
+      "status": $("input[type='radio'][name='request_status']:checked").val()
+    }
+
+    $.post(url, formData, (res) => {
+      console.log(res)
+      $(`#confirm-rides-{{req.request_id}}`).hide();
+    })
+
+  }
+
+  $(`#confirm-rides-{{req.request_id}}`).on('submit', confirmRequests)
+  });
+
+</script>
+{% endfor %}
+{% endfor %}
+{% endblock %}
+
