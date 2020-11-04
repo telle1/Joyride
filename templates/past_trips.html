@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}Past Trips{% endblock %}
+
+{% block head %} 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="../static/css/inner.css" />
+{% endblock %}
+
+{% block body %}
+<div class="container">
+
+  <ul class="nav nav-tabs">
+    <li class="mr-2">
+      <a data-toggle="tab" href="#driving">Drives</a>
+    </li>
+    <li>
+      <a data-toggle="tab" href="#riding">Rides</a>
+    </li>
+  </ul>  
+
+  <!---DRIVING TABLE-->
+  <div class="tab-content">
+    <div id="driving" class="tab-pane fade in active">
+      <h3>PAST DRIVES</h3>
+      <table class="table table-bordered table-striped">
+          <thead>
+          <tr>
+              <th scope="col">Date</th>
+              <th scope="col">From</th>
+              <th scope="col">To</th>
+              <th scope="col">Seats</th>
+              <th scope="col">Price</th>
+              <th scope="col">Passengers</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for rides in user_drives %}
+
+          <tr>
+              <th scope="row">{{rides.date}} RIDE ID{{rides.ride_id}}</th>
+              <td>{{rides.start_loc}}</td>
+              <td>{{rides.end_loc}}</td>
+              <td id ="row-seats">{{rides.seats}}</td>
+              <td>{{rides.price}}</td>
+              <td>
+                {% for request in rides.request %} <!--WHERE STATUS IS APPROVED-->
+                  {% if request.approved == 'approved' %}
+                <span>{{request.user.first_name}} {{request.user.last_name}}</span>
+                <br>
+                  {% endif %}
+                {% endfor %}
+              </td>  
+
+          </tr>
+          {% endfor %}
+          </tbody>
+      </table>
+  </div>
+
+<!---RIDING TABLE-->
+<div id="riding" class="tab-pane">
+  <h3>PAST RIDES</h3>
+  <table class="table table-bordered table-striped">
+      <thead>
+      <tr>
+          <th scope="col">Date</th>
+          <th scope="col">From</th>
+          <th scope="col">To</th>
+          <th scope="col">Driver</th>
+          <th scope="col">Cost</th>
+      </tr>
+      </thead>
+      <tbody>
+      {% for request in user_rides %}
+      <tr>
+        <th scope="row">{{request.ride.date}}</th>
+        <td>{{request.ride.start_loc}}</td>
+        <td>{{request.ride.end_loc}}</td>
+        <td>{{request.ride.driver_id}}</td>
+        <td>{{request.ride.price}}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+  </table>
+</div>
+</div>
+</div>
+{% endblock %}
