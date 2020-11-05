@@ -185,31 +185,32 @@ def request_ride():
 def get_user_profile():
     """Return profile page."""
     if 'user_id' in session:
-        #user = User.query.filter(User.user_id == session['user_id']).one()
         user = User.query.options(db.joinedload('ride')).filter(User.user_id == session['user_id']).one()
-
-        # count = db.session.execute('select count(DISTINCT end_loc) from rides where driver_id = session['user_id'];')
-        # print(count)
-     #   print(db.session.query(User).count())
-        #db.session.query(db.func.count(distinct(user.ride.end_loc))).count()      
-        count = 0 
+        # print('LIST OF RIDE REQUESTS', user.request)
+        # print('LIST WHERE USER DRIVES', user.ride)   
+        destinations = 0 
         people_met = 0
-        for ride in user.ride:
-            count += db.session.query(db.func.count(distinct(ride.end_loc))).count()
+        dollars_earned = 0  
+        test = 0
+        for ride in user.ride: #for rides where the user drives
+            destinations += db.session.query(db.func.count(distinct(ride.end_loc))).count()
+            # print('REQUESTS FOR RIDE #', ride.ride_id, ride.request)
+            # print('RIDE PRICE', ride.price)
+            for req in ride.request: #find all the requests for that ride 
+                if req.status == 'Approved': #if the status is approved,
+                    people_met +=1 #add one to number of people met
+                    dollars_earned += req.ride.price #add the ride price (for each approved passenger, add the ride price)
+        for req in user.request: #for the rides that I am a passenger
+            if req.status == 'Approved':
+                destinations += 1
+            print('REQUEST INFO***REQUEST INFO***REQUEST INFO***', req)
+            print('RIDE INFO***RIDE INFO***RIDE INFO***', req.ride)
+            for req in req.ride.request: #go to the request -> get the req.status = approved
+                print('ALL THE REQUESTS FOR THAT RIDE I AM A PASSENGER OF', req)
+                if req.status == 'Approved':
+                    people_met +=1 #(-1 for me as the passenger but +1 for the driver balances to 0)
 
-
-        for ride in user.request: 
-            print('***************************', ride)
-            if ride.status == 'Approved':
-                count += 1
-
-        total_destinations = count
-        # total_people_met = 
-        # total_money_saved = 
-
-    return render_template("profile.html", user = user) 
-    #return render_template("profile.html", fname = fname, etc) 
-
+    return render_template("profile.html", user = user, destinations = destinations, dollars_earned = dollars_earned, people_met = people_met) 
 
 @app.route('/edit-profile', methods = ['POST'])
 def update_user_profile():
