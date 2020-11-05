@@ -14,8 +14,8 @@ class User(db.Model):
     first_name = db.Column(db.String, nullable = False)
     last_name = db.Column(db.String, nullable = False)
     email = db.Column(db.String, unique = True, nullable = False)
+    phone_num = db.Column(db.String, nullable = False)
     password = db.Column(db.String, nullable = False)
-    #user_phone number....for twilio
     #location, image, short bio for profile, map?
     #how about the 4 table in profile?
 

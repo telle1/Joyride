@@ -15,6 +15,7 @@ app.secret_key = os.environ['secret_key']
 account_sid = os.environ['account_sid']
 auth_token  = os.environ['auth_token']
 client = Client(account_sid, auth_token)
+twilio_phone_num = os.environ['twilio_phone_num']
 
 
 # Normally, if you refer to an undefined variable in a Jinja template,
@@ -65,12 +66,14 @@ def register_user():
     first_name = request.form.get('f_name')
     last_name = request.form.get('l_name')
     email = request.form.get('email')
+    phone_num = request.form.get('phone')
     password = request.form.get('password')
 
+    print(phone_num)
     user = User.query.filter(User.email == email).first()
     #hash password
     if user is None:
-        new_user = User(first_name = first_name, last_name = last_name, email = email, password = password)
+        new_user = User(first_name = first_name, last_name = last_name, email = email, password = password, phone_num = phone_num)
         db.session.add(new_user)
         db.session.commit()
         flash('You have successfully registered! Log in to continue.')
@@ -164,11 +167,12 @@ def request_ride():
             db.session.add(add_req)
             db.session.commit()
             resp = jsonify({'msg': "Ride successfully requested."})
-            print('THIS IS THE DRIVERs FIRST NAME', add_req.ride.user.first_name)
-        #   send_twilio_message = client.messages.create(
-        #     to="phone-num", (driver) aka req.ride.user.phone_num
-        #     from_="+1phonenum", (rider aka session['user_id'])
-        #     body= rider_msg)
+            #print('THIS IS THE DRIVERs FIRST NAME', add_req.ride.user.first_name)
+            #print('THIS IS THE RIDERS PHONE NUM', add_req.user.phone_num)
+            # send_twilio_message = client.messages.create(
+            #     to= add_req.ride.user.phone_num, 
+            #     from_= twilio_phone_num , #(rider aka session['user_id']) add_req.user.phone_num
+            #     body= rider_msg)
         else:
             resp = jsonify({'msg': "You cannot request your own ride."})
     else:
