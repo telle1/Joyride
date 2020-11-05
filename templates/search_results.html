@@ -24,7 +24,7 @@
       {% if ride.seats > 0 %}
       <div class="col-md-6">
         <div class="card mb-3">
-          <form action='/request-ride.json' method = "post" id="form-request-{{ride.ride_id}}">
+         <!-- <form action='/request-ride.json' method = "post" id="form-request-{{ride.ride_id}}"> -->
             <h5 class="card-header btn-theme">{{ride.date}} </h5>
             <div class="card-body">
               <div class="row">
@@ -47,13 +47,11 @@
                 <input type="hidden" value = {{ride.driver_id}} name = "driver_id" id = "driver_id"> 
                 <input type="hidden" value = {{ride.ride_id}} name = "ride_id" id = "ride_id"> 
 
-                <button class = 'btn btn-theme' type = "submit" id="submit-button">Request ride</button>
-                
-            
-            </div>
-          </form>
-        </div> 
+                <button class="btn btn-theme" data-toggle="modal" data-target="#req-{{ride.ride_id}}">Request ride</button>
 
+            </div>
+        <!--  </form>-->
+        </div> 
       </div>
       {% endif %}
     {% endfor %}
@@ -63,10 +61,40 @@
     {% endif %}
   </div>
 </div>
-  {% endblock %}
 
-  {% block script %}
-  {% for ride in matching_rides %}
+{% for ride in matching_rides %}
+
+<!--Login Modal-->
+<div class="modal fade" id="req-{{ride.ride_id}}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title w-100 text-center">REQUEST RIDE</h2x`>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!--Form-->
+        <form action="/request-ride.json" id="form-{{ride.ride_id}}" method="post">       
+          <div class="input-group input-group-lg mb-4">
+            <textarea id = "rider_msg-{{ride.ride_id}}" class="form-control" placeholder="Message for driver" rows="3"></textarea>  
+          </div>   
+          <div class="form-group mb-4">
+            <button type="submit" class="btn btn-theme form-control">Request</button> 
+          </div>  
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+{% endblock %}
+
+{% block script %}
+{% for ride in matching_rides %}
 
   <script>
     function alertRequest(evt){
@@ -74,19 +102,21 @@
       console.log('THIS IS THE ID OF THE RIDE', {{ride.ride_id}})
       let url = '/request-ride.json';
       let formData = {
-        "ride_id": {{ride.ride_id}}
+        "ride_id": {{ride.ride_id}},
+        "rider_msg": $('#rider_msg-{{ride.ride_id}}').val()
       };
 
       console.log(formData)
 
       $.post(url, formData, (res) => {
         console.log(res)
+        $('#req-{{ride.ride_id}}').modal('toggle')
         $('#msg').html('<p>' + res.msg + '<p>')
       })
 
     }
 
-    $('#form-request-{{ride.ride_id}}').on('submit', alertRequest);
+    $('#form-{{ride.ride_id}}').on('submit', alertRequest);
   </script>
-  {% endfor %}
-  {% endblock %}
+{% endfor %}
+{% endblock %}

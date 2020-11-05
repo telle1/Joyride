@@ -75,7 +75,7 @@ class Request(db.Model): #Change to UserRides/UserRequests? change rider_id to u
     ride = db.relationship('Ride') #backreffed
     
     def __repr__(self):
-        return f'<Requests request_id = {self.request_id} ride_id = {self.ride_id} rider_id = {self.rider_id} seats = {self.ride.seats} status = {self.status}>'
+        return f'<Requests request_id = {self.request_id} ride_id = {self.ride_id} rider_id = {self.rider_id} status = {self.status}>'
 
 def connect_to_db(flask_app, db_uri='postgresql:///joyride', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
