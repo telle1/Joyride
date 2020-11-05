@@ -45,7 +45,8 @@
               <td id='passengers-{{rides.ride_id}}'>
                 {% for req in rides.request %}
                   {% if req.status == 'Approved' %}
-                    <p class='mb-0'>{{req.user.first_name}} {{req.user.last_name}}</p>
+                 <!--   <p class='mb-0'>{{req.user.first_name}} {{req.user.last_name}}</p> -->
+                 <p><a data-toggle="modal" href="#user-info-{{req.user.user_id}}">{{req.user.first_name}} {{req.user.last_name}}</a></p>
                   {% endif %}
                 {% endfor %}
               </td>
@@ -103,11 +104,32 @@
 </div>
 </div>
 </div>
+
+{% for rides in user_drives|sort(attribute='date') %}
+{% for req in rides.request %}
+<!--User Modals-->
+<div class="modal" id="user-info-{{req.user.user_id}}" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title w-100 text-center">{{req.user.first_name}} Contact Info</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Email: {{req.user.email}}</p>
+        <p>Phone: {{req.user.email}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div> 
+  </div>
+</div>
+{% endfor %}
+{% endfor %}
+
 {% endblock %}  
-
-
-
-
 
 {% block script %}
 
@@ -131,7 +153,8 @@
       $('#msg').html('<p>' + res.msg + '<p>')
       $(`#row-seats-{{rides.ride_id}}`).html('<p>' + res.seats + '<p>');
       if (res.first_name && res.last_name){
-      $(`#passengers-{{rides.ride_id}}`).append('<p>' + res.first_name + res.last_name + '<p>')
+      //$(`#passengers-{{rides.ride_id}}`).append('<p>' + res.first_name + res.last_name + '<p>')
+      $(`#passengers-{{rides.ride_id}}`).append('<p><a data-toggle="modal" href="#user-info-{{req.user.user_id}}">' + res.first_name + res.last_name + '</a></p>')      
       }
     })
 
