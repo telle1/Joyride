@@ -9,7 +9,7 @@
 <div class="container">
   
     <div class="text-center text-header animated bounce">
-        <h1>WHERE TO NEXT, {{user.first_name}}?</h1>
+        <h1>WHERE TO NEXT, {{user.first_name}} ID = {{user.user_id}}?</h1>
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -43,10 +43,16 @@
     </div>
     <div class="row mt-4">
         <div class="col-md-3">
-            <div class="bio">
-                <p class="text-center">Enter image here</p>
-                <p class="font-weight-bold">Location</p>
-                <p class="font-weight-bold">Enter brief description here....</p>
+            <div class="bio p-3">
+                <p class="text-center">About Me</p>
+                {% if user.profile %}
+                <p class="font-weight-bold">{{user}}</p>
+                <p class="font-weight-bold">{{user}}</p>
+                {% endif %}
+                <button class="btn btn-theme shadow-none" data-toggle="modal" data-target="#edit">Edit Profile</button>
+
+           
+                <ul></ul>
             </div>
         </div>
         <div class="col-md-9">
@@ -54,6 +60,39 @@
         </div>
     </div>
 </div>
+
+<!--Modal-->
+<div class="modal fade" id="edit">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title w-100 text-center">EDIT PROFILE</h2x`>
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!--Form-->
+          <form action="/edit-profile" method="post">
+            <div class="input-group input-group-lg mb-4 mr-1">
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+              </div>
+              <input type="text" class="form-control" placeholder="Location" name="location"  >
+            </div>
+            <div class="input-group input-group-lg mb-4">
+     
+              <textarea name = "bio" class="form-control" placeholder="Brief Bio" name="bio" rows="3"></textarea>>
+              
+            </div>     
+            <div class="form-group mb-4">
+              <button type="submit" class="btn btn-theme form-control">Submit</button> 
+            </div>  
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
 {% endblock %}
 
@@ -78,5 +117,7 @@
         });
     });
 </script>
+
+
 
 {% endblock %}

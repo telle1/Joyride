@@ -21,9 +21,22 @@ class User(db.Model):
 
     request = db.relationship('Request')
     ride = db.relationship('Ride')
+    profile = db.relationship('Profile', uselist=False)
 
     def __repr__(self):
         return f'<User user_id ={self.user_id} email = {self.email} {self.first_name} {self.first_name}>'
+
+class Profile(db.Model):
+
+    __tablename__ = "profiles"
+
+    profile_id = db.Column(db.Integer, primary_key=True, autoincrement = True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
+    location = db.Column(db.String)
+    bio = db.Column(db.Text)
+
+    user = db.relationship('User', uselist=False)
+
 
 class Ride(db.Model):
     """A ride."""
@@ -55,17 +68,14 @@ class Request(db.Model): #Change to UserRides/UserRequests? change rider_id to u
 
     request_id = db.Column(db.Integer, primary_key = True, autoincrement = True, unique = True)
     ride_id = db.Column(db.Integer, db.ForeignKey('rides.ride_id'), nullable = False)
-    #driver_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
     rider_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
-    request_pending = db.Column(db.Boolean)
-    approved = db.Column(db.String)
-    #status - pending/inprogess, approved, completed
+    status = db.Column(db.String)
 
     user = db.relationship('User') #backreffed
     ride = db.relationship('Ride') #backreffed
     
     def __repr__(self):
-        return f'<Requests request_id = {self.request_id} ride_id = {self.ride_id} rider_id = {self.rider_id} seats = {self.ride.seats}>'
+        return f'<Requests request_id = {self.request_id} ride_id = {self.ride_id} rider_id = {self.rider_id} seats = {self.ride.seats} status = {self.status}>'
 
 def connect_to_db(flask_app, db_uri='postgresql:///joyride', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri

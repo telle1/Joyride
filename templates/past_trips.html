@@ -42,10 +42,10 @@
               <td>{{rides.start_loc}}</td>
               <td>{{rides.end_loc}}</td>
               <td id ="row-seats">{{rides.seats}}</td>
-              <td>{{rides.price}}</td>
+              <td>${{rides.price}}</td>
               <td>
                 {% for request in rides.request %} <!--WHERE STATUS IS APPROVED-->
-                  {% if request.approved == 'approved' %}
+                  {% if request.status == 'Approved' %}
                 <span>{{request.user.first_name}} {{request.user.last_name}}</span>
                 <br>
                   {% endif %}
@@ -72,13 +72,13 @@
       </tr>
       </thead>
       <tbody>
-      {% for request in user_rides %}
+      {% for req in past_user_rides %}
       <tr>
-        <th scope="row">{{request.ride.date}}</th>
-        <td>{{request.ride.start_loc}}</td>
-        <td>{{request.ride.end_loc}}</td>
-        <td>{{request.ride.driver_id}}</td>
-        <td>{{request.ride.price}}</td>
+        <th scope="row">{{req.ride.date}}</th>
+        <td>{{req.ride.start_loc}}</td>
+        <td>{{req.ride.end_loc}}</td>
+        <td>{{req.ride.driver_id}}</td>
+        <td>${{req.ride.price}}</td>
       </tr>
       {% endfor %}
       </tbody>

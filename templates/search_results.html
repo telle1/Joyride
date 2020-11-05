@@ -16,10 +16,12 @@
   </div>
 
   <div class="msg mt-3" id="msg"></div>
+
   {% if matching_rides|length >= 1 %}
   <h2 class="mt-4 font-weight-bold">Search Results for {{matching_rides[0].start_loc}} to {{matching_rides[0].end_loc}}</h2>
   <div class = "row mt-4">
     {% for ride in matching_rides %}
+      {% if ride.seats > 0 %}
       <div class="col-md-6">
         <div class="card mb-3">
           <form action='/request-ride.json' method = "post" id="form-request-{{ride.ride_id}}">
@@ -53,7 +55,7 @@
         </div> 
 
       </div>
-    
+      {% endif %}
     {% endfor %}
 
     {% else %}
@@ -72,7 +74,6 @@
       console.log('THIS IS THE ID OF THE RIDE', {{ride.ride_id}})
       let url = '/request-ride.json';
       let formData = {
-        "driver_id": {{ride.driver_id}},
         "ride_id": {{ride.ride_id}}
       };
 

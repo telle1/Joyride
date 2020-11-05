@@ -19,7 +19,7 @@
     </li>
   </ul>  
 
-
+  <div class="msg mt-3" id="msg"></div>
   <!---DRIVING TABLE-->
   <div class="tab-content">
     <div id="driving" class="tab-pane fade in active">
@@ -28,31 +28,37 @@
           <thead>
           <tr>
               <th scope="col">Date</th>
-              <th scope="col">From</th>
-              <th scope="col">To</th>
+              <th scope="col">Location</th>
               <th scope="col">Seats</th>
               <th scope="col">Price</th>
+              <th scope="col">Passengers</th>
               <th scope="col">Status</th>
           </tr>
           </thead>
           <tbody>
-          {% for rides in user_drives %}
+          {% for rides in user_drives|sort(attribute='date') %}
           <tr>
               <th scope="row">{{rides.date}}</th>
-              <td>{{rides.start_loc}}</td>
-              <td>{{rides.end_loc}}</td>
-              <td id ="row-seats">{{rides.seats}}</td>
-              <td>{{rides.price}}</td>
+              <td>{{rides.start_loc}} -> {{rides.end_loc}}</td>
+              <td id ="row-seats-{{rides.ride_id}}">{{rides.seats}}</td>
+              <td>${{rides.price}}</td>
+              <td id='passengers-{{rides.ride_id}}'>
+                {% for req in rides.request %}
+                  {% if req.status == 'Approved' %}
+                    <p class='mb-0'>{{req.user.first_name}} {{req.user.last_name}}</p>
+                  {% endif %}
+                {% endfor %}
+              </td>
               <td>
                 {% for req in rides.request %}
-                  {% if req.approved != 'approved' or req.approved != 'denied' %}
+                  {% if req.status == 'Pending' %}
                 <form action="/confirm-rides.json" id="confirm-rides-{{req.request_id}}" method="post">
                 <span>Rider id {{req.rider_id}} ride id {{req.ride_id}}</span>
                 <input type="hidden" value = {{req.rider_id}} id = 'rider_id' name = 'rider_id'>
                 <input type="hidden" value = {{req.request_id}} id = 'request_id' name = 'request_id'>
-                <input type="radio" id="approved" name="request_status" value="approved">
+                <input type="radio" id="approved" name="request_status-{{req.request_id}}" value="Approved">
                 <label for="Approved">Approve</label>
-                <input type="radio" id="denied" name="request_status" value="denied">
+                <input type="radio" id="denied" name="request_status-{{req.request_id}}" value="Denied">
                 <label for="Denied">Deny</label>
                 <button type="submit" class="btn btn-theme">Confirm</button>
                 <br>
@@ -60,8 +66,7 @@
                 </form>
                   {% endif %}
                 {% endfor %}
-              </td>  
-
+              </td>                              
           </tr>
           {% endfor %}
           </tbody>
@@ -83,14 +88,14 @@
       </tr>
       </thead>
       <tbody>
-      {% for req in user_rides %}
+      {% for req in current_user_rides|sort(attribute='ride.date') %}
       <tr>
         <th scope="row">{{req.ride.date}}</th>
         <td>{{req.ride.start_loc}}</td>
         <td>{{req.ride.end_loc}}</td>
         <td>{{req.ride.driver_id}}</td>
-        <td>{{req.ride.price}}</td>
-        <td>Approved or disapproved</td>
+        <td>${{req.ride.price}}</td>
+        <td>{{req.status}}</td>
       </tr>
       {% endfor %}
       </tbody>
@@ -114,15 +119,20 @@
     evt.preventDefault();
     let url = '/confirm-rides.json';
     let formData = {
-      "rider_id": $('#rider_id').val(),
-      "request_id": $('#request_id').val(),
-      "ride_id": $('#ride_id').val(),
-      "status": $("input[type='radio'][name='request_status']:checked").val()
+      "rider_id": {{req.rider_id}},
+      "request_id": {{req.request_id}},
+      "ride_id": {{req.ride_id}},
+      "status": $("input[type='radio'][name='request_status-{{req.request_id}}']:checked").val()
     }
 
     $.post(url, formData, (res) => {
       console.log(res)
       $(`#confirm-rides-{{req.request_id}}`).hide();
+      $('#msg').html('<p>' + res.msg + '<p>')
+      $(`#row-seats-{{rides.ride_id}}`).html('<p>' + res.seats + '<p>');
+      if (res.first_name && res.last_name){
+      $(`#passengers-{{rides.ride_id}}`).append('<p>' + res.first_name + res.last_name + '<p>')
+      }
     })
 
   }
