@@ -54,7 +54,9 @@
                 {% for req in rides.request %}
                   {% if req.status == 'Pending' %}
                 <form action="/confirm-rides.json" id="confirm-rides-{{req.request_id}}" method="post">
-                <span>Rider id {{req.rider_id}} ride id {{req.ride_id}}</span>
+              <!--  <span>Rider id {{req.rider_id}} ride id {{req.ride_id}}</span> -->
+                <span><a data-toggle="modal" href="#user-info-{{req.user.user_id}}">{{req.user.first_name}} {{req.user.last_name}}</a></span>
+
                 <input type="hidden" value = {{req.rider_id}} id = 'rider_id' name = 'rider_id'>
                 <input type="hidden" value = {{req.request_id}} id = 'request_id' name = 'request_id'>
                 <input type="radio" id="approved" name="request_status-{{req.request_id}}" value="Approved">
@@ -94,7 +96,8 @@
         <th scope="row">{{req.ride.date}}</th>
         <td>{{req.ride.start_loc}}</td>
         <td>{{req.ride.end_loc}}</td>
-        <td>{{req.ride.driver_id}}</td>
+      <!--  <td>{{req.ride.user.first_name}} {{req.ride.user.last_name}}</td> -->
+        <td><p><a data-toggle="modal" href="#driver-info-{{req.ride.driver_id}}">{{req.ride.user.first_name}} {{req.ride.user.last_name}}</a></p></td>
         <td>${{req.ride.price}}</td>
         <td>{{req.status}}</td>
       </tr>
@@ -107,21 +110,21 @@
 
 {% for rides in user_drives|sort(attribute='date') %}
 {% for req in rides.request %}
-<!--User Modals-->
+<!--Passenger Info Modal-->
 <div class="modal" id="user-info-{{req.user.user_id}}" role="dialog">
   <div class="modal-dialog">
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title w-100 text-center">{{req.user.first_name}} Contact Info</h4>
+        <h4 class="modal-title w-100 text-center"> Contact Info for {{req.user.first_name}}</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <div class="modal-body">
-        <p>Email: {{req.user.email}}</p>
-        <p>Phone: {{req.user.email}}</p>
+        <p><span class='font-weight-bold'>Email:</span> {{req.user.email}}</p>
+        <p><span class='font-weight-bold'>Phone:</span> {{req.user.phone_num}}</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-theme" data-dismiss="modal">Close</button>
       </div>
     </div> 
   </div>
@@ -129,6 +132,27 @@
 {% endfor %}
 {% endfor %}
 
+{% for req in current_user_rides %}
+<!--Driver Info Modal (Riding Page)-->
+<div class="modal" id="driver-info-{{req.ride.driver_id}}" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title w-100 text-center"> Contact Info for {{req.user.first_name}}</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p><span class='font-weight-bold'>Email:</span> {{req.ride.user.email}}</p>
+        <p><span class='font-weight-bold'>Phone:</span> {{req.ride.user.phone_num}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-theme" data-dismiss="modal">Close</button>
+      </div>
+    </div> 
+  </div>
+</div>
+{% endfor %}
 {% endblock %}  
 
 {% block script %}
