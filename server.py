@@ -251,22 +251,22 @@ def confirm_rides():
 
     print('******************************\n''request_id =', request_id, 'rider_id=', rider_id, 'ride_id =', ride_id, 'status=', status)
 
-    update_request = Request.query.filter(Request.request_id == request_id).first()
+    get_request_to_update = crud.get_request_by_request_id(request_id = request_id)
 
     if status == 'Approved':
-        if update_request.ride.seats > 0:
-            update_request.ride.seats -= 1
-            update_request.status = 'Approved'
+        if get_request_to_update.ride.seats > 0:
+            get_request_to_update.ride.seats -= 1
+            get_request_to_update.status = 'Approved'
             db.session.commit()
-            resp = jsonify({'msg': 'Ride successfully approved.', 'seats': update_request.ride.seats, 'first_name': update_request.user.first_name, 'last_name': update_request.user.first_name})
+            resp = jsonify({'msg': 'Ride successfully approved.', 'seats': get_request_to_update.ride.seats, 'first_name': get_request_to_update.user.first_name, 'last_name': get_request_to_update.user.first_name})
         else:
-            resp = jsonify({'msg': 'Seat capacity has been reached for this ride.', 'seats': update_request.ride.seats})
-            update_request.status = 'Denied'
+            resp = jsonify({'msg': 'Seat capacity has been reached for this ride.', 'seats': get_request_to_update.ride.seats})
+            get_request_to_update.status = 'Denied'
             db.session.commit()
     else:
-        update_request.status = 'Denied'
+        get_request_to_update.status = 'Denied'
         db.session.commit()
-        resp = jsonify({'msg': 'Ride removed.', 'seats': update_request.ride.seats})
+        resp = jsonify({'msg': 'Ride removed.', 'seats': get_request_to_update.ride.seats})
     
     return resp
 
@@ -281,7 +281,6 @@ def logout_user():
     print(session)
 
     return redirect('/')
-
 
 if __name__ == "__main__":
     connect_to_db(app, echo= False)

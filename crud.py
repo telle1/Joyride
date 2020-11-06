@@ -36,6 +36,10 @@ def get_request(ride_id, rider_id):
     """Return requests for a certain ride made by a certain user."""
     return Request.query.filter(Request.ride_id == ride_id, Request.rider_id == rider_id).first()
 
+def get_request_by_request_id(request_id):
+    """Return requests by request_id"""
+    return Request.query.filter(Request.request_id == request_id).first()
+
 def get_current_user_drives(driver_id):
     """Return current rides where the user drives."""
     return Ride.query.filter(Ride.driver_id == driver_id, Ride.date > current_time).all()
