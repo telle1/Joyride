@@ -1,4 +1,5 @@
-from flask import Flask, render_template, redirect, flash, session, request, jsonify
+from flask import Flask, render_template, redirect, flash, session, request, jsonify, url_for
+from functools import wraps #for log-inrequired
 from model import db, User, Ride, Request, TravelList, connect_to_db
 import crud
 from twilio.rest import Client
@@ -31,6 +32,15 @@ app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
 
 current_time = datetime.now()
 
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' in session:
+            return f(*args, **kwargs)
+        else:
+            flash("You must be logged in first.")
+            return redirect('/')
+    return decorated_function
 
 @app.route('/')
 def index():
@@ -53,12 +63,12 @@ def login_user():
     if user:
         if password == user.password:
             session['user_id'] = user.user_id
-            flash('Successfully logged in!')
+            # flash('Successfully logged in!')
             # print(session)
         else:
             flash('Incorrect password. Please try again.')
 
-    return redirect('/')
+    return redirect('/profile')
 
 @app.route('/process-signup', methods = ["POST"])
 def register_user():
@@ -79,21 +89,15 @@ def register_user():
 
     return redirect('/')
 
-@app.route('/post')
+@app.route('/post') 
+@login_required
 def post_ride():
     """Return post a ride page."""
-
-    print(session)
-
-    if 'user_id' in session:
-        return render_template("post.html")
-    else:
-        flash("Only registered users can post a ride. Please login.")
-        return redirect('/')
+    return render_template("post.html")
 
 @app.route('/post-complete', methods =['POST'])
+@login_required
 def post_ride_to_database():
-    #if session id expires..->redirect back to homepage and flash session expired, please log in again;.else execute the following
 
     start_loc = request.form.get('from_input')
     end_loc = request.form.get('to_input')
@@ -143,6 +147,7 @@ def post_search_to_page():
 #     return jsonify({'res': rides_list})
 
 @app.route('/request-ride.json', methods = ['POST'])
+@login_required #returns undefined, but does not redirect
 def request_ride():
 
     ride_id = request.form.get('ride_id')
@@ -150,6 +155,7 @@ def request_ride():
 
     ride = crud.get_ride_by_id(ride_id)
     driver_id = ride.driver_id
+
     req = crud.get_request(rider_id = session['user_id'], ride_id = ride_id)
 
     print('THIS IS THE REQUEST INFORMATION:', req)
@@ -171,41 +177,41 @@ def request_ride():
             resp = jsonify({'msg': "You cannot request your own ride."})
     else:
         resp = jsonify({'msg': "You already requested this ride."})
-        print('THIS IS THE DRIVER ID',req.ride.driver_id)
+        print('THIS IS THE DRIVER ID', req.ride.driver_id)
 
     return resp
 
 @app.route('/profile')
+@login_required
 def get_user_profile():
     """Return profile page."""
-    if 'user_id' in session:
-        #user = User.query.options(db.joinedload('ride')).filter(User.user_id == session['user_id']).one()
-        user = crud.get_user_by_id(user_id = session['user_id'])
-        # print('LIST OF RIDE REQUESTS', user.request)
-        # print('LIST WHERE USER DRIVES', user.ride)   
-        destinations = 0 
-        people_met = 0
-        dollars_earned = 0  
-        for ride in user.ride: #for rides where the user drives
-            destinations += db.session.query(db.func.count(distinct(ride.end_loc))).count()
-            #print(destinations)
-            # print('REQUESTS FOR RIDE #', ride.ride_id, ride.request)
-            # print('RIDE PRICE', ride.price)
-            for req in ride.request: #find all the requests for that ride 
-                if req.status == 'Approved': #if the status is approved,
-                    people_met +=1 #add one to number of people met
-                    dollars_earned += req.ride.price #add the ride price (for each approved passenger, add the ride price)
-        for req in user.request: #for the rides that I am a passenger
+    #user = User.query.options(db.joinedload('ride')).filter(User.user_id == session['user_id']).one()
+    user = crud.get_user_by_id(user_id = session['user_id'])
+    # print('LIST OF RIDE REQUESTS', user.request)
+    # print('LIST WHERE USER DRIVES', user.ride)   
+    destinations = 0 
+    people_met = 0
+    dollars_earned = 0  
+    for ride in user.ride: #for rides where the user drives
+        destinations += db.session.query(db.func.count(distinct(ride.end_loc))).count()
+        #print(destinations)
+        # print('REQUESTS FOR RIDE #', ride.ride_id, ride.request)
+        # print('RIDE PRICE', ride.price)
+        for req in ride.request: #find all the requests for that ride 
+            if req.status == 'Approved': #if the status is approved,
+                people_met +=1 #add one to number of people met
+                dollars_earned += req.ride.price #add the ride price (for each approved passenger, add the ride price)
+    for req in user.request: #for the rides that I am a passenger
+        if req.status == 'Approved':
+            destinations += 1
+        print('REQUEST INFO***REQUEST INFO***REQUEST INFO***', req)
+        print('RIDE INFO***RIDE INFO***RIDE INFO***', req.ride)
+        for req in req.ride.request: #go to the request -> get the req.status = approved
+            print('ALL THE REQUESTS FOR THAT RIDE I AM A PASSENGER OF', req)
             if req.status == 'Approved':
-                destinations += 1
-            print('REQUEST INFO***REQUEST INFO***REQUEST INFO***', req)
-            print('RIDE INFO***RIDE INFO***RIDE INFO***', req.ride)
-            for req in req.ride.request: #go to the request -> get the req.status = approved
-                print('ALL THE REQUESTS FOR THAT RIDE I AM A PASSENGER OF', req)
-                if req.status == 'Approved':
-                    people_met +=1 #(-1 for me as the passenger but +1 for the driver balances to 0)
+                people_met +=1 #(-1 for me as the passenger but +1 for the driver balances to 0)
 
-        travel_list = crud.get_user_travel_list(user_id = session['user_id'])
+    travel_list = crud.get_user_travel_list(user_id = session['user_id'])
 
     return render_template("profile.html", user = user, destinations = destinations, dollars_earned = dollars_earned, people_met = people_met, travel_list = travel_list) 
 
@@ -226,6 +232,7 @@ def add_location_to_travel_list():
     return jsonify({'list': travel_list_result})
 
 @app.route('/current-rides')
+@login_required
 def get_user_current_rides():
     """Return current trips page."""
     current_user_drives = crud.get_current_user_drives(driver_id = session['user_id'])
@@ -234,6 +241,7 @@ def get_user_current_rides():
     return render_template("current_trips.html", current_user_drives = current_user_drives, current_ride_requests = current_ride_requests) 
 
 @app.route('/past-rides')
+@login_required
 def get_user_past_rides():
 
     past_user_drives = crud.get_past_user_drives(driver_id = session['user_id'])
@@ -284,7 +292,6 @@ def logout_user():
 
 if __name__ == "__main__":
     connect_to_db(app, echo= False)
-
     
     app.run(debug=True, host="0.0.0.0", port=5000)
 

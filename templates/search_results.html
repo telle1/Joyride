@@ -96,6 +96,8 @@
       $.post(url, formData, (res) => {
         console.log(res)
         $('#req-{{ride.ride_id}}').modal('toggle')
+
+
         $('#msg').html('<p>' + res.msg + '<p>')
       })
 
