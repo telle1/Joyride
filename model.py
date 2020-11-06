@@ -21,21 +21,20 @@ class User(db.Model):
 
     request = db.relationship('Request')
     ride = db.relationship('Ride')
-    profile = db.relationship('Profile', uselist=False)
 
     def __repr__(self):
         return f'<User user_id ={self.user_id} email = {self.email} {self.first_name} {self.first_name}>'
 
-class Profile(db.Model):
+class TravelList(db.Model):
 
-    __tablename__ = "profiles"
+    __tablename__ = "travel_list"
 
-    profile_id = db.Column(db.Integer, primary_key=True, autoincrement = True)
+    list_id = db.Column(db.Integer, primary_key=True, autoincrement = True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
-    location = db.Column(db.String)
-    bio = db.Column(db.Text)
+    list_item = db.Column(db.String)
 
-    user = db.relationship('User', uselist=False)
+    def __repr__(self):
+        return f'<List_item = {self.list_item} list_id = {self.list_id} user_id = {self.user_id}>'
 
 
 class Ride(db.Model):

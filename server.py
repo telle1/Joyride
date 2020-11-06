@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, flash, session, request, jsonify
-from model import db, User, Ride, Request, Profile, connect_to_db
+from model import db, User, Ride, Request, TravelList, connect_to_db
 from twilio.rest import Client
 from sqlalchemy import func, distinct
 from datetime import datetime
@@ -194,6 +194,7 @@ def get_user_profile():
         test = 0
         for ride in user.ride: #for rides where the user drives
             destinations += db.session.query(db.func.count(distinct(ride.end_loc))).count()
+            #print(destinations)
             # print('REQUESTS FOR RIDE #', ride.ride_id, ride.request)
             # print('RIDE PRICE', ride.price)
             for req in ride.request: #find all the requests for that ride 
@@ -209,29 +210,22 @@ def get_user_profile():
                 print('ALL THE REQUESTS FOR THAT RIDE I AM A PASSENGER OF', req)
                 if req.status == 'Approved':
                     people_met +=1 #(-1 for me as the passenger but +1 for the driver balances to 0)
+        travel_list = TravelList.query.filter(TravelList.user_id == session['user_id']).all()
+        print(travel_list)
 
-    return render_template("profile.html", user = user, destinations = destinations, dollars_earned = dollars_earned, people_met = people_met) 
+    return render_template("profile.html", user = user, destinations = destinations, dollars_earned = dollars_earned, people_met = people_met, travel_list = travel_list) 
 
-@app.route('/edit-profile', methods = ['POST'])
-def update_user_profile():
-    """Edit profile page."""
+@app.route('/travel-list', methods=['POST'])
+def add_location_to_travel_list():
 
-    location = request.form.get("location")
-    bio = request.form.get("bio")
+    list_item = request.form.get('list_item')
+    print('LIST ITEM:', list_item)
+    new_travel_list_item = TravelList(user_id = session['user_id'], list_item = list_item)
+    db.session.add(new_travel_list_item)
+    db.session.commit()
 
-    print(location)
-    print(bio)
-    profile = Profile.query.filter(Profile.user_id == session['user_id']).first()
-    if not profile:
-        add_profile = Profile(user_id = session['user_id'], location = location, bio= bio)
-        db.session.add(add_profile)
-        db.session.commit()
-    else:         
-        profile.location = location
-        profile.bio = bio
-        db.session.commit()
+    return jsonify({'list_item': list_item})
 
-    return redirect("/profile") 
 
 @app.route('/current-rides')
 def get_user_current_rides():

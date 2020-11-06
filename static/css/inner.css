@@ -75,7 +75,7 @@ form h3 {
 }
 
 .bio {
-    border: 1px solid red;
+    border: 1px solid #388087;
     height: 525px;
     padding: 10x;
 }
@@ -87,6 +87,12 @@ form h3 {
     text-shadow: 0 0 3px #388087, 0 0 8px #388087;
 
 }
+
+li:hover{
+    cursor: pointer;
+   }
+
+
 
 /*Bounce animation - courtesy of https://codepen.io/levineuland*/
 

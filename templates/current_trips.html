@@ -54,12 +54,11 @@
                 {% for req in rides.request %}
                   {% if req.status == 'Pending' %}
                 <form action="/confirm-rides.json" id="confirm-rides-{{req.request_id}}" method="post">
-              <!--  <span>Rider id {{req.rider_id}} ride id {{req.ride_id}}</span> -->
                 <span><a data-toggle="modal" href="#user-info-{{req.user.user_id}}">{{req.user.first_name}} {{req.user.last_name}}</a></span>
 
                 <input type="hidden" value = {{req.rider_id}} id = 'rider_id' name = 'rider_id'>
                 <input type="hidden" value = {{req.request_id}} id = 'request_id' name = 'request_id'>
-                <input type="radio" id="approved" name="request_status-{{req.request_id}}" value="Approved">
+                <input type="radio" id="approved" name="request_status-{{req.request_id}}" value="Approved" required>
                 <label for="Approved">Approve</label>
                 <input type="radio" id="denied" name="request_status-{{req.request_id}}" value="Denied">
                 <label for="Denied">Deny</label>
