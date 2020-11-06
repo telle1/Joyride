@@ -2,21 +2,13 @@
 {% block title %} Search Results {% endblock %}
 {% block head %} 
 <link rel="stylesheet" href="../static/css/inner.css" />
+<style>
+</style>
 {% endblock %}
 
 {% block body %}
 <div class="container search-container">
-  <div class="row">
-      <form action='/search-complete' class="form-inline mx-auto f-grey" id="search-rides">
-          <input type="text" class="form-control mr-2" name="from_input" id = "from_input" placeholder="Start Location">
-          <input type="text" class="form-control mr-2" name="to_input" id= "to_input" placeholder="Destination">
-          <input type="date" class="form-control" name="date">
-          <button type="submit" class="btn btn-theme my-1">Search</button>
-      </form>
-  </div>
-
   <div class="msg mt-3" id="msg"></div>
-
   {% if matching_rides|length >= 1 %}
   <h2 class="mt-4 font-weight-bold">Search Results for {{matching_rides[0].start_loc}} to {{matching_rides[0].end_loc}}</h2>
   <div class = "row mt-4">
@@ -24,15 +16,12 @@
       {% if ride.seats > 0 %}
       <div class="col-md-6">
         <div class="card mb-3">
-         <!-- <form action='/request-ride.json' method = "post" id="form-request-{{ride.ride_id}}"> -->
             <h5 class="card-header btn-theme">{{ride.date}} </h5>
             <div class="card-body">
               <div class="row">
-
                 <div class="col-md-8">
                   <h4 class="card-title font-weight-bold">{{ride.user.first_name}} {{ride.user.first_name}}</h4>
                 </div>
-
                 <div class="col-md-4">
                   <div class="card-text text-right"> 
                    <h3 class = "mb-0 font-weight-bold">{{ride.seats}} seats </h3>
@@ -40,9 +29,7 @@
                   </div>
                 </div>
               </div>
-
                 <p class="card-text">Driver comments: {{ride.comments}}</p>
-                
                 <p class="card-text">driverid = {{ride.driver_id}} rideid = {{ride.ride_id}}</p>
                 <input type="hidden" value = {{ride.driver_id}} name = "driver_id" id = "driver_id"> 
                 <input type="hidden" value = {{ride.ride_id}} name = "ride_id" id = "ride_id"> 
@@ -50,20 +37,21 @@
                 <button class="btn btn-theme" data-toggle="modal" data-target="#req-{{ride.ride_id}}">Request ride</button>
 
             </div>
-        <!--  </form>-->
         </div> 
       </div>
       {% endif %}
     {% endfor %}
-
+    <a href="/search" class='ml-3'>Not satisfied? Try again.</a>
     {% else %}
-    <h3 class="mt-4">No rides found</p>
+    <h3 class="mt-4">No rides found</h3>
+    <img class="car-img mt-3" src="../static/images/sad_car.png" alt="No rides found">
+    <br>
+    <a href="/search" class="btn btn-theme mt-3">Try again</a>
     {% endif %}
   </div>
 </div>
 
 {% for ride in matching_rides %}
-
 <!--Request Modal-->
 <div class="modal fade" id="req-{{ride.ride_id}}">
   <div class="modal-dialog" role="document">
@@ -85,17 +73,14 @@
           </div>  
         </form>
       </div>
-
     </div>
   </div>
 </div>
 {% endfor %}
-
 {% endblock %}
 
 {% block script %}
 {% for ride in matching_rides %}
-
   <script>
     function alertRequest(evt){
       evt.preventDefault();

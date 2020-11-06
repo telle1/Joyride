@@ -35,7 +35,7 @@
           </tr>
           </thead>
           <tbody>
-          {% for rides in user_drives %}
+          {% for rides in past_user_drives %}
 
           <tr>
               <th scope="row">{{rides.date}} RIDE ID{{rides.ride_id}}</th>
@@ -72,7 +72,7 @@
       </tr>
       </thead>
       <tbody>
-      {% for req in past_user_rides %}
+      {% for req in past_ride_requests %}
       <tr>
         <th scope="row">{{req.ride.date}}</th>
         <td>{{req.ride.start_loc}}</td>

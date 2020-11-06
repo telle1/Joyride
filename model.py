@@ -16,8 +16,6 @@ class User(db.Model):
     email = db.Column(db.String, unique = True, nullable = False)
     phone_num = db.Column(db.String, nullable = False)
     password = db.Column(db.String, nullable = False)
-    #location, image, short bio for profile, map?
-    #how about the 4 table in profile?
 
     request = db.relationship('Request')
     ride = db.relationship('Ride')
@@ -36,6 +34,8 @@ class TravelList(db.Model):
     def __repr__(self):
         return f'<List_item = {self.list_item} list_id = {self.list_id} user_id = {self.user_id}>'
 
+    def serialize(self):
+        return {'list_id': self.list_id, 'user_id': self.user_id, 'list_item': self.list_item}
 
 class Ride(db.Model):
     """A ride."""

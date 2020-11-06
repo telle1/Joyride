@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, flash, session, request, jsonify
 from model import db, User, Ride, Request, TravelList, connect_to_db
+import crud
 from twilio.rest import Client
 from sqlalchemy import func, distinct
 from datetime import datetime
@@ -28,16 +29,15 @@ app.jinja_env.undefined = jinja2.StrictUndefined
 # more useful (you should remove this line in production though)
 app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
 
+current_time = datetime.now()
+
+
 @app.route('/')
 def index():
     """Return homepage."""
     print(session)
 
-    current_time = datetime.now()
-    print(current_time)
-
     return render_template("index.html")
-
 
 @app.route('/process-login', methods = ["POST"])
 def login_user():
@@ -46,7 +46,7 @@ def login_user():
     email = request.form.get('email')
     password = request.form.get('password')
 
-    user = User.query.filter(User.email == email).first()
+    user = crud.get_user_by_email(email)
 
     if not user:
         flash('No users exist under this email. Please register.')
@@ -54,7 +54,7 @@ def login_user():
         if password == user.password:
             session['user_id'] = user.user_id
             flash('Successfully logged in!')
-            print(session)
+            # print(session)
         else:
             flash('Incorrect password. Please try again.')
 
@@ -69,13 +69,10 @@ def register_user():
     phone_num = request.form.get('phone')
     password = request.form.get('password')
 
-    print(phone_num)
-    user = User.query.filter(User.email == email).first()
+    user = crud.get_user_by_email(email)
     #hash password
     if user is None:
-        new_user = User(first_name = first_name, last_name = last_name, email = email, password = password, phone_num = phone_num)
-        db.session.add(new_user)
-        db.session.commit()
+        crud.create_user(first_name = first_name, last_name = last_name, email = email, password = password, phone_num = phone_num)
         flash('You have successfully registered! Log in to continue.')
     else:
         flash('A user with that email has already been registered.')
@@ -105,10 +102,7 @@ def post_ride_to_database():
     price = request.form.get('price')
     comments = request.form.get('comments')
 
-    ride = Ride(driver_id = session['user_id'], seats = seats, date = date, start_loc = start_loc, end_loc = end_loc, price= price, comments = comments)
-    db.session.add(ride)
-    db.session.commit()
-
+    crud.create_ride(driver_id = session['user_id'], seats = seats, date = date, start_loc = start_loc, end_loc = end_loc, price= price, comments = comments)
     flash('Ride successfully added! ')
     return redirect('/post')
 
@@ -121,11 +115,10 @@ def search_for_ride():
 @app.route('/search-results')
 def post_search_to_page():
 
-    current_time = datetime.now()
     start_loc = request.args.get('from_input')
     end_loc = request.args.get('to_input')
 
-    matching_rides = Ride.query.filter(Ride.start_loc == start_loc, Ride.end_loc == end_loc, Ride.date > current_time).all()
+    matching_rides = crud.get_matching_rides(start_loc = start_loc, end_loc = end_loc)
     print('**************************************************************MATCHING RIDES \n', matching_rides, '\n*********************************** ***************************') 
     
     return render_template('search_results.html', matching_rides = matching_rides)
@@ -155,9 +148,10 @@ def request_ride():
     ride_id = request.form.get('ride_id')
     rider_msg = request.form.get('rider_msg')
 
-    ride = Ride.query.filter(Ride.ride_id == ride_id).first()
+    ride = crud.get_ride_by_id(ride_id)
     driver_id = ride.driver_id
-    req = Request.query.filter(Request.ride_id == ride_id, Request.rider_id == session['user_id']).first()
+    req = crud.get_request(rider_id = session['user_id'], ride_id = ride_id)
+
     print('THIS IS THE REQUEST INFORMATION:', req)
     print('THIS IS THE RIDER MESSAGE', rider_msg)
     print('THIS IS THE RIDE ID', ride, 'THIS IS THE DRIVER ID', driver_id)
@@ -185,13 +179,13 @@ def request_ride():
 def get_user_profile():
     """Return profile page."""
     if 'user_id' in session:
-        user = User.query.options(db.joinedload('ride')).filter(User.user_id == session['user_id']).one()
+        #user = User.query.options(db.joinedload('ride')).filter(User.user_id == session['user_id']).one()
+        user = crud.get_user_by_id(user_id = session['user_id'])
         # print('LIST OF RIDE REQUESTS', user.request)
         # print('LIST WHERE USER DRIVES', user.ride)   
         destinations = 0 
         people_met = 0
         dollars_earned = 0  
-        test = 0
         for ride in user.ride: #for rides where the user drives
             destinations += db.session.query(db.func.count(distinct(ride.end_loc))).count()
             #print(destinations)
@@ -210,8 +204,8 @@ def get_user_profile():
                 print('ALL THE REQUESTS FOR THAT RIDE I AM A PASSENGER OF', req)
                 if req.status == 'Approved':
                     people_met +=1 #(-1 for me as the passenger but +1 for the driver balances to 0)
-        travel_list = TravelList.query.filter(TravelList.user_id == session['user_id']).all()
-        print(travel_list)
+
+        travel_list = crud.get_user_travel_list(user_id = session['user_id'])
 
     return render_template("profile.html", user = user, destinations = destinations, dollars_earned = dollars_earned, people_met = people_met, travel_list = travel_list) 
 
@@ -219,40 +213,33 @@ def get_user_profile():
 def add_location_to_travel_list():
 
     list_item = request.form.get('list_item')
-    print('LIST ITEM:', list_item)
-    new_travel_list_item = TravelList(user_id = session['user_id'], list_item = list_item)
-    db.session.add(new_travel_list_item)
-    db.session.commit()
 
-    return jsonify({'list_item': list_item})
+    crud.create_new_travel_list_item(user_id = session['user_id'], list_item = list_item)
+    travel_list = crud.get_user_travel_list(user_id = session['user_id'])
 
+    travel_list_result = []
+    for item in travel_list:
+        serialize_item = item.serialize()
+        travel_list_result.append(serialize_item)
+    print(travel_list_result)
+
+    return jsonify({'list': travel_list_result})
 
 @app.route('/current-rides')
 def get_user_current_rides():
     """Return current trips page."""
+    current_user_drives = crud.get_current_user_drives(driver_id = session['user_id'])
+    current_ride_requests = crud.get_current_user_requests(rider_id = session['user_id'])
 
-    current_time = datetime.now()
-    user_drives = Ride.query.filter(Ride.driver_id == session['user_id'], Ride.date > current_time).all()
-    all_user_rides = Request.query.filter(Request.rider_id == session['user_id']).all()
-    current_user_rides = []
-    for req in all_user_rides:
-        if req.ride.date > current_time:
-            current_user_rides.append(req)
-
-    return render_template("current_trips.html", user_drives = user_drives, current_user_rides = current_user_rides) 
+    return render_template("current_trips.html", current_user_drives = current_user_drives, current_ride_requests = current_ride_requests) 
 
 @app.route('/past-rides')
 def get_user_past_rides():
 
-    current_time = datetime.now()
-    user_drives = Ride.query.filter(Ride.driver_id == session['user_id'], Ride.date < current_time).all()
-    all_user_rides = Request.query.filter(Request.rider_id == session['user_id']).all()
-    past_user_rides = []
-    for req in all_user_rides:
-        if req.ride.date < current_time:
-            past_user_rides.append(req)
+    past_user_drives = crud.get_past_user_drives(driver_id = session['user_id'])
+    past_ride_requests = crud.get_past_user_requests(rider_id = session['user_id'])
 
-    return render_template("past_trips.html", user_drives = user_drives, past_user_rides = past_user_rides) 
+    return render_template("past_trips.html", past_user_drives = past_user_drives, past_ride_requests = past_ride_requests) 
 
 @app.route('/confirm-rides.json', methods=['POST'])
 def confirm_rides():

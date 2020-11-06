@@ -44,7 +44,7 @@
     <div class="row mt-4">
         <div class="col-md-3">
             <div class="bio p-2">
-                <h4 class="text-center font-weight-bold">Travel List</h4>
+                <h4 class="text-center font-weight-bold travel-header">Travel List</h4>
 
                 <form action="/travel-list" id="travel-list" method="post">
                   <input type="text" name="travel-place"/>
@@ -72,9 +72,41 @@
 <script src="../static/js/maps.js"></script> <!--Map script tag-->
 
 <script
-  src="https://maps.googleapis.com/maps/api/js?key={GOOGLE_API_KEY}&callback=initMap&libraries=places&v=weekly"
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzk5tSbrgXGYOB-CPCMAd3pvcObnK8oow&callback=initMap&libraries=places&v=weekly"
   defer
 ></script> 
+<script>
+function addItem(evt){
+        evt.preventDefault();
+
+        let url = '/travel-list'
+        let formData = {
+        "list_item": $("input[type='text'][name='travel-place']").val()
+        }
+
+        //console.log(formData)  
+        $.post(url, formData, (res) => {
+        let lst = "";
+        $.each(res.list, function(i, item){
+            lst += `<li list_id> ${item.list_item} </li>`
+            //console.log(item)
+        })
+        //console.log(lst)
+        // $('#places-to-go').append('<li>' + res.list_item + '</li>');
+        //let lst = ""; 
+        $('#places-to-go').html(lst);
+        // console.log(res)
+        })
+}
+
+$('#travel-list').on('submit', addItem)
+
+$(document).on('dblclick','li', function(){
+        $(this).toggleClass('strike').fadeOut('slow');    
+    });
+
+    
+</script>
 
 <script> //Animate numbers
     $('.count').each(function () {
@@ -89,35 +121,5 @@
         });
     });
 </script>
-<script>
-
-
-function addItem(evt){
-      evt.preventDefault();
-
-      let url = '/travel-list'
-      let formData = {
-        "list_item": $("input[type='text'][name='travel-place']").val()
-      }
-
-      console.log(formData)
-      $.post(url, formData, (res) => {
-        console.log(res)
-        $('#places-to-go').append('<li>' + res.list_item + '</li>');
-      })
-}
-
-$('#travel-list').on('submit', addItem)
-
-
-$(document).on('dblclick','li', function(){
-      $(this).toggleClass('strike').fadeOut('slow');    
-    });
-
-
-
-</script>
-
-
 
 {% endblock %}

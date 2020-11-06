@@ -36,7 +36,7 @@
           </tr>
           </thead>
           <tbody>
-          {% for rides in user_drives|sort(attribute='date') %}
+          {% for rides in current_user_drives|sort(attribute='date') %}
           <tr>
               <th scope="row">{{rides.date}}</th>
               <td>{{rides.start_loc}} -> {{rides.end_loc}}</td>
@@ -90,7 +90,7 @@
       </tr>
       </thead>
       <tbody>
-      {% for req in current_user_rides|sort(attribute='ride.date') %}
+      {% for req in current_ride_requests|sort(attribute='ride.date') %}
       <tr>
         <th scope="row">{{req.ride.date}}</th>
         <td>{{req.ride.start_loc}}</td>
@@ -107,7 +107,7 @@
 </div>
 </div>
 
-{% for rides in user_drives|sort(attribute='date') %}
+{% for rides in current_user_drives|sort(attribute='date') %}
 {% for req in rides.request %}
 <!--Passenger Info Modal-->
 <div class="modal" id="user-info-{{req.user.user_id}}" role="dialog">
@@ -131,7 +131,7 @@
 {% endfor %}
 {% endfor %}
 
-{% for req in current_user_rides %}
+{% for req in current_ride_requests %}
 <!--Driver Info Modal (Riding Page)-->
 <div class="modal" id="driver-info-{{req.ride.driver_id}}" role="dialog">
   <div class="modal-dialog">
@@ -156,7 +156,7 @@
 
 {% block script %}
 
-{% for rides in user_drives %}
+{% for rides in current_user_drives %}
 {% for req in rides.request %}
 <script>
   $(document).ready(function () {
@@ -185,7 +185,6 @@
 
   $(`#confirm-rides-{{req.request_id}}`).on('submit', confirmRequests)
   });
-
 </script>
 {% endfor %}
 {% endfor %}

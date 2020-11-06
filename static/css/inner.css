@@ -52,6 +52,12 @@ form h3 {
     display: inline-block;
 }
 
+.car-img{
+    height: 300px;
+    width: 400px;
+    transform: scaleX(-1);
+}
+
 /*Profile page---Profile page---Profile page---Profile page---Profile page---Profile page---*/
 .inner {
     border-radius: 20px;
@@ -91,6 +97,10 @@ form h3 {
 li:hover{
     cursor: pointer;
    }
+
+.travel-header{
+    color: #eba92a;
+}
 
 
 
