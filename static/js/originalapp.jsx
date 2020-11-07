@@ -22,6 +22,17 @@ function App(){
 function NavBar(){
     return (
         <div>
+            {/* <nav>
+                <ul>
+                    <li>
+                    <Link to="/">Homepage</Link>
+                    </li>
+                    <li>
+                    <Link to="/search">Search</Link>
+                    </li>
+                </ul>
+            </nav> */}
+
             <nav class="navbar navbar-expand-md fixed-top navbar-custom">
                 <div class="container">
                     <Link to="/" className="navbar-brand">Joyride</Link>
