@@ -47,7 +47,9 @@ def index():
     """Return homepage."""
     print(session)
 
-    return render_template("index.html")
+    #return render_template("index.html")
+    return render_template('react.html')
+
 
 @app.route('/process-login', methods = ["POST"])
 def login_user():
