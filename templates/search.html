@@ -7,6 +7,9 @@
     position: absolute;
   }
 </style>
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzk5tSbrgXGYOB-CPCMAd3pvcObnK8oow&callback=initMap&libraries=places"
+></script> 
 {% endblock %}
 
 {% block body %}
@@ -61,4 +64,17 @@
     })
   $('#search-rides').on('submit', returnSearch); 
 </script> -->
+ <!--Map script tag-->  
+<script>
+  function initialize() {
+  var from_input = document.getElementById('from_input');
+  var to_input = document.getElementById('to_input');
+  let autocomplete_from = new google.maps.places.Autocomplete(from_input);
+  let autocomplete_to = new google.maps.places.Autocomplete(to_input);
+}
+
+  google.maps.event.addDomListener(window, 'load', initialize);
+
+</script>
+
 {% endblock %}

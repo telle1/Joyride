@@ -8,7 +8,7 @@ from datetime import datetime
 import jinja2
 import json
 import os
-
+import geocoder
 app = Flask(__name__)
 
 # A secret key is needed to use Flask sessioning features
@@ -18,7 +18,7 @@ account_sid = os.environ['account_sid']
 auth_token  = os.environ['auth_token']
 client = Client(account_sid, auth_token)
 twilio_phone_num = os.environ['twilio_phone_num']
-
+os.environ["GOOGLE_API_KEY"] = "API_KEY"
 
 # Normally, if you refer to an undefined variable in a Jinja template,
 # Jinja silently ignores this. This makes debugging difficult, so we'll
@@ -105,7 +105,9 @@ def post_ride_to_database():
     seats = request.form.get('seats')
     price = request.form.get('price')
     comments = request.form.get('comments')
-
+    # start_lat_long = request.form.get('start_lat')
+    # print('latlong', start_lat_long)
+    # print(type(start_lat_long))
     crud.create_ride(driver_id = session['user_id'], seats = seats, date = date, start_loc = start_loc, end_loc = end_loc, price= price, comments = comments)
     flash('Ride successfully added! ')
     return redirect('/post')
@@ -185,18 +187,13 @@ def request_ride():
 @login_required
 def get_user_profile():
     """Return profile page."""
-    #user = User.query.options(db.joinedload('ride')).filter(User.user_id == session['user_id']).one()
     user = crud.get_user_by_id(user_id = session['user_id'])
-    # print('LIST OF RIDE REQUESTS', user.request)
-    # print('LIST WHERE USER DRIVES', user.ride)   
+
     destinations = 0 
     people_met = 0
     dollars_earned = 0  
     for ride in user.ride: #for rides where the user drives
         destinations += db.session.query(db.func.count(distinct(ride.end_loc))).count()
-        #print(destinations)
-        # print('REQUESTS FOR RIDE #', ride.ride_id, ride.request)
-        # print('RIDE PRICE', ride.price)
         for req in ride.request: #find all the requests for that ride 
             if req.status == 'Approved': #if the status is approved,
                 people_met +=1 #add one to number of people met
@@ -204,12 +201,19 @@ def get_user_profile():
     for req in user.request: #for the rides that I am a passenger
         if req.status == 'Approved':
             destinations += 1
-        print('REQUEST INFO***REQUEST INFO***REQUEST INFO***', req)
-        print('RIDE INFO***RIDE INFO***RIDE INFO***', req.ride)
         for req in req.ride.request: #go to the request -> get the req.status = approved
-            print('ALL THE REQUESTS FOR THAT RIDE I AM A PASSENGER OF', req)
             if req.status == 'Approved':
                 people_met +=1 #(-1 for me as the passenger but +1 for the driver balances to 0)
+
+    user_drives = Ride.query.filter(Ride.driver_id == session['user_id'])
+    ride_end_locs = []
+    ride_start_locs = []
+    for ride in user_drives:
+        ride_end_locs.append(ride.end_loc)
+        ride_start_locs.append(ride.start_loc)
+    print(ride_end_locs)
+    print(ride_start_locs)
+
 
     travel_list = crud.get_user_travel_list(user_id = session['user_id'])
 

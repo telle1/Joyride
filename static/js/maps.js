@@ -31,11 +31,27 @@ function initMap() {
     var from_input = document.getElementById('from_input');
     var to_input = document.getElementById('to_input');
 
-    //map.controls[google.maps.ControlPosition.TOP_LEFT].push(input); <- this is not need this pushes the input field onto the map
-
     //Create the autocomplete object
     var autocomplete_from = new google.maps.places.Autocomplete(from_input, options);
     var autocomplete_to = new google.maps.places.Autocomplete(to_input, options);
+
+    //Trying to get the lats and longs to put into a new table for databse
+    autocomplete_from.addListener('place_changed', function () {
+      var place = autocomplete_from.getPlace();
+      var start_lat = place.geometry.location;
+    
+      $('#start_lat').val(start_lat)
+      console.log('from', start_lat)
+    
+      })
+
+      autocomplete_to.addListener('place_changed', function () {
+      var place = autocomplete_to.getPlace();
+      var lat = place.geometry.location.lat();
+      var long = place.geometry.location.lng()
+    
+      console.log('to', lat, long)
+      })
     /************End autocomplete the from and to search inputs ***************/
 
     directionsRenderer.setMap(map);
@@ -69,5 +85,7 @@ function calculateAndDisplayRoute(directionsService, directionsRenderer) {
       }
     );
   }
+
+
+
   
- 
