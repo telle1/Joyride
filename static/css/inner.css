@@ -46,6 +46,10 @@ form h3 {
 }
   
 /*Search ride---Search ride---Search ride---Search ride---Search ride---*/
+.search-container{
+    padding-top: 100px;
+}
+
 .msg{
     font-weight: bold;
     padding: 10px;
