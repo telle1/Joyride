@@ -85,25 +85,45 @@
     function alertRequest(evt){
       evt.preventDefault();
       console.log('THIS IS THE ID OF THE RIDE', {{ride.ride_id}})
-      let url = '/request-ride.json';
-      let formData = {
-        "ride_id": {{ride.ride_id}},
-        "rider_msg": $('#rider_msg-{{ride.ride_id}}').val()
-      };
+    //   let url = '/request-ride.json';
+    //   let formData = {
+    //     "ride_id": {{ride.ride_id}},
+    //     "rider_msg": $('#rider_msg-{{ride.ride_id}}').val()
+    //   };
 
-      console.log(formData)
+    //   console.log(formData)
 
-      $.post(url, formData, (res) => {
-        console.log(res)
-        $('#req-{{ride.ride_id}}').modal('toggle')
+    //   $.post(url, formData, (res) => {
+    //     console.log(res)
+    //     $('#req-{{ride.ride_id}}').modal('toggle')
+    //     $('#msg').html('<p>' + res.msg + '<p>')
+    //   })
+    // }
 
-
-        $('#msg').html('<p>' + res.msg + '<p>')
+      fetch('/request-ride.json', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          ride_id: {{ride.ride_id}},
+          rider_msg: $('#rider_msg-{{ride.ride_id}}').val()
+        })
       })
-
+      .then(function(response) {
+        console.log(response);
+        return response.json();
+      })
+      .then(data => {
+        $('#req-{{ride.ride_id}}').modal('toggle')
+        // console.log(data)
+        // console.log(data.msg)
+        $('#msg').html('<p>' + data.msg + '<p>')
+      })
     }
 
     $('#form-{{ride.ride_id}}').on('submit', alertRequest);
+
   </script>
 {% endfor %}
 {% endblock %}

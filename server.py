@@ -151,10 +151,15 @@ def post_search_to_page():
 @app.route('/request-ride.json', methods = ['POST'])
 @login_required #returns undefined, but does not redirect
 def request_ride():
-
-    ride_id = request.form.get('ride_id')
-    rider_msg = request.form.get('rider_msg')
-
+    #tried using fetch
+    data = request.get_json()
+    print(data)
+    print(data['ride_id'])
+    ride_id = data['ride_id']
+    rider_msg = data['rider_msg']
+    # ride_id = request.form.get('ride_id')
+    # rider_msg = request.form.get('rider_msg')
+    # print('tHIS IS THE RIDE_ID', ride_id)
     ride = crud.get_ride_by_id(ride_id)
     driver_id = ride.driver_id
 
@@ -182,6 +187,7 @@ def request_ride():
         print('THIS IS THE DRIVER ID', req.ride.driver_id)
 
     return resp
+
 
 @app.route('/profile')
 @login_required

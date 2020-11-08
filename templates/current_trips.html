@@ -180,7 +180,6 @@
       $(`#passengers-{{rides.ride_id}}`).append('<p><a data-toggle="modal" href="#user-info-{{req.user.user_id}}">' + res.first_name + res.last_name + '</a></p>')      
       }
     })
-
   }
 
   $(`#confirm-rides-{{req.request_id}}`).on('submit', confirmRequests)
