@@ -8,6 +8,7 @@ function Post(){
     const [seats, setSeats] = useState(0)
     const [price, setPrice] = useState(0)
     const [comments, setComments] = useState('')
+    const [postStatus, setPostStatus] = useState("")
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -27,14 +28,13 @@ function Post(){
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data) 
-            $('#msg').html('<p>' + data.msg + '<p>')
+            setPostStatus(data.msg)
         })
     }
 
     return(
         <div className="container post-ride">
-            <div className="mt-3" id = "msg"></div>
+            <div className="mt-3" id = "msg">{postStatus}</div>
             <div className="row">
             <div className="col-md-5">
                 <form onSubmit={handleSubmit} method="post" className="f-grey">

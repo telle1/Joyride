@@ -46,50 +46,52 @@ def login_required(f):
 def index():
     """Return homepage."""
     print(session)
-
-    #return render_template("index.html")
     return render_template('react.html')
-
 
 @app.route('/process-login', methods = ["POST"])
 def login_user():
     """Allow user to login."""
 
-    email = request.form.get('email')
-    password = request.form.get('password')
+    data = request.json
+    email = data['email']
+    password = data['password']
 
     user = crud.get_user_by_email(email)
-
     if not user:
-        flash('No users exist under this email. Please register.')
+        resp = jsonify({'msg': 'No users exist under this email. Please register.'})
     if user:
         if password == user.password:
             session['user_id'] = user.user_id
-            # flash('Successfully logged in!')
-            # print(session)
+            resp = jsonify({'msg': 'Successfully logged in!'})
         else:
-            flash('Incorrect password. Please try again.')
+            resp = jsonify({'msg': 'Incorrect password. Please try again.'})
 
-    return redirect('/profile')
+    return resp
 
 @app.route('/process-signup', methods = ["POST"])
 def register_user():
     """Allow new users to register."""
-    first_name = request.form.get('f_name')
-    last_name = request.form.get('l_name')
-    email = request.form.get('email')
-    phone_num = request.form.get('phone')
-    password = request.form.get('password')
+    data = request.json
+
+    print(data)
+
+    first_name = data['firstName']
+    last_name = data['lastName']
+    email = data['email']
+    phone_num = data['phoneNumber']
+    password = data['password']
 
     user = crud.get_user_by_email(email)
     #hash password
     if user is None:
         crud.create_user(first_name = first_name, last_name = last_name, email = email, password = password, phone_num = phone_num)
-        flash('You have successfully registered! Log in to continue.')
+        resp = jsonify({'msg': 'You have successfully registered! Log in to continue.'})
+        # flash('You have successfully registered! Log in to continue.')
     else:
-        flash('A user with that email has already been registered.')
+        resp = jsonify({'msg': 'A user with that email has already been registered.'})
+        # flash('A user with that email has already been registered.')
 
-    return redirect('/')
+    return resp
 
 # @app.route('/post') 
 # @login_required
@@ -112,22 +114,28 @@ def post_ride_to_database():
     ride = crud.create_ride(driver_id = session['user_id'], seats = seats, date = date, start_loc = start_loc, end_loc = end_loc, price= price, comments = comments)
     return jsonify({'msg': 'Ride successfully added.'})
 
-@app.route('/search')
-def search_for_ride():
-    """Return post a ride page."""
+# @app.route('/search')
+# def search_for_ride():
+#     """Return post a ride page."""
 
-    return render_template("search.html") 
+#     return render_template("search.html") 
 
-@app.route('/search-results')
+@app.route('/search-results', methods=['POST'])
 def post_search_to_page():
 
-    start_loc = request.args.get('from_input')
-    end_loc = request.args.get('to_input')
-
+    data = request.json
+    start_loc = data['startInput']
+    end_loc = data['endInput']
     matching_rides = crud.get_matching_rides(start_loc = start_loc, end_loc = end_loc)
     print('**************************************************************MATCHING RIDES \n', matching_rides, '\n*********************************** ***************************') 
     
-    return render_template('search_results.html', matching_rides = matching_rides)
+    rides_list = []
+    for rides in matching_rides:
+        res_data = rides.serialize()
+        rides_list.append(res_data)
+    print(rides_list)
+    return jsonify({'res': rides_list})
+    # return render_template('search_results.html', matching_rides = matching_rides)
 
 # @app.route('/search-results')
 # def post_search_to_page():

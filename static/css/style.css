@@ -15,6 +15,9 @@ body {
   font-weight: bold;
 }
 
+.yellow{
+  color: #eba92a;
+}
   
 /*NAVBAR---NAVBAR---NAVBAR---NAVBAR---NAVBAR---NAVBAR---NAVBAR---*/
 
@@ -32,6 +35,12 @@ body {
     font-family: 'Pacifico', cursive;
     font-weight: 500;
     font-size: 20px;
+  }
+
+  .login-register-msg{
+    padding-top: 70px;
+    text-align: center;
+    font-weight: bold;
   }
 
 /*FOOTER---FOOTER---FOOTER---FOOTER---FOOTER---FOOTER---FOOTER---FOOTER---FOOTER---*/
