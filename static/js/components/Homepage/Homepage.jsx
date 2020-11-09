@@ -3,28 +3,16 @@ const { useHistory, useParams, Redirect, Switch, Prompt, Link, Route } = ReactRo
 const { useState, useEffect } = React 
 
 function HomePage(){
-
-        // <div>
-        //     {/* <LogInModal/> */}
-        //     {/* <Hero/>
-        //     <InfoSquare/>
-        //     <Features/> */}
-
-   const [count, setCount] = useState(0);
- 
-   return (
-      <div>
-         <p>You clicked {count} times</p>
-         <button onClick={() => setCount(count + 1)}>
-           Click me
-         </button>
-      </div>
-    );
-
-  }
+    return(
+        <div>
+            <Hero/>
+            <InfoSquare/>
+            <Features/>
+        </div>
+    )
+}
             
     
-
 function Hero(){
     return (
         <section id="homesection">

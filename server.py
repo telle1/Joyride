@@ -91,26 +91,26 @@ def register_user():
 
     return redirect('/')
 
-@app.route('/post') 
-@login_required
-def post_ride():
-    """Return post a ride page."""
-    return render_template("post.html")
+# @app.route('/post') 
+# @login_required
+# def post_ride():
+#     """Return post a ride page."""
+#     return render_template("post.html")
 
 @app.route('/post-complete', methods =['POST'])
 @login_required
 def post_ride_to_database():
 
-    start_loc = request.form.get('from_input')
-    end_loc = request.form.get('to_input')
-    date = request.form.get('date') #change to datetime?
-    seats = request.form.get('seats')
-    price = request.form.get('price')
-    comments = request.form.get('comments')
+    data = request.json
+    start_loc = data['from']
+    end_loc = data['to']
+    date = data['date']
+    seats = data['seats']
+    price = data['price']
+    comments = data['comments']
 
-    crud.create_ride(driver_id = session['user_id'], seats = seats, date = date, start_loc = start_loc, end_loc = end_loc, price= price, comments = comments)
-    flash('Ride successfully added! ')
-    return redirect('/post')
+    ride = crud.create_ride(driver_id = session['user_id'], seats = seats, date = date, start_loc = start_loc, end_loc = end_loc, price= price, comments = comments)
+    return jsonify({'msg': 'Ride successfully added.'})
 
 @app.route('/search')
 def search_for_ride():
