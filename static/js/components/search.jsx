@@ -37,6 +37,8 @@ function Search(){
             </div>
             {matchingRides.map(matchingRide => (
                 <MatchingRide 
+                    key = {matchingRide.ride_id}
+                    id = {matchingRide.ride_id}
                     date= {matchingRide.date}
                     driverFirstName= {matchingRide.driver_fname}
                     driverLastName= {matchingRide.driver_lname}
@@ -49,7 +51,7 @@ function Search(){
 }
 
 
-function MatchingRide({date, driverFirstName, driverLastName, seats, price, comments}){
+function MatchingRide({date, driverFirstName, driverLastName, seats, price, comments, id}){
     return (
             <div className="card mb-3">
                 <h5 className="card-header btn-theme"> {date} </h5>
@@ -66,7 +68,36 @@ function MatchingRide({date, driverFirstName, driverLastName, seats, price, comm
                         </div>
                     </div>
                     <p className="card-text">Driver comments: {comments}</p>
+                    <button className="btn btn-theme" data-toggle="modal" data-target={id}>Request ride</button>
+                    <RequestModal/>
                 </div>
             </div> 
     )
 }
+
+function RequestModal(){
+    return(
+        <div className="modal fade" id={id}>
+        <div className="modal-dialog" role="document">
+            <div className="modal-content">
+            <div className="modal-header">
+                <h2 className="modal-title w-100 text-center">REQUEST RIDE</h2>
+                <button type="button" className="close" data-dismiss="modal">
+                <span>&times;</span>
+                </button>
+            </div>
+            <div className="modal-body">
+            
+                <form action="/request-ride.json" id="form-{{ride.ride_id}}" method="post">       
+                <div className="input-group input-group-lg mb-4">
+                    <textarea id = "rider_msg-{{ride.ride_id}}" className="form-control" placeholder="Message for driver" rows="3"></textarea>  
+                </div>   
+                <div className="form-group mb-4">
+                    <button type="submit" className="btn btn-theme form-control">Request</button> 
+                </div>  
+                </form>
+            </div>
+            </div>
+        </div>
+        </div>
+)}

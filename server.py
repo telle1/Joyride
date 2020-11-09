@@ -248,7 +248,22 @@ def get_user_current_rides():
     current_user_drives = crud.get_current_user_drives(driver_id = session['user_id'])
     current_ride_requests = crud.get_current_user_requests(rider_id = session['user_id'])
 
-    return render_template("current_trips.html", current_user_drives = current_user_drives, current_ride_requests = current_ride_requests) 
+    #return render_template("current_trips.html", current_user_drives = current_user_drives, current_ride_requests = current_ride_requests) 
+    current_drives_list = []
+    for drive in current_user_drives:
+        serialize_drive = drive.serialize()
+        
+        for req in drive.request:
+            if req.status == 'Approved':
+                serialize_drive['passengers'] = [req.user.first_name, req.user.last_name]
+            if req.status == 'Pending':
+                serialize_drive['requests'] = [req.user.first_name, req.user.last_name]
+    
+        current_drives_list.append(serialize_drive)
+
+    print(current_drives_list)
+
+    return jsonify({'drives': current_drives_list})
 
 @app.route('/past-rides')
 @login_required

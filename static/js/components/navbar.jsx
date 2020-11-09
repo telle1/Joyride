@@ -9,7 +9,7 @@ function NavBar(){
         <div>
             <nav className="navbar navbar-expand-md fixed-top navbar-custom">
                 <div className="container">
-                    <Link to="/search" className="navbar-brand">Joyride</Link>
+                    <Link to="/current-rides" className="navbar-brand">Joyride</Link>
                     <ul className="navbar-nav">
                         <li className="nav-item">
                         <button className="btn navbar-btn shadow-none" data-toggle="modal" data-target="#login">Log In</button>

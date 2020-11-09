@@ -16,15 +16,15 @@ function App(){
                     <Route path="/post">
                         <Post/>
                     </Route>
-                    {/* <Route exact path="/current-rides">
+                    <Route exact path="/current-rides">
                         <CurrentRides/>
-                    </Route>
-                    <Route exact path="/past-rides">
+                    </Route> 
+                    {/* <Route exact path="/past-rides">
                         <PastRides/>
                     </Route>
                     <Route exact path="/profile">
                         <Profile/>
-                    </Route> */}
+                    </Route>  */}
                 </Switch>
                 <Footer/>
             </Router>
