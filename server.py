@@ -135,33 +135,14 @@ def post_search_to_page():
         rides_list.append(res_data)
     print(rides_list)
     return jsonify({'res': rides_list})
-    # return render_template('search_results.html', matching_rides = matching_rides)
 
-# @app.route('/search-results')
-# def post_search_to_page():
-
-#     # start_loc = request.args.get('from_input')
-#     # end_loc = request.args.get('to_input')
-#     start_loc = request.args.get('from_input')
-#     end_loc = request.args.get('to_input')
-
-#     matching_rides = Ride.query.filter(Ride.start_loc == start_loc, Ride.end_loc == end_loc).all()
-#     print(matching_rides)
-
-#     rides_list = []
-#     for rides in matching_rides:
-#         res_data = rides.serialize()
-#         rides_list.append(res_data)
-    
-#     #return render_template('search_results.html', matching_rides = matching_rides)
-#     return jsonify({'res': rides_list})
-
-@app.route('/request-ride.json', methods = ['POST'])
+@app.route('/request-ride', methods = ['POST'])
 @login_required #returns undefined, but does not redirect
 def request_ride():
 
-    ride_id = request.form.get('ride_id')
-    rider_msg = request.form.get('rider_msg')
+    data = request.json
+    ride_id = data['ride_id']
+    rider_msg = data['rider_msg']
 
     ride = crud.get_ride_by_id(ride_id)
     driver_id = ride.driver_id

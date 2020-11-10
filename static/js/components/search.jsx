@@ -51,6 +51,11 @@ function Search(){
 
 
 function MatchingRide({date, driverFirstName, driverLastName, seats, price, comments, id}){
+
+    const [showRequest, setShowRequest] = useState(false)
+    const handleShow = () => setShowRequest(true)
+    const handleClose = () => setShowRequest(false) 
+
     return (
             <div className="card mb-3">
                 <h5 className="card-header btn-theme"> {date} </h5>
@@ -67,36 +72,52 @@ function MatchingRide({date, driverFirstName, driverLastName, seats, price, comm
                         </div>
                     </div>
                     <p className="card-text">Driver comments: {comments}</p>
-                    <button className="btn btn-theme" data-toggle="modal" data-target='#{id}'>Request ride</button>
-                    <RequestModal/>
+                    <Button className="btn-theme" onClick={handleShow}>Request Ride</Button>
+                    <RequestModal showRequest={showRequest} handleClose={handleClose}/>
                 </div>
             </div> 
     )
 }
 
-function RequestModal(){
+function RequestModal({showRequest, handleClose}){
+
+    // const [matchingRides, setMatchingRides] = useState([])
+    // const [startInput, setStartInput] = useState("")
+    // const [endInput, setEndInput] = useState("")
+
+    // const sendRequest = (evt) => {
+    //     evt.preventDefault()
+    //     fetch("/request-ride", {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json"
+    //         },
+    //         body: JSON.stringify({
+    //             ride_id: ?,
+    //             rider_msg: ?
+    //         }) 
+    //     })
+    //     .then(res => res.json())
+    //     .then(data => {
+    //         console.log(data.msg)
+    //     })        
+    // }
+
+
     return(
-        <div className="modal fade" id='{id}'>
-        <div className="modal-dialog" role="document">
-            <div className="modal-content">
-            <div className="modal-header">
-                <h2 className="modal-title w-100 text-center">REQUEST RIDE</h2>
-                <button type="button" className="close" data-dismiss="modal">
-                <span>&times;</span>
-                </button>
-            </div>
-            <div className="modal-body">
-            
-                <form action="/request-ride.json" id="form-{{ride.ride_id}}" method="post">       
-                <div className="input-group input-group-lg mb-4">
-                    <textarea id = "rider_msg-{{ride.ride_id}}" className="form-control" placeholder="Message for driver" rows="3"></textarea>  
-                </div>   
-                <div className="form-group mb-4">
-                    <button type="submit" className="btn btn-theme form-control">Request</button> 
-                </div>  
-                </form>
-            </div>
-            </div>
-        </div>
-        </div>
+        <Modal show={showRequest} onHide={handleClose}>
+            <Modal.Header closeButton>
+            <Modal.Title>USER LOGIN</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                    <form onSubmit={sendRequest} method="post">       
+                        <div className="input-group input-group-lg mb-4">
+                            <textarea id = "rider_msg-{{ride.ride_id}}" className="form-control" placeholder="Message for driver" rows="3"></textarea>  
+                        </div>   
+                        <div className="form-group mb-4">
+                            <button type="submit" className="btn btn-theme form-control">Request</button> 
+                        </div>  
+                    </form>
+            </Modal.Body>
+        </Modal>
     )}

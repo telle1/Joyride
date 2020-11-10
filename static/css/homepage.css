@@ -158,12 +158,12 @@ h3.heading {
   overflow: visible;
 }
 
-.carousel-control-next,
+/* .carousel-control-next,
 .carousel-control-prev {
   filter: invert(100%);
   top: 90px;
 
-}
+} */
 
 .profile {
   background-color: #f4f4f4;

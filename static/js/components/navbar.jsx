@@ -1,11 +1,10 @@
 const { useState } = React 
-const {Modal, Button} = ReactBootstrap
+const {Modal, Button, Alert} = ReactBootstrap
 
 function NavBar({setUser, user}){
-  //  const [registerStatus, setRegisterStatus] = useState("")
-    //state for login Modal
     const [showLogin, setShowLogin] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
+    const [showAlert, setShowAlert] = useState(true)
     const handleLoginClose = () => setShowLogin(false);
     const handleRegisterClose = () => setShowRegister(false);
     const handleLoginShow = () => setShowLogin(true);
@@ -24,8 +23,20 @@ function NavBar({setUser, user}){
             <NavBarNoUser handleLoginShow={handleLoginShow} handleRegisterShow={handleRegisterShow}/>
             <LogInModal setUser={setUser} handleLoginClose={handleLoginClose} showLogin={showLogin}/>
             <RegisterModal handleRegisterClose={handleRegisterClose} showRegister={showRegister} />
+            {/* <LoginAlert text="hi"/> */}
         </div> )
     }
+}
+
+function LoginAlert({text, setShowAlert}){
+  return (
+    <Alert variant="danger" onClose={() => setShowAlert(false)} dismissible>
+      <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
+      <p>
+        {text}
+      </p>
+   </Alert>
+  )
 }
 
 function NavBarNoUser({handleLoginShow, handleRegisterShow}){
@@ -77,7 +88,6 @@ function NavBarUser({handleLogout}){
         <li className="nav-item">
           <Link to="/" className="btn navbar-btn shadow-none" onClick={handleLogout}>Log Out</Link>
         </li>
-        <li id="msg" className="login-register-msg">{registerStatus}</li>
       </ul>
       </div>
     </nav>  
