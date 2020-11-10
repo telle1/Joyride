@@ -20,18 +20,19 @@ footer {
 
 /*My rides page---My rides page---My rides page---My rides page---My rides page---*/
 /*TABLE*/
-.current-rides{
-    padding-top: 85px;
+.current-rides, .past-rides {
+    padding-top: 100px;
 }
 
-h3 {
+.table-header {
     color: #eba92a;
     font-weight: bold;
+    padding-top: 30px;
 }
 
-.nav-tabs a {
+/* .nav-tab {
     color: black;
-}
+} */
 
 /*Post ride page---Post ride page---Post ride page---Post ride page---Post ride page---*/
 .post-ride{

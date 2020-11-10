@@ -86,18 +86,10 @@ def register_user():
     if user is None:
         crud.create_user(first_name = first_name, last_name = last_name, email = email, password = password, phone_num = phone_num)
         resp = jsonify({'msg': 'You have successfully registered! Log in to continue.', 'success': 'success'})
-        # flash('You have successfully registered! Log in to continue.')
     else:
         resp = jsonify({'msg': 'A user with that email has already been registered.'})
-        # flash('A user with that email has already been registered.')
 
     return resp
-
-# @app.route('/post') 
-# @login_required
-# def post_ride():
-#     """Return post a ride page."""
-#     return render_template("post.html")
 
 @app.route('/post-complete', methods =['POST'])
 @login_required
@@ -114,12 +106,6 @@ def post_ride_to_database():
     ride = crud.create_ride(driver_id = session['user_id'], seats = seats, date = date, start_loc = start_loc, end_loc = end_loc, price= price, comments = comments)
     return jsonify({'msg': 'Ride successfully added.'})
 
-# @app.route('/search')
-# def search_for_ride():
-#     """Return post a ride page."""
-
-#     return render_template("search.html") 
-
 @app.route('/search-results', methods=['POST'])
 def post_search_to_page():
 
@@ -127,13 +113,13 @@ def post_search_to_page():
     start_loc = data['startInput']
     end_loc = data['endInput']
     matching_rides = crud.get_matching_rides(start_loc = start_loc, end_loc = end_loc)
-    print('**************************************************************MATCHING RIDES \n', matching_rides, '\n*********************************** ***************************') 
+    print('**************************************************************MATCHING RIDES NON-SERIALIZED \n', matching_rides, '\n*********************************** ***************************') 
     
     rides_list = []
     for rides in matching_rides:
         res_data = rides.serialize()
         rides_list.append(res_data)
-    print(rides_list)
+    print('*********MATCHING RIDES********', rides_list)
     return jsonify({'res': rides_list})
 
 @app.route('/request-ride', methods = ['POST'])
@@ -229,7 +215,6 @@ def get_user_current_rides():
     current_user_drives = crud.get_current_user_drives(driver_id = session['user_id'])
     current_ride_requests = crud.get_current_user_requests(rider_id = session['user_id'])
 
-    #return render_template("current_trips.html", current_user_drives = current_user_drives, current_ride_requests = current_ride_requests) 
     current_drives_list = []
     for drive in current_user_drives:
         serialize_drive = drive.serialize()
@@ -241,10 +226,20 @@ def get_user_current_rides():
                 serialize_drive['requests'] = [req.user.first_name, req.user.last_name]
     
         current_drives_list.append(serialize_drive)
-
-    print(current_drives_list)
-
-    return jsonify({'drives': current_drives_list})
+    
+    current_rides_list = []
+    for req in current_ride_requests:
+        req_serialized = {
+            'date': req.ride.date,
+            'start_loc': req.ride.start_loc,
+            'end_loc': req.ride.end_loc,
+            'driver': [req.ride.user.first_name, req.ride.user.last_name],
+            'cost': req.ride.price,
+            'status': req.status,
+        }
+        current_rides_list.append(req_serialized)
+    print('tHIS IS THE CURRENT REQUEST LIST', current_rides_list)
+    return jsonify({'drives': current_drives_list, 'rides': current_rides_list})
 
 @app.route('/past-rides')
 @login_required

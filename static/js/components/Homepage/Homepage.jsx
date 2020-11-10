@@ -1,6 +1,7 @@
 // const { checkPropTypes } = require("prop-types"); //where did this come from
 const { useHistory, useParams, Redirect, Switch, Prompt, Link, Route } = ReactRouterDOM;
 const {Carousel, Container, Row, Col} = ReactBootstrap
+// const {Typed} = Typed.JS
 
 function HomePage(){
     return(
@@ -24,9 +25,35 @@ function Heading({header}){
 function Hero(){
     return (
         <section id="homesection">
-           <h1>Enjoy the <span className="animate"></span></h1>
+           {/* <h1>Enjoy the</h1>  */}
+           {/* <Typeanimation/> */}
+           <h1>Enjoy the <span className="animate">ride</span></h1>
         </section>
     )}
+
+
+// const Typeanimation = () => {
+
+//   useEffect(() => {
+//       // Options for the Typed object
+//       const options = {
+//           strings: [ride, company, savings],
+//           typeSpeed: 50
+//       };
+
+//       // New Typed instance
+//       const typed = new Typed('#typed_effect', options);
+
+//       // Destroy Typed instance on unmounting the component to prevent memory leaks
+//       return () => {
+//           typed.destroy();
+//       };
+//   }, [text]);
+
+//   return (    
+//       <span id='typed_effect'></span>
+//   );
+// };
 
 function InfoSquares(){
   return (
