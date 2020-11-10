@@ -1,6 +1,5 @@
 const { useState, useEffect } = React 
 
-
 function Search(){
     const [matchingRides, setMatchingRides] = useState([])
     const [startInput, setStartInput] = useState("")
@@ -68,7 +67,7 @@ function MatchingRide({date, driverFirstName, driverLastName, seats, price, comm
                         </div>
                     </div>
                     <p className="card-text">Driver comments: {comments}</p>
-                    <button className="btn btn-theme" data-toggle="modal" data-target={id}>Request ride</button>
+                    <button className="btn btn-theme" data-toggle="modal" data-target='#{id}'>Request ride</button>
                     <RequestModal/>
                 </div>
             </div> 
@@ -77,7 +76,7 @@ function MatchingRide({date, driverFirstName, driverLastName, seats, price, comm
 
 function RequestModal(){
     return(
-        <div className="modal fade" id={id}>
+        <div className="modal fade" id='{id}'>
         <div className="modal-dialog" role="document">
             <div className="modal-content">
             <div className="modal-header">
@@ -100,4 +99,4 @@ function RequestModal(){
             </div>
         </div>
         </div>
-)}
+    )}

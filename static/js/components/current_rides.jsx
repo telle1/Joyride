@@ -17,7 +17,7 @@ function CurrentRides(){
     }, [])
 
     return(
-        <div className="container">
+        <div className="container current-rides">
             <ul className="nav nav-tabs">
                 <li className="mr-2">
                 <a data-toggle="tab" href="#driving">Driving</a>

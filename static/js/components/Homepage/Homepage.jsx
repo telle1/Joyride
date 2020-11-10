@@ -1,4 +1,4 @@
-const { checkPropTypes } = require("prop-types"); //where did this come from
+// const { checkPropTypes } = require("prop-types"); //where did this come from
 const { useHistory, useParams, Redirect, Switch, Prompt, Link, Route } = ReactRouterDOM;
 
 function HomePage(){
@@ -30,12 +30,12 @@ function Hero(){
 function InfoSquares(){
   return (
       <section id="what-row">
-        <div className="container-fluid">
+         <div className="container-fluid">
           <div className="row">
             <InfoSquare imageClass="col-left" header="THE BEST LONG DISTANCE RIDESHARE." text="Join our welcoming community of carpoolers."/>
             <InfoSquare imageClass="col-right" header="FIND OR GIVE A RIDE." text="Search our user-friendly site for listings."/>
           </div>
-        </div>
+        </div> 
       </section>   
   )}
   

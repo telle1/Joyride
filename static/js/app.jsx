@@ -1,11 +1,16 @@
 const Router = ReactRouterDOM.BrowserRouter;
 const { useHistory, useParams, Redirect, Switch, Prompt, Link, Route} = ReactRouterDOM;
+const { useState } = React 
+
 
 function App(){
+
+    const [user, setUser] = useState(null)
+
     return (
         <div>
             <Router>
-                <NavBar/>
+                <NavBar setUser={setUser} user={user}/>
                 <Switch>
                     <Route exact path="/">
                         <HomePage/>
@@ -16,7 +21,7 @@ function App(){
                     <Route path="/post">
                         <Post/>
                     </Route>
-                    <Route exact path="/current-rides">
+                    <Route path="/current-rides">
                         <CurrentRides/>
                     </Route> 
                     {/* <Route exact path="/past-rides">
@@ -29,7 +34,6 @@ function App(){
                 <Footer/>
             </Router>
         </div>
-
     )
 }
 

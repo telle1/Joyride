@@ -62,7 +62,7 @@ def login_user():
     if user:
         if password == user.password:
             session['user_id'] = user.user_id
-            resp = jsonify({'msg': 'Successfully logged in!'})
+            resp = jsonify({'msg': 'Successfully logged in!', 'user_id': user.user_id})
         else:
             resp = jsonify({'msg': 'Incorrect password. Please try again.'})
 
