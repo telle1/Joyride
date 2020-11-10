@@ -85,7 +85,7 @@ def register_user():
     #hash password
     if user is None:
         crud.create_user(first_name = first_name, last_name = last_name, email = email, password = password, phone_num = phone_num)
-        resp = jsonify({'msg': 'You have successfully registered! Log in to continue.'})
+        resp = jsonify({'msg': 'You have successfully registered! Log in to continue.', 'success': 'success'})
         # flash('You have successfully registered! Log in to continue.')
     else:
         resp = jsonify({'msg': 'A user with that email has already been registered.'})

@@ -8,7 +8,7 @@ function Post(){
     const [seats, setSeats] = useState(0)
     const [price, setPrice] = useState(0)
     const [comments, setComments] = useState('')
-    const [postStatus, setPostStatus] = useState("")
+    const [postStatus, setPostStatus] = useState('')
 
     const handleSubmit = (e) => {
         e.preventDefault();

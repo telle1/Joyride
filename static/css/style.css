@@ -9,11 +9,17 @@ body {
     background-color: #388087;
 }
 
-.flash-msg{
+.alert-position{
+  margin-top: 55px;
+  margin-bottom: 0px;
+  padding-bottom: 10px;
+}
+
+/* .flash-msg{
   padding-top: 70px;
   text-align: center;
   font-weight: bold;
-}
+} */
 
 .yellow{
   color: #eba92a;

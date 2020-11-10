@@ -1,6 +1,6 @@
 // const { checkPropTypes } = require("prop-types"); //where did this come from
 const { useHistory, useParams, Redirect, Switch, Prompt, Link, Route } = ReactRouterDOM;
-const {Carousel} = ReactBootstrap
+const {Carousel, Container, Row, Col} = ReactBootstrap
 
 function HomePage(){
     return(
@@ -15,10 +15,10 @@ function HomePage(){
 
 function Heading({header}){
   return(
-    <div className="col-12">
-      <h3 className="heading">{header}</h3>
-      <div className="heading-underline"></div>
-    </div>
+    <Col>
+       <h3 className="heading">{header}</h3>
+       <div className="heading-underline"></div>
+    </Col>
   )}
             
 function Hero(){
@@ -30,33 +30,33 @@ function Hero(){
 
 function InfoSquares(){
   return (
-      <section id="what-row">
-         <div className="container-fluid">
-          <div className="row">
+      <section id="info-squares">
+        <Container fluid>
+          <Row>
             <InfoSquare imageClass="col-left" header="THE BEST LONG DISTANCE RIDESHARE." text="Join our welcoming community of carpoolers."/>
             <InfoSquare imageClass="col-right" header="FIND OR GIVE A RIDE." text="Search our user-friendly site for listings."/>
-          </div>
-        </div> 
+          </Row>
+        </Container>
       </section>   
   )}
   
 function InfoSquare({imageClass, header, text}){
   return (
-      <div className="col-md-6 what">
+      <Col className="info-square">
         <div className={imageClass}>
             <div className="heading-underline"></div>
             <h3>{header}</h3>
             <h5>{text}</h5>
         </div>
-      </div>
+      </Col>
   )}
 
 function Features(){
   return (
     <section id = "why">
-      <div className="container">
+      <Container>
         <Heading header="Why Joyride?"/>
-        <div className="row text-center py-4">
+        <Row className= "text-center py-4">
           <Feature icon= "fas fa-piggy-bank fa-4x" header= 'Save Money' paragraph = "Less than an Uber or flight. It's not about finding savings at the pump,
               but finding savings before. Instead of paying for gas all by yourself, 
               split the cost with Joyride and make your wallet smile."/>
@@ -66,48 +66,42 @@ function Features(){
           <Feature icon= "fas fa-globe-americas fa-4x" header= 'Help the Earth' paragraph = "Reduce your carbon footprint. Did you know that a whopping 28% of greenhouse
             gas emissions come from transportation? Help save the Earth and fight for
             climate change by riding with us."/>
-        </div>
-      </div>
+        </Row>
+      </Container>
     </section>
   )}
 
 function Feature({icon, header, paragraph}){
   return (
-    <div className="col-md-4">
+    <Col>
       <div className="feature py-4">
-        <i
-          className={icon}
-          style={{color: "#388087"}}
-          data-fa-transform="shrink-3 up-4"
-        ></i>
+        <i className={icon} style={{color: "#388087"}} data-fa-transform="shrink-3 up-4"></i>
         <h3>{header}</h3>
-        <p className="text-justify">
-          {paragraph}
-        </p>
+        <p className="text-justify"> {paragraph} </p>
       </div>
-    </div>
+    </Col>
   )}
 
 function HowItWorks(){
   return (
     <section id = "how">
-      <div className = "container">
+      <Container>
         <Heading header="How It Works"/>
-        <div className = "row py-5 align-items-center">
-          <div className = "col-md-6 d-none d-md-block">
+        <Row className="py-5 align-items-center">
+          <Col class= "d-none d-md-block">
             <div className = "how-steps">
               <HowStep icon="fas fa-search fa-4x mr-4" description={["Simply ", <span>check</span>, " for rides travelling to your destination."]}/>
               <HowStep icon="fas fa-car fa-4x mr-4" description={[<span>Match</span>, " with a driver."]}/>
               <HowStep icon="far fa-handshake fa-4x mr-2" description={[<span>Negotiate</span>, " on a great price."]}/>
               <HowStep icon="fas fa-flag-checkered fa-4x mr-4" description={["Happily ", <span>reach</span>, " your destination."]}/>
             </div>
-          </div>
-          <div className = "col-md-6 vid">
+          </Col>
+          <Col className= "vid">
             <iframe width="520" height="420" src="https://www.youtube.com/embed/V_lAhqLXT9A"
               style = {{border: "none", marginLeft: "30px"}}></iframe>
-          </div>
-        </div>
-    </div>
+          </Col>
+        </Row>
+      </Container>
   </section>
   )}
 
@@ -161,12 +155,12 @@ function ControlledCarousel() {
   
 function TestimonialPerson({imageSource, text, name}){
   return (
-    <div className="col-md-4 text-center">
+    <Col className= "text-center">
       <div className="profile">
         <img src={imageSource} alt="user"/>
         <blockquote>{text}</blockquote>
         <h3>{name}</h3>
       </div>
-    </div>
+    </Col>
   )}
 

@@ -57,23 +57,23 @@ h3.heading {
 }
 
 /* What 1 row page---What 1 row page---What 1 row page---What 1 row page---What 1 row page---What 1 row page---*/
-#what-row .heading-underline {
+#info-squares .heading-underline {
   background-color: #eba92a;
   width: 3rem;
   height: 0.3rem;
   margin: 0 0;
 }
 
-#what-row h3 {
+#info-squares h3 {
   font-size: 50px;
   margin-top: 15px;
 }
 
-#what-row .row {
+#info-squares .row {
   padding: 3px 0px;
 }
 
-#what-row .what {
+#info-squares .info-square{
   height: 500px;
   border-radius: 5px;
   padding: 0 2px;
@@ -92,7 +92,6 @@ h3.heading {
   background: url('../images/mountain.jpg') no-repeat center
     center/ cover;
 }
-
 
 
 /* Why 3 features page---Why 3 features page---Why 3 features page---Why 3 features page---*/
@@ -158,12 +157,12 @@ h3.heading {
   overflow: visible;
 }
 
-/* .carousel-control-next,
+.carousel-control-next,
 .carousel-control-prev {
   filter: invert(100%);
   top: 90px;
 
-} */
+}
 
 .profile {
   background-color: #f4f4f4;
@@ -208,12 +207,7 @@ blockquote:after {
   vertical-align: -0.4em;
 }
 
-/*MODAL*/
-.modal .btn {
-  border-radius: 20px;
-  height: 50px;
-  font-size: 20px;
-}
+
 
 
 
