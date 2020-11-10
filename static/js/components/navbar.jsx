@@ -1,5 +1,5 @@
 const { useState } = React 
-const {Modal, Button, Alert} = ReactBootstrap
+const {Modal, Button, Alert, Dropdown} = ReactBootstrap
 
 function NavBar({setUser, user}){
     const [showLogin, setShowLogin] = useState(false);
@@ -42,7 +42,7 @@ function NavBarNoUser({handleLoginShow, handleRegisterShow}){
   return (
     <nav className="navbar navbar-expand-md fixed-top navbar-custom">
       <div className="container">
-          <Link to="/post" className="navbar-brand">Joyride</Link>
+          <Link to="/" className="navbar-brand">Joyride</Link>
           <ul className="navbar-nav">
               <li className="nav-item">
               <Button className="btn-theme" onClick={handleLoginShow}>Log In</Button>
@@ -60,7 +60,7 @@ function NavBarUser({handleLogout}){
   return (
     <nav className="navbar navbar-expand-md fixed-top navbar-custom">
       <div className="container">
-        <a className="navbar-brand" href="/">Joyride</a>
+        <Link to="/" className="navbar-brand">Joyride</Link>
         <ul className="navbar-nav mr-auto">
         <li className="nav-item">
           <Link to="/search" className="btn navbar-btn shadow-none">Search</Link>
@@ -71,7 +71,7 @@ function NavBarUser({handleLogout}){
       </ul>
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
-          <div className="dropdown">
+          {/* <div className="dropdown">
             <button className="btn dropdown-toggle shadow-none" type="button" id="dropdownMenuButton" data-toggle="dropdown">
               My Rides
             </button>
@@ -79,10 +79,19 @@ function NavBarUser({handleLogout}){
               <Link to="/current-rides" className="dropdown-item">Current Rides</Link>
               <a className="dropdown-item" href="/past-rides">Past Rides</a>
             </div>
-          </div>
+          </div> */}
+          <Dropdown>
+            <Dropdown.Toggle className="btn-theme" id="rides-dropdown">
+              My Rides
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <Dropdown.Item><Link to="/current-rides">Current Rides</Link></Dropdown.Item>
+              <Dropdown.Item><Link to="/past-rides">Past Rides</Link></Dropdown.Item>
+              </Dropdown.Menu>
+          </Dropdown>
         </li>
         <li className="nav-item">
-          <Link to="/search" className="btn navbar-btn shadow-none">Profile</Link>
+          <Link to="/profile" className="btn navbar-btn shadow-none">Profile</Link>
         </li>
         <li className="nav-item">
           <Link to="/" className="btn navbar-btn shadow-none" onClick={handleLogout}>Log Out</Link>

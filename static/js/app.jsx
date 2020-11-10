@@ -24,12 +24,12 @@ function App(){
                     <Route path="/current-rides">
                         <CurrentRides/>
                     </Route> 
-                    {/* <Route exact path="/past-rides">
+                    <Route path="/past-rides">
                         <PastRides/>
                     </Route>
-                    <Route exact path="/profile">
+                   <Route path="/profile">
                         <Profile/>
-                    </Route>  */}
+                    </Route> 
                 </Switch>
                 <Footer/>
             </Router>

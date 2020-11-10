@@ -88,7 +88,7 @@ function HowItWorks(){
       <Container>
         <Heading header="How It Works"/>
         <Row className="py-5 align-items-center">
-          <Col class= "d-none d-md-block">
+          <Col className= "d-none d-md-block">
             <div className = "how-steps">
               <HowStep icon="fas fa-search fa-4x mr-4" description={["Simply ", <span>check</span>, " for rides travelling to your destination."]}/>
               <HowStep icon="fas fa-car fa-4x mr-4" description={[<span>Match</span>, " with a driver."]}/>
