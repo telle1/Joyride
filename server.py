@@ -143,7 +143,7 @@ def request_ride():
             add_req = Request(ride_id = ride_id, rider_id = session['user_id'], status = 'Pending')
             db.session.add(add_req)
             db.session.commit()
-            resp = jsonify({'msg': "Ride successfully requested."})
+            resp = jsonify({'msg': "Ride successfully requested.", 'alert': 'success'})
             #print('THIS IS THE DRIVERs FIRST NAME', add_req.ride.user.first_name)
             #print('THIS IS THE RIDERS PHONE NUM', add_req.user.phone_num)
             # send_twilio_message = client.messages.create(
@@ -151,9 +151,9 @@ def request_ride():
             #     from_= twilio_phone_num , #(rider aka session['user_id']) add_req.user.phone_num
             #     body= rider_msg)
         else:
-            resp = jsonify({'msg': "You cannot request your own ride."})
+            resp = jsonify({'msg': "You cannot request your own ride.", 'alert': 'danger'})
     else:
-        resp = jsonify({'msg': "You already requested this ride."})
+        resp = jsonify({'msg': "You already requested this ride.", 'alert': 'warning'})
         print('THIS IS THE DRIVER ID', req.ride.driver_id)
 
     return resp
