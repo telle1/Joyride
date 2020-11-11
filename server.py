@@ -162,10 +162,8 @@ def request_ride():
 @login_required
 def get_user_profile():
     """Return profile page."""
-    #user = User.query.options(db.joinedload('ride')).filter(User.user_id == session['user_id']).one()
     user = crud.get_user_by_id(user_id = session['user_id'])
-    # print('LIST OF RIDE REQUESTS', user.request)
-    # print('LIST WHERE USER DRIVES', user.ride)   
+
     destinations = 0 
     people_met = 0
     dollars_earned = 0  
@@ -179,18 +177,19 @@ def get_user_profile():
                 people_met +=1 #add one to number of people met
                 dollars_earned += req.ride.price #add the ride price (for each approved passenger, add the ride price)
     for req in user.request: #for the rides that I am a passenger
-        if req.status == 'Approved':
+        if req.status == 'Approved': #add one to destination if my req was approved
             destinations += 1
         print('REQUEST INFO***REQUEST INFO***REQUEST INFO***', req)
         print('RIDE INFO***RIDE INFO***RIDE INFO***', req.ride)
-        for req in req.ride.request: #go to the request -> get the req.status = approved
+        for req in req.ride.request: #get all the requests for each ride I am in
             print('ALL THE REQUESTS FOR THAT RIDE I AM A PASSENGER OF', req)
             if req.status == 'Approved':
                 people_met +=1 #(-1 for me as the passenger but +1 for the driver balances to 0)
 
-    travel_list = crud.get_user_travel_list(user_id = session['user_id'])
+    #travel_list = crud.get_user_travel_list(user_id = session['user_id'])
 
-    return render_template("profile.html", user = user, destinations = destinations, dollars_earned = dollars_earned, people_met = people_met, travel_list = travel_list) 
+    return jsonify({'first_name': user.first_name, 'last_name': user.last_name, 
+                  'destinations': destinations, 'people_met': people_met, 'dollars_earned': dollars_earned})
 
 @app.route('/travel-list', methods=['POST'])
 def add_location_to_travel_list():
@@ -239,8 +238,7 @@ def get_user_current_rides():
             'status': req.status,
         }
         current_rides_list.append(req_serialized)
-    print('***************THIS IS THE CURRENT DRIVES FOR THE USER*****************', current_drives_list)
-    print('***************tHIS IS THE CURRENT REQUEST LIST***************', current_rides_list)
+
     return jsonify({'drives': current_drives_list, 'rides': current_rides_list})
 
 @app.route('/past-rides')
