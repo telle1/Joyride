@@ -1,5 +1,5 @@
-const { useEffect } = React
 const {Container, Row, Col} = ReactBootstrap
+const { useEffect, useState } = React
 
 function Profile(){
 
@@ -7,11 +7,10 @@ function Profile(){
     const [lastName, setLastName] = useState("")
     const [destinations, setDestinations] = useState(0)
     const [peopleMet, setPeopleMet] = useState(0)
-    const [dollars, setDollars = useState(0)
+    const [dollars, setDollars] = useState(0)
 
-    //might have to change how many times this is called
     useEffect(() =>{
-        fetch("/current-rides", {
+        fetch("/profile", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -19,21 +18,23 @@ function Profile(){
         })
         .then(res => res.json())
         .then(data => {
+            console.log(data)
             setFirstName(data.first_name)
             setLastName(data.last_name)
             setDestinations(data.destinations)
             setDollars(data.dollars_earned)
             setPeopleMet(data.people_met)
         })
-    }, [])
+    }, []);
+
 
     return(
         <Container>
-            <div class="text-center text-header animated bounce">
+            <div className="text-center text-header animated bounce">
                 <h1>WHERE TO NEXT, {firstName} {lastName}?</h1>
             </div>
             <Row>
-                <StatSquare stat={destinations} description="destinations discovered." color="inner inner-0"></StatSquare>
+                <StatSquare stat={destinations} description="destinations discovered." color="inner inner-0"/>
                 <StatSquare stat={peopleMet} description="new adventurers met." color="inner inner-1"></StatSquare>
                 <StatSquare stat={dollars} description="dollars earned." color="inner inner-2"></StatSquare>
                 <StatSquare stat="100" description="percent pure JOY." color="inner inner-3"></StatSquare>
@@ -55,11 +56,11 @@ function Profile(){
 
                     </div>
                 </Col>
-                <Col xs={9}>
-                    <div id="map"></div>
-                </Col>
+                {/* // <Col xs={9}>
+                //     <div id="map"></div>
+                // </Col> */}
             </Row>
-    </Container>
+        </Container>
     )
 }
 
@@ -73,3 +74,5 @@ function StatSquare({stat, description, color}){
         </Col>
     )
 }
+
+        

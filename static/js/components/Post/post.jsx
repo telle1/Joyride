@@ -13,10 +13,18 @@ function Post({setAlertStatus, setAlertColor, alertStatus, alertColor}){
     const handleSubmit = (e) => {
         e.preventDefault();
         fetch("/post-complete", {
-            method: "GET",
+            method: "POST",
             headers: {
                 "Content-Type": "application/json"
-            }
+            },
+            body: JSON.stringify({
+                from: from,
+                to: to,
+                date: date,
+                seats: seats,
+                price: price,
+                comments: comments
+            })
         })
         .then(res => res.json())
         .then(data => {
@@ -33,7 +41,7 @@ function Post({setAlertStatus, setAlertColor, alertStatus, alertColor}){
         <div className="container post-ride">
             <div className="row">
             <div className="col-md-5">
-                <form onSubmit={handleSubmit} method="post" className="f-grey">
+                <form onSubmit={handleSubmit} className="f-grey" method="post">
                 <h3 className="mb-3"> Post a Ride</h3>
                 <div className="form-group row">
                     <div className = "col-md-3 col-form-label">
