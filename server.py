@@ -224,6 +224,7 @@ def get_user_current_rides():
                 serialize_drive['passengers'] = [req.user.first_name, req.user.last_name]
             if req.status == 'Pending':
                 serialize_drive['requests'] = [req.user.first_name, req.user.last_name]
+                serialize_drive['request_id'] = [req.request_id]
     
         current_drives_list.append(serialize_drive)
     
@@ -238,7 +239,8 @@ def get_user_current_rides():
             'status': req.status,
         }
         current_rides_list.append(req_serialized)
-    print('tHIS IS THE CURRENT REQUEST LIST', current_rides_list)
+    print('***************THIS IS THE CURRENT DRIVES FOR THE USER*****************', current_drives_list)
+    print('***************tHIS IS THE CURRENT REQUEST LIST***************', current_rides_list)
     return jsonify({'drives': current_drives_list, 'rides': current_rides_list})
 
 @app.route('/past-rides')
@@ -248,15 +250,37 @@ def get_user_past_rides():
     past_user_drives = crud.get_past_user_drives(driver_id = session['user_id'])
     past_ride_requests = crud.get_past_user_requests(rider_id = session['user_id'])
 
-    return render_template("past_trips.html", past_user_drives = past_user_drives, past_ride_requests = past_ride_requests) 
+   # print('PAST USER DRIVES', past_user_drives)
+    past_drives_ser = []
+    for drive in past_user_drives:
+        drive_ser = drive.serialize()
+        for req in drive.request:
+            if req.status == 'Approved':
+                drive_ser['passengers'] = [req.user.first_name, req.user.last_name]
+        past_drives_ser.append(drive_ser)
+    
+    past_rides_ser = []
+    for req in past_ride_requests:
+        req_serialized = {
+            'date': req.ride.date,
+            'start_loc': req.ride.start_loc,
+            'end_loc': req.ride.end_loc,
+            'driver': [req.ride.user.first_name, req.ride.user.last_name],
+            'cost': req.ride.price,
+        }
+        past_rides_ser.append(req_serialized)
 
-@app.route('/confirm-rides.json', methods=['POST'])
+    return jsonify({'drives': past_drives_ser, 'rides': past_rides_ser})
+
+@app.route('/confirm-rides', methods=['POST'])
 def confirm_rides():
 
-    rider_id = request.form.get("rider_id")
-    status = request.form.get("status")
-    request_id = request.form.get("request_id")
-    ride_id = request.form.get("ride_id")
+    data = request.json
+
+    # rider_id = data['rider_id']
+    status = data['status']
+    request_id = data['request_id']
+    # ride_id = data['status']
 
     print('******************************\n''request_id =', request_id, 'rider_id=', rider_id, 'ride_id =', ride_id, 'status=', status)
 
