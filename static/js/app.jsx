@@ -14,10 +14,9 @@ function UserAlert({text, setShowAlert, color}){
 function App(){
 
     const [user, setUser] = useState(null)
-
-    const [showAlert, setShowAlert] = useState(false)
     const [alertColor, setAlertColor] = useState(false)
     const [alertStatus, setAlertStatus] = useState("")
+
     //save user on page refresh
     useEffect(() => {
         const user_id = localStorage.getItem("user_id");
@@ -30,17 +29,16 @@ function App(){
     return (
         <div>
             <Router>
-                <NavBar setUser={setUser} user={user} setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
-                {showAlert ? <UserAlert text={alertStatus} color={alertColor} setShowAlert={setShowAlert}/> : null}
+                <NavBar setUser={setUser} user={user} alertColor={alertColor} setAlertColor={setAlertColor} alertStatus={alertStatus} setAlertStatus={setAlertStatus}/>
                 <Switch>
                     <Route exact path="/">
                         <HomePage/>
                     </Route>
                     <Route path="/search">
-                        <Search setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
+                        <Search alertColor={alertColor} setAlertColor={setAlertColor} alertStatus={alertStatus} setAlertStatus={setAlertStatus}/>
                     </Route>
                     <Route path="/post">
-                        <Post/>
+                        <Post alertColor={alertColor} setAlertColor={setAlertColor} alertStatus={alertStatus} setAlertStatus={setAlertStatus}/>
                     </Route>
                     <Route path="/current-rides">
                         <AllCurrentTrips/>

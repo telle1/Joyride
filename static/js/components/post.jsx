@@ -1,6 +1,6 @@
 const { useState, useEffect } = React 
 
-function Post(){
+function Post({setAlertStatus, setAlertColor, alertStatus, alertColor}){
 
     const [from, setFrom] = useState('')
     const [to, setTo] = useState('')
@@ -8,7 +8,7 @@ function Post(){
     const [seats, setSeats] = useState(0)
     const [price, setPrice] = useState(0)
     const [comments, setComments] = useState('')
-    const [postStatus, setPostStatus] = useState('')
+    const [showAlert, setShowAlert] = useState('')
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -28,13 +28,17 @@ function Post(){
         })
         .then(res => res.json())
         .then(data => {
-            setPostStatus(data.msg)
+            setAlertStatus(data.msg)
+            setAlertColor('success')
+            setShowAlert(true)
         })
     }
 
     return(
+    <React.Fragment>
+        <div className="mt-3" id = "msg"> {showAlert ? <UserAlert text={alertStatus} color={alertColor} setShowAlert={setShowAlert}/> : null}
+        </div>    
         <div className="container post-ride">
-            <div className="mt-3" id = "msg">{postStatus}</div>
             <div className="row">
             <div className="col-md-5">
                 <form onSubmit={handleSubmit} method="post" className="f-grey">
@@ -97,7 +101,8 @@ function Post(){
                 <div id="map"></div>
             </div>
         </div>
-    </div>
+        </div>
+    </React.Fragment>
     )
 }
 
