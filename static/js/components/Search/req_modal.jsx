@@ -4,7 +4,7 @@ function RequestModal({showRequest, handleClose, rideID, setAlertColor, setAlert
 
     const sendRequest = (evt) => {
         evt.preventDefault()
-        console.log('TESTTTTTTTT')
+        console.log('THIS IS THE RIDE_ID', rideID)
         fetch("/request-ride", {
             method: "POST",
             headers: {

@@ -11,7 +11,7 @@ function MatchingRide({date, driverFirstName, driverLastName, seats, price, comm
                 <div className="card-body">
                     <div className="row">
                         <div className="col-md-8">
-                            <h4 className="card-title font-weight-bold"> {driverFirstName} {driverLastName} </h4>
+                            <h4 className="card-title font-weight-bold"> {driverFirstName} {driverLastName} rideID:{rideID} </h4>
                         </div>
                         <div className="col-md-4">
                             <div className="card-text text-right"> 

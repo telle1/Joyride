@@ -236,10 +236,27 @@ def get_user_current_rides():
             'driver': [req.ride.user.first_name, req.ride.user.last_name],
             'cost': req.ride.price,
             'status': req.status,
+            'request_id': req.request_id
         }
         current_rides_list.append(req_serialized)
 
     return jsonify({'drives': current_drives_list, 'rides': current_rides_list})
+
+@app.route('/delete-ride', methods=['POST'])
+def delete_ride():
+
+    data = request.json
+    request_id = data['request_id']
+    print(request_id)
+    req_to_delete = crud.get_request_by_request_id(request_id)
+    print(req_to_delete)
+    print('SEATS', req_to_delete.ride.seats)
+    #must incerement seat count by 1...
+    # db.session.delete(req_to_delete)
+    # db.session.commit()
+
+    return jsonify({'msg': 'Deleted ride.'})
+
 
 @app.route('/past-rides')
 @login_required
