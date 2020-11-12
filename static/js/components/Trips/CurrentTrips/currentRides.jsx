@@ -4,7 +4,7 @@ const {Button, Modal } = ReactBootstrap
 function CurrentRides(){
 
     const [currentRides, setCurrentRides] = useState([])
-
+    //want to call this everytime currentRides changes...
     useEffect(() => {
         fetch("/current-rides", {
             method: "GET",
@@ -17,28 +17,17 @@ function CurrentRides(){
             setCurrentRides(data.rides)
             console.log(data.rides)
         })
-    }, [])
-
-    
-    function currentRide(){
-        let rideList = []
-        for (let i=0; i<currentRides.length; i++){
-            let currentRide = currentRides[i];
-
-            rideList.push(<RideListItem currentRide = {currentRide}/>)
-            
-        }
-        console.log('HELLLO', rideList)
-        return rideList
-    }
+    }, []) //CHANGE BACK TO currentRides
 
     return(
         <div className="riding">
             <h3 className="table-header">RIDING</h3>
             <table className="table table-bordered table-striped">
-                <TableHeader col2="From" col3="To" col4="Driver" col5="cost"></TableHeader>
+                <TableHeader col2="From" col3="To" col4="Driver" col5="Cost"></TableHeader>
                 <tbody>
-                    {currentRide()}
+                    {currentRides.map(currentRide => (
+                        <RideListItem currentRide = {currentRide}/>
+                    ))}
                 </tbody>
             </table>
         </div>
@@ -52,20 +41,37 @@ function RideListItem({currentRide}){
     const handleShow = () => setShow(true)
     const handleClose = () => setShow(false) 
 
-    console.log('RIDE LIST ITEMMMMM', currentRide)
+    return (
+    <tr key={currentRide.request_id}> 
+        <td>{currentRide.date}</td>
+        <td>{currentRide.start_loc}</td>
+        <td>{currentRide.end_loc}</td>
+        <td>{currentRide.driver[0]} {currentRide.driver[1]}</td>
+        <td>${currentRide.cost} </td>
+        <td>
+            {currentRide.status}
+            <div className="pull-right">
+            <Button className="btn-theme" onClick={handleShow}>Cancel</Button>
+            </div>   
+            <CnclModal key={currentRide.request_id} show={show} handleClose={handleClose} request_id={currentRide.request_id}/>
+        </td>      
+    </tr>
 
-    function handleRemove(evt){
+    )
+}
+
+function CnclModal({show, handleClose, request_id}){
+
+    const handleRemove = (evt) => {
         evt.preventDefault()     
-
-        console.log('THIS IS THE REQUEST-ID', currentRide.request_id)
-
+        console.log('THIS IS THE REQUST ID', request_id)
         fetch("/delete-ride", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                request_id: currentRide.request_id
+                request_id: request_id
             }) 
         })
         .then(res => res.json())
@@ -74,26 +80,6 @@ function RideListItem({currentRide}){
         })      
     }
 
-    return (
-    <tr key={currentRide.request_id}> 
-        <td>{currentRide.date}</td>
-        <td>{currentRide.start_loc}</td>
-        <td>{currentRide.end_loc}</td>
-        <td>{currentRide.driver[0]} {currentRide.driver[1]}</td>
-        <td>{currentRide.cost} REQUEST ID{currentRide.request_id}</td>
-        <td>
-            {currentRide.status}
-            <div className="pull-right">
-            <Button className="btn-theme" onClick={handleShow}>Cancel</Button>
-            </div>   
-            <CnclModal key={currentRide.request_id} show={show} handleRemove={handleRemove} handleClose={handleClose} request_id={currentRide.request_id}/>
-        </td>      
-    </tr>
-
-    )
-}
-
-function CnclModal({show, handleClose, handleRemove}){
     return(
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
@@ -101,8 +87,8 @@ function CnclModal({show, handleClose, handleRemove}){
             </Modal.Header>
             <Modal.Body>
                     <form onSubmit={handleRemove} method="post">       
-                        <div className="input-group input-group-lg mb-4">
-                            <p>Are you sure you would like to cancel your ride request?</p>
+                        <div className="input-group input-group-lg mb-4 ml-2">
+                            <p>Are you sure you want to cancel?</p>
                         </div>   
                         <div className="form-group mb-4">
                             <button type="submit" className="btn btn-theme form-control" onClick={handleClose}>Cancel ride</button> 
@@ -112,45 +98,3 @@ function CnclModal({show, handleClose, handleRemove}){
         </Modal>
     )}
 
-
-
-        // const [id, setId] = useState("")
-    // console.log('REQUEST IDDDDDDD', request_id)
-    
-    // const handleRemove = (evt) => {
-    //     evt.preventDefault()
-
-    //     // setId(request_id)
-
-    //     console.log('THIS IS THE REQUEST-ID', request_id)
-
-    //     fetch("/delete-ride", {
-    //         method: "POST",
-    //         headers: {
-    //             "Content-Type": "application/json"
-    //         },
-    //         body: JSON.stringify({
-    //             request_id: request_id
-    //         }) 
-    //     })
-    //     .then(res => res.json())
-    //     .then(data => {
-    //         console.log(data.msg) 
-    //     })      
-    // }
-                    {/* {currentRides.map(currentRide => (
-                    // <tr key={currentRide.request_id}> 
-                    //     <td>{currentRide.date}</td>
-                    //     <td>{currentRide.start_loc}</td>
-                    //     <td>{currentRide.end_loc}</td>
-                    //     <td>{currentRide.driver[0]} {currentRide.driver[1]}</td>
-                    //     <td>{currentRide.cost} REQUEST ID{currentRide.request_id}</td>
-                    //     <td>
-                    //         {currentRide.status}
-                    //         <div className="pull-right">
-                    //         <Button className="btn-theme" onClick={handleShow}>Cancel</Button>
-                    //         </div>   
-                    //         <CnclModal key={currentRide.request_id} show={show} handleClose={handleClose} request_id={currentRide.request_id}/>
-                    //     </td>      
-                    // </tr>
-                ))} */}

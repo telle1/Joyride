@@ -27,7 +27,7 @@ function CurrentDrives(){
             <table className="table table-bordered table-striped">
                 <TableHeader col2="Location" col3="Seats" col4="Price" col5="Passengers"></TableHeader>
                 <tbody>
-                    {/* {currentDrives.map(currentDrive => (
+                    {currentDrives.map(currentDrive => (
                     <tr>
                         <td>{currentDrive.date}</td>
                         <td>{currentDrive.start_loc} -> {currentDrive.end_loc}</td>
@@ -38,7 +38,7 @@ function CurrentDrives(){
                             {currentDrive.requests ? <RadioButton request_id={currentDrive.request_id}></RadioButton> : null}
                         </td>
                     </tr>
-                    ))} */}
+                    ))}
                 </tbody>
             </table>
         </div>
@@ -65,7 +65,6 @@ function RadioButton({request_id}){
         .then(res => res.json())
         .then(data => {
             console.log(data)
-            //setCurrentDrives
         })
     }
 

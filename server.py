@@ -274,13 +274,20 @@ def delete_ride():
 
     data = request.json
     request_id = data['request_id']
-    print('THIS IS THE REQUEST ID', request_id)
+    print('THIS IS THE REQUEST ID LINE 277', request_id)
     req_to_delete = crud.get_request_by_request_id(request_id)
     print(req_to_delete)
     print('SEATS', req_to_delete.ride.seats)
-    #must incerement seat count by 1...
-    # db.session.delete(req_to_delete)
-    # db.session.commit()
+
+    ride_of_req = req_to_delete.ride
+    ride_of_req.seats +=1
+    print('INCREMENTED SEATS', ride_of_req.seats)
+
+    db.session.delete(req_to_delete)
+    db.session.add(ride_of_req)
+    db.session.commit()
+    #notify driver?
+
 
     return jsonify({'msg': 'Deleted ride.'})
 
