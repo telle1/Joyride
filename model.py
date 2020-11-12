@@ -59,7 +59,8 @@ class Ride(db.Model):
     def serialize(self):
         return {'ride_id': self.ride_id, 'driver': self.driver_id, 'seats': self.seats,
         'date': self.date, 'start_loc': self.start_loc, 'end_loc': self.end_loc, 
-        'price': self.price, 'comments': self.comments, "driver_fname" : self.user.first_name, "driver_lname": self.user.last_name }
+        'price': self.price, 'comments': self.comments, "driver_fname" : self.user.first_name, 
+        "driver_lname": self.user.last_name }
 
 class Request(db.Model): #Change to UserRides/UserRequests? change rider_id to user_id a
     """A list of users requests."""

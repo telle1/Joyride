@@ -218,14 +218,41 @@ def get_user_current_rides():
     for drive in current_user_drives:
         serialize_drive = drive.serialize()
         
+        # for req in drive.request:
+        #     if req.status == 'Approved':
+        #         serialize_drive['passengers'] = [req.user.first_name, req.user.last_name]
+        #     if req.status == 'Pending':
+        #         serialize_drive['requests'] = [req.user.first_name, req.user.last_name]
+        #         serialize_drive['request_id'] = req.request_id
         for req in drive.request:
+
+            # drive_ser = {
+            #     'date': req.ride.date,
+            #     'start_loc': req.ride.start_loc,
+            #     'end_loc': req.ride.end_loc,
+            #     'driver': [req.ride.user.first_name, req.ride.user.last_name],
+            #     'cost': req.ride.price,
+            #     'status': req.status,
+            #     'request_id': req.request_id
+            # }
             if req.status == 'Approved':
-                serialize_drive['passengers'] = [req.user.first_name, req.user.last_name]
+                if 'passengers' in serialize_drive:
+                    serialize_drive['passengers'].append([req.user.first_name, req.user.last_name])
+                else:
+                    serialize_drive['passengers'] = [req.user.first_name, req.user.last_name]
             if req.status == 'Pending':
-                serialize_drive['requests'] = [req.user.first_name, req.user.last_name]
-                serialize_drive['request_id'] = [req.request_id]
-    
+                if 'requests' in serialize_drive:
+                    serialize_drive['requests'].append([req.user.first_name, req.user.last_name])
+                else:
+                    serialize_drive['requests'] = [req.user.first_name, req.user.last_name]
+                if 'request_id' in serialize_drive:
+                    serialize_drive['request_id'].append(req.request_id)
+                else:
+                     serialize_drive['request_id'] = [req.request_id]
+        
         current_drives_list.append(serialize_drive)
+    print('CURRENT DRIVES LIST', current_drives_list)
+
     
     current_rides_list = []
     for req in current_ride_requests:
@@ -247,7 +274,7 @@ def delete_ride():
 
     data = request.json
     request_id = data['request_id']
-    print(request_id)
+    print('THIS IS THE REQUEST ID', request_id)
     req_to_delete = crud.get_request_by_request_id(request_id)
     print(req_to_delete)
     print('SEATS', req_to_delete.ride.seats)
@@ -295,9 +322,10 @@ def confirm_rides():
     # rider_id = data['rider_id']
     status = data['status']
     request_id = data['request_id']
+    print(status, request_id)
     # ride_id = data['status']
 
-    print('******************************\n''request_id =', request_id, 'rider_id=', rider_id, 'ride_id =', ride_id, 'status=', status)
+    print('******************************\n''request_id =', request_id, 'status=', status)
 
     get_request_to_update = crud.get_request_by_request_id(request_id = request_id)
 

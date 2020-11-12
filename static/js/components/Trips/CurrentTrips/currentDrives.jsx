@@ -3,9 +3,9 @@ const { useState, useEffect } = React
 function CurrentDrives(){
 
     const [currentDrives, setCurrentDrives] = useState([])
-    const [rideStatus, setRideStatus] = useState(null)
+    // const [rideStatus, setRideStatus] = useState(null)
 
-    console.log('THIS IS THE RIDE STATUS', rideStatus)
+    // console.log('THIS IS THE RIDE STATUS', rideStatus)
 
     //might have to change how many times this is called/ everytime currentdrives changes..
     useEffect(() =>{
@@ -27,28 +27,31 @@ function CurrentDrives(){
             <table className="table table-bordered table-striped">
                 <TableHeader col2="Location" col3="Seats" col4="Price" col5="Passengers"></TableHeader>
                 <tbody>
-                    {currentDrives.map(currentDrive => (
+                    {/* {currentDrives.map(currentDrive => (
                     <tr>
                         <td>{currentDrive.date}</td>
                         <td>{currentDrive.start_loc} -> {currentDrive.end_loc}</td>
                         <td>{currentDrive.seats}</td>
                         <td>{currentDrive.price}</td>
                         <td>{currentDrive.passengers}</td>
-                        <td>{currentDrive.requests}
-                            {currentDrive.requests ? <RadioButton rideStatus ={rideStatus} setRideStatus={setRideStatus} request_id={currentDrive.request_id}></RadioButton> : null}
+                        <td>{currentDrive.requests} request ID: {currentDrive.request_id}
+                            {currentDrive.requests ? <RadioButton request_id={currentDrive.request_id}></RadioButton> : null}
                         </td>
                     </tr>
-                    ))}
+                    ))} */}
                 </tbody>
             </table>
         </div>
     )
 }
 
-function RadioButton({setRideStatus, rideStatus, request_id}){
+function RadioButton({request_id}){
+
+    const [rideStatus, setRideStatus] = useState(null)
 
     const handleStatus = (evt) => {
         evt.preventDefault()
+
         fetch("/confirm-rides", {
             method: "POST",
             headers: {
@@ -62,10 +65,12 @@ function RadioButton({setRideStatus, rideStatus, request_id}){
         .then(res => res.json())
         .then(data => {
             console.log(data)
+            //setCurrentDrives
         })
     }
 
     console.log('THIS IS THE REQUEST ID', request_id)
+    console.log('STATUS', rideStatus)
 
     return (
     <form onSubmit={handleStatus} method="post">
