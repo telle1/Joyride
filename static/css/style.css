@@ -9,6 +9,18 @@ body {
     background-color: #388087;
 }
 
+.btn-yellow {
+  color: white;
+  background-color: #eba92a;
+}
+
+.btn-yellow:hover {
+  background-color: #F32013;
+  color: white;
+
+}
+
+
 .alert-position{
   margin-top: 70px;
   margin-bottom: 0px;

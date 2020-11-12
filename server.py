@@ -251,31 +251,6 @@ def get_user_current_rides():
 
     return jsonify({'drives': current_drives_list, 'rides': current_rides_list})
 
-@app.route('/delete-request', methods=['POST'])
-def delete_ride():
-
-    data = request.json
-    request_id = data['request_id']
-    print('THIS IS THE REQUEST ID LINE 277', request_id)
-    req_to_delete = crud.get_request_by_request_id(request_id)
-    print(req_to_delete)
-    print('SEATS', req_to_delete.ride.seats)
-
-    if req_to_delete.status == 'Approved':
-        ride_of_req = req_to_delete.ride
-        ride_of_req.seats +=1
-        db.session.add(ride_of_req)
-        db.session.commit()
-        print('INCREMENTED SEATS', ride_of_req.seats)
-
-    db.session.delete(req_to_delete)
-    db.session.commit()
-    #notify driver?
-
-
-    return jsonify({'msg': 'Deleted ride.'})
-
-
 @app.route('/past-rides')
 @login_required
 def get_user_past_rides():
@@ -331,6 +306,49 @@ def confirm_rides():
         resp = jsonify({'msg': 'Ride removed.', 'alert_color': "success"})
     
     return resp
+
+@app.route('/delete-request', methods=['POST'])
+def delete_request():
+
+    data = request.json
+    request_id = data['request_id']
+    print('THIS IS THE REQUEST ID LINE 277', request_id)
+    req_to_delete = crud.get_request_by_request_id(request_id)
+    print(req_to_delete)
+    print('SEATS', req_to_delete.ride.seats)
+
+    if req_to_delete.status == 'Approved':
+        ride_of_req = req_to_delete.ride
+        ride_of_req.seats +=1
+        db.session.add(ride_of_req)
+        db.session.commit()
+        print('INCREMENTED SEATS', ride_of_req.seats)
+
+    db.session.delete(req_to_delete)
+    db.session.commit()
+    #notify driver?
+
+    return jsonify({'msg': 'Deleted ride.'})
+
+@app.route('/delete-ride', methods=['POST'])
+def delete_ride():
+    data = request.json
+    ride_id = data['ride_id']
+
+    ride = crud.get_ride_by_id(ride_id)
+    print('THIS IS THE RIDE DELETED LINE339', ride)
+
+    reqs_for_ride = ride.request
+    print('REQUESTS FOR RIDE TO DELETE', reqs_for_ride)
+    for req in reqs_for_ride:
+        req.status = 'Cancelled'
+        db.session.commit() #do not add since we are updating the ride
+
+    db.session.delete(ride)
+    db.session.commit()
+
+    return jsonify({'msg': 'Ride successfully cancelled.'})
+
 
 @app.route('/logout')
 def logout_user():

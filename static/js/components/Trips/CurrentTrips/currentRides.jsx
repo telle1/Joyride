@@ -51,16 +51,16 @@ function RideListItem({currentRide}){
         <td>
             {currentRide.status}
             <div className="pull-right">
-            <Button className="btn-theme" onClick={handleShow}>Cancel Request</Button>
+            <Button className="btn-theme" onClick={handleShow}> {currentRide.status === 'Cancelled' ? 'Delete From Table' : 'Cancel Request'}</Button>
             </div>   
-            <CnclModal key={currentRide.request_id} show={show} handleClose={handleClose} request_id={currentRide.request_id}/>
+            <CnclModal key={currentRide.request_id} show={show} handleClose={handleClose} request_id={currentRide.request_id} status={currentRide.status}/>
         </td>      
     </tr>
 
     )
 }
 
-function CnclModal({show, handleClose, request_id}){
+function CnclModal({show, handleClose, request_id, status}){
 
     const handleRemove = (evt) => {
         evt.preventDefault()     
@@ -88,10 +88,12 @@ function CnclModal({show, handleClose, request_id}){
             <Modal.Body>
                     <form onSubmit={handleRemove} method="post">       
                         <div className="input-group input-group-lg mb-4 ml-2">
-                            <p>Are you sure you want to cancel?</p>
+                            <p>{status === 'Cancelled' ? 'Sorry for the inconvenience. We hope you find another joyride!' : 'Are you sure you want to cancel?'}</p>
                         </div>   
                         <div className="form-group mb-4">
-                            <button type="submit" className="btn btn-theme form-control" onClick={handleClose}>Cancel ride</button> 
+                            <button type="submit" className="btn btn-theme form-control" onClick={handleClose}>
+                            {status === 'Cancelled' ? 'Delete Entry' : 'Are you sure you want to cancel?'}
+                            </button> 
                         </div>  
                     </form>
             </Modal.Body>

@@ -36,6 +36,14 @@ function CurrentDrives({setAlertColor, setAlertStatus, setShowAlert}){
 
 function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert}){
 
+    const [show, setShow] = useState(false)
+    const handleShow = () => setShow(true)
+    const handleClose = () => setShow(false) 
+
+    const [showEdit, setShowEdit] = useState(false)
+    const handleEditShow = () => setShowEdit(true)
+    const handleEditClose = () => setShowEdit(false) 
+
     const request = () => {
         const requestList = []
         if (currentDrive.requests){
@@ -59,7 +67,15 @@ function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert
 
     return(
         <tr>
-            <td>{currentDrive.date} RIDE ID{currentDrive.ride_id}</td>
+            <td>
+                {currentDrive.date} RIDE ID{currentDrive.ride_id}
+                <div>
+                <Button className="btn-theme mr-2" onClick={handleEditShow}>Edit Ride</Button>
+                <Button className="btn-yellow" onClick={handleShow}>Delete Ride</Button>
+                <DelRideModal show={show} handleClose={handleClose} ride_id={currentDrive.ride_id}/>
+                <EditRideModal showEdit={showEdit} handleEditClose={handleEditClose} ride_id={currentDrive.ride_id}/>
+                </div>
+            </td>
             <td>{currentDrive.start_loc} -> {currentDrive.end_loc}</td>
             <td>{currentDrive.seats}</td>
             <td>{currentDrive.price}</td>
@@ -116,16 +132,105 @@ function RadioButton({request_id, setAlertColor, setAlertStatus, setShowAlert}){
 
 
 
-// function currentRide(){
-//     let rideList = []
-//     for (let i=0; i<currentRides.length; i++){
-//         let currentRide = currentRides[i];
+function DelRideModal({show, handleClose, ride_id}){
 
-//         rideList.push(<RideListItem currentRide = {currentRide}/>)
+    const handleRemove = (evt) => {
+        evt.preventDefault()     
+        console.log('THIS IS THE RIDE ID', ride_id)
+        fetch("/delete-ride", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                ride_id: ride_id
+            }) 
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data.msg) 
+        })      
+    }
 
-//     }
-//     console.log('HELLLO', rideList)
-//     return rideList
-//then call currentRide() in your return
-// }
+    return(
+        <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+            <Modal.Title>CANCEL CONFIRMATION </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                    <form onSubmit={handleRemove} method="post">       
+                        <div className="form-group- mb-2">
+                            <p className="ml-1 mr-1">Are you sure you want to <span className="font-weight-bold">permanently</span> delete this ride? Joyriders are counting on you!</p>
+                        </div>   
+                        <div className="form-group mb-4">
+                            <button type="submit" className="btn btn-theme form-control" onClick={handleClose}>Cancel ride</button> 
+                        </div>  
+                    </form>
+            </Modal.Body>
+        </Modal>
+    )}
 
+
+function EditRideModal({showEdit, handleEditClose, request_id}){
+
+
+    const [seats, setSeats] = useState(0)
+    const [price, setPrice] = useState(0)
+    const [comments, setComments] = useState('')
+
+    const editRide = (evt) => {
+        evt.preventDefault()     
+        console.log('THIS IS THE REQUST ID', request_id)
+        fetch("/delete-request", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                request_id: request_id
+            }) 
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data.msg) 
+        })      
+    }
+
+return(
+    <Modal show={showEdit} onHide={handleEditClose}>
+        <Modal.Header closeButton>
+        <Modal.Title>EDIT RIDE </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <form onSubmit={editRide} className="ml-3 mr-3" method="post">
+                <div className="form-group row">
+                    <div className = "col-md-3 col-form-label">
+                    <label htmlFor="#">Seats</label>
+                    </div>
+                    <div className="col-sm-9">
+                    <input type="number" className="form-control" name="seats" placeholder="0" min="0" value={seats} onChange={(e) => setSeats(e.target.value)}/>
+                    </div>
+                </div>
+                <div className="form-group row">
+                    <div className = "col-md-3 col-form-label">
+                    <label htmlFor="#">Price</label>
+                    </div>
+                    <div className="col-sm-9">
+                    <input type="number" className="form-control" name="price" placeholder="0" min="0" value={price} onChange={(e) => setPrice(e.target.value)}/>
+                    </div>
+                </div>
+                <div className="form-group row">
+                    <div className = "col-md-3 col-form-label">
+                    <label htmlFor="#">Comments</label>
+                    </div>
+                    <div className="col-sm-9">
+                    <textarea className="form-control" name="comments" rows="5" value={comments} onChange={(e) => setComments(e.target.value)}></textarea>
+                    </div>
+                </div>
+                <div className="form-group mt-4">
+                        <button type="submit" className="btn btn-theme form-control" onClick={handleEditClose}>Edit ride</button> 
+                </div>
+        </form>
+        </Modal.Body>
+    </Modal>
+)}
