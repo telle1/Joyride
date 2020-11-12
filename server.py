@@ -315,6 +315,9 @@ def edit_ride():
     seats = data['seats']
     price = data['price']
     comments = data['comments']
+    date = data['date']
+    start_loc = data['from']
+    end_loc = data['to']
 
     ride = crud.get_ride_by_id(ride_id)
     print('BEFORE RIDE INFO', ride)
@@ -322,6 +325,9 @@ def edit_ride():
     ride.seats = seats
     ride.price = price
     ride.comments = comments
+    ride.date = date
+    ride.start_loc = start_loc
+    ride.end_loc = end_loc
 
     db.session.commit()
     print('UPDATED RIDE INFO', ride)
