@@ -42,7 +42,9 @@ def get_request_by_request_id(request_id):
 
 def get_current_user_drives(driver_id):
     """Return current rides where the user drives."""
-    return Ride.query.filter(Ride.driver_id == driver_id, Ride.date > current_time).all()
+    # return Ride.query.filter(Ride.driver_id == driver_id, Ride.date > current_time).all()
+    drives = Ride.query.filter(Ride.driver_id == driver_id, Ride.date > current_time)
+    return drives.order_by('date').all()
 
 def get_past_user_drives(driver_id):
     """Return past rides where the user drives."""

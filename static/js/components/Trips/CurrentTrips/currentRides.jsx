@@ -51,7 +51,7 @@ function RideListItem({currentRide}){
         <td>
             {currentRide.status}
             <div className="pull-right">
-            <Button className="btn-theme" onClick={handleShow}>Cancel</Button>
+            <Button className="btn-theme" onClick={handleShow}>Cancel Request</Button>
             </div>   
             <CnclModal key={currentRide.request_id} show={show} handleClose={handleClose} request_id={currentRide.request_id}/>
         </td>      
@@ -65,7 +65,7 @@ function CnclModal({show, handleClose, request_id}){
     const handleRemove = (evt) => {
         evt.preventDefault()     
         console.log('THIS IS THE REQUST ID', request_id)
-        fetch("/delete-ride", {
+        fetch("/delete-request", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
