@@ -1,7 +1,10 @@
-function AllCurrentTrips(){
+function AllCurrentTrips({alertColor, alertStatus, setAlertColor, setAlertStatus}){
+    const [showAlert, setShowAlert] = useState(false)
+    
     return(
         <React.Fragment>
-            <AllTrips firstTab= {<CurrentDrives/>} secondTab= {<CurrentRides/>} 
+            {showAlert ? <UserAlert text={alertStatus} color={alertColor} setShowAlert={setShowAlert}/> : null}
+            <AllTrips firstTab= {<CurrentDrives setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>} secondTab= {<CurrentRides/>} 
                 firstTitle="Drives" secondTitle="Rides"/>
         </React.Fragment>
     )

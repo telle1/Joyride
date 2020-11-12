@@ -320,15 +320,15 @@ def confirm_rides():
             get_request_to_update.ride.seats -= 1
             get_request_to_update.status = 'Approved'
             db.session.commit()
-            resp = jsonify({'msg': 'Ride successfully approved.', 'seats': get_request_to_update.ride.seats, 'first_name': get_request_to_update.user.first_name, 'last_name': get_request_to_update.user.first_name})
+            resp = jsonify({'msg': 'Ride successfully approved.', 'alert_color': "success"})
         else:
-            resp = jsonify({'msg': 'Seat capacity has been reached for this ride.', 'seats': get_request_to_update.ride.seats})
+            resp = jsonify({'msg': 'Seat capacity has been reached for this ride.', 'alert_color': "warning"})
             get_request_to_update.status = 'Denied'
             db.session.commit()
     else:
         get_request_to_update.status = 'Denied'
         db.session.commit()
-        resp = jsonify({'msg': 'Ride removed.', 'seats': get_request_to_update.ride.seats})
+        resp = jsonify({'msg': 'Ride removed.', 'alert_color': "success"})
     
     return resp
 

@@ -52,11 +52,14 @@ def get_past_user_drives(driver_id):
 
 def get_current_user_requests(rider_id):
     """Return current rides where the user rides"""
-    all_user_requests = Request.query.filter(Request.rider_id == rider_id).all()
+    all_user_requests = Request.query.filter(Request.rider_id == rider_id)
+    sorted_requests = all_user_requests.order_by('request_id').all()
+
     current_user_requests = []
-    for req in all_user_requests:
+    for req in sorted_requests:
         if req.ride.date > current_time:
             current_user_requests.append(req)
+
     return current_user_requests
 
 def get_past_user_requests(rider_id):

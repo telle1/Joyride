@@ -1,6 +1,6 @@
 const { useState, useEffect } = React 
 
-function CurrentDrives(){
+function CurrentDrives({setAlertColor, setAlertStatus, setShowAlert}){
 
     const [currentDrives, setCurrentDrives] = useState([])
 
@@ -24,7 +24,8 @@ function CurrentDrives(){
                 <TableHeader col2="Location" col3="Seats" col4="Price" col5="Passengers"></TableHeader>
                 <tbody>
                     {currentDrives.map(currentDrive => (
-                        <CurrentDrive currentDrive={currentDrive}/>
+                        <CurrentDrive currentDrive={currentDrive} setAlertColor={setAlertColor} 
+                        setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
                     ))}
                 </tbody>
             </table>
@@ -33,13 +34,14 @@ function CurrentDrives(){
 }
 
 
-function CurrentDrive({currentDrive}){
+function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert}){
 
     const request = () => {
         const requestList = []
         if (currentDrive.requests){
             for (const request of currentDrive.requests){
-                requestList.push(<p>{request.name} {request.id} <RadioButton request_id={request.id}/></p>)
+                requestList.push(<p>{request.name} {request.id} <RadioButton request_id={request.id}
+                    setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/></p>)
             }
         }
         return requestList
@@ -49,7 +51,7 @@ function CurrentDrive({currentDrive}){
         const passengerList = []
         if (currentDrive.passengers){
             for (const passenger of currentDrive.passengers){
-                passengerList.push(<p>{passenger}</p>)
+                passengerList.push(<p className="mb-0">{passenger[0]} {passenger[1]}</p>)
             }
         }   
         return passengerList
@@ -67,7 +69,7 @@ function CurrentDrive({currentDrive}){
     )
 }
 
-function RadioButton({request_id}){
+function RadioButton({request_id, setAlertColor, setAlertStatus, setShowAlert}){
 
     const [rideStatus, setRideStatus] = useState(null)
 
@@ -89,7 +91,10 @@ function RadioButton({request_id}){
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data)
+            // console.log(data)
+            setAlertStatus(data.msg)
+            setShowAlert(true)
+            setAlertColor(data.alert_color)
         })
     }
 

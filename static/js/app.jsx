@@ -41,7 +41,7 @@ function App(){
                         <Post alertColor={alertColor} setAlertColor={setAlertColor} alertStatus={alertStatus} setAlertStatus={setAlertStatus}/>
                     </Route>
                     <Route path="/current-rides">
-                        <AllCurrentTrips/>
+                        <AllCurrentTrips alertColor={alertColor} setAlertColor={setAlertColor} alertStatus={alertStatus} setAlertStatus={setAlertStatus}/>
                     </Route> 
                     <Route path="/past-rides">
                         <PastTrips/>
