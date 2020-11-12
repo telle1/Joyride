@@ -36,21 +36,32 @@ function CurrentDrives({setAlertColor, setAlertStatus, setShowAlert}){
 
 function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert}){
 
+    //Cancel Modal
     const [show, setShow] = useState(false)
     const handleShow = () => setShow(true)
     const handleClose = () => setShow(false) 
-
+    //Edit Modal
     const [showEdit, setShowEdit] = useState(false)
     const handleEditShow = () => setShowEdit(true)
     const handleEditClose = () => setShowEdit(false) 
 
 
     const request = () => {
+
         const requestList = []
         if (currentDrive.requests){
             for (const request of currentDrive.requests){
-                requestList.push(<p>{request.name} {request.id} <RadioButton request_id={request.id}
-                    setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/></p>)
+                const [showInfo, setShowInfo] = useState(false)
+                const handleInfoShow = () => setShowInfo(true)
+                const handleInfoClose = () => setShowInfo(false) 
+                // requestList.push(<p>{request.name} {request.id} <RadioButton request_id={request.id}
+                //     setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/></p>)
+                requestList.push(<p>
+                    <button className="btn btn-transparent mr-2" onClick={handleInfoShow}>{request.name} {request.id}</button>
+                    <ContactInfoModal showInfo={showInfo} handleInfoClose={handleInfoClose} request={request}/>
+                    <RadioButton request_id={request.id}
+                    setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
+                    </p>)
             }
         }
         return requestList
@@ -88,6 +99,21 @@ function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert
     )
 }
 
+function ContactInfoModal({showInfo, handleInfoClose, request}){
+
+
+    return(
+        <Modal show={showInfo} onHide={handleInfoClose}>
+            <Modal.Header closeButton>
+            <Modal.Title>RIDER CONTACT INFO</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <p><span className="mr-2">Email:</span>{request.email}</p>
+                <p><span className="mr-2">Phone Number:</span>{request.phone_num}</p>
+            </Modal.Body>
+        </Modal>
+    )}
+
 function RadioButton({request_id, setAlertColor, setAlertStatus, setShowAlert}){
 
     const [rideStatus, setRideStatus] = useState(null)
@@ -123,12 +149,12 @@ function RadioButton({request_id, setAlertColor, setAlertStatus, setShowAlert}){
     return (
     <form onSubmit={handleStatus} method="post">
         <input type="radio" checked={rideStatus === 'Approved'} name="request_status" value="Approved" onClick={()=>setRideStatus('Approved')} required />
-        <label for="Approved">Approve</label>
+        <label htmlFor="Approved">Approve</label>
 
         <input type="radio" checked={rideStatus === 'Denied'} name="request_status" value="Denied" onClick={()=>setRideStatus('Denied')}/>
-        <label for="Denied">Deny</label>
+        <label htmlFor="Denied">Deny</label>
 
-        <button type="submit" class="btn btn-theme">Confirm</button>
+        <button type="submit" className="btn btn-theme">Confirm</button>
     </form>
     )
 }
@@ -277,3 +303,7 @@ function DelRideModal({show, handleClose, ride_id}){
     )}
 
 
+
+    
+    
+    

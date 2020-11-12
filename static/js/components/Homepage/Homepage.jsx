@@ -32,29 +32,6 @@ function Hero(){
     )}
 
 
-// const Typeanimation = () => {
-
-//   useEffect(() => {
-//       // Options for the Typed object
-//       const options = {
-//           strings: [ride, company, savings],
-//           typeSpeed: 50
-//       };
-
-//       // New Typed instance
-//       const typed = new Typed('#typed_effect', options);
-
-//       // Destroy Typed instance on unmounting the component to prevent memory leaks
-//       return () => {
-//           typed.destroy();
-//       };
-//   }, [text]);
-
-//   return (    
-//       <span id='typed_effect'></span>
-//   );
-// };
-
 function InfoSquares(){
   return (
       <section id="info-squares">

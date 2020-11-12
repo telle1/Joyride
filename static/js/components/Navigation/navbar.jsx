@@ -46,9 +46,9 @@ function NavBarNoUser({setUser, setShowAlert, setAlertStatus, setAlertColor}){
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">  
               <Nav className="ml-auto">
-                <Nav.Link><Button className="btn-theme" onClick={handleLoginShow}>Log In</Button>
+                <Nav.Link><button className="btn btn-theme" onClick={handleLoginShow}>Log In</button>
                 </Nav.Link>
-                <Nav.Link><Button className="btn-theme" onClick={handleRegisterShow}>Sign Up</Button></Nav.Link>
+                <Nav.Link><button className="btn btn-theme" onClick={handleRegisterShow}>Sign Up</button></Nav.Link>
               </Nav>
           </Navbar.Collapse>
         </Container>

@@ -227,9 +227,12 @@ def get_user_current_rides():
             if req.status == 'Pending':
                 if 'requests' in serialize_drive:
                     serialize_drive['requests'].append({'id': req.request_id, 
-                                                       'name': [req.user.first_name, req.user.last_name]})
+                                                       'name': [req.user.first_name, req.user.last_name],
+                                                       'email': req.user.email, 
+                                                       'phone_num': req.user.phone_num})
                 else:
-                    serialize_drive['requests'] = [{'id': req.request_id, 'name': [req.user.first_name, req.user.last_name]}]
+                    serialize_drive['requests'] = [{'id': req.request_id, 'name': [req.user.first_name, req.user.last_name],
+                                                    'email': req.user.email, 'phone_num': req.user.phone_num}]
         
         current_drives_list.append(serialize_drive)
 

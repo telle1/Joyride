@@ -26,7 +26,7 @@ function CurrentRides(){
                 <TableHeader col2="From" col3="To" col4="Driver" col5="Cost"></TableHeader>
                 <tbody>
                     {currentRides.map(currentRide => (
-                        <RideListItem currentRide = {currentRide}/>
+                        <RideListItem key={currentRide.request_id} currentRide = {currentRide}/>
                     ))}
                 </tbody>
             </table>
