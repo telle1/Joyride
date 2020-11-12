@@ -20,6 +20,11 @@ body {
 
 }
 
+.btn-transparent {
+  color: blue;
+  background-color: transparent;
+  border: transparent;
+}
 
 .alert-position{
   margin-top: 70px;

@@ -44,9 +44,6 @@ function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert
     const handleEditShow = () => setShowEdit(true)
     const handleEditClose = () => setShowEdit(false) 
 
-    // const [showFullEdit, setShowFullEdit] = useState(false)
-    // const handleFullEditShow = () => setShowFullEdit(true)
-    // const handleFullEditClose = () => setShowFullEdit(false) 
 
     const request = () => {
         const requestList = []
@@ -74,16 +71,12 @@ function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert
             <td>
                 {currentDrive.date} RIDE ID{currentDrive.ride_id}
                 <div>
-                <Button className="btn-theme mr-2" onClick={handleEditShow}>Edit Ride</Button>
-                <Button className="btn-yellow" onClick={handleShow}>Delete Ride</Button>
+                <button className="btn btn-theme mr-2" onClick={handleEditShow}>Edit Ride</button>
+                <button className="btn btn-yellow" onClick={handleShow}>Delete Ride</button>
                 <DelRideModal show={show} handleClose={handleClose} ride_id={currentDrive.ride_id}/>
-                {/* {currentDrive.passengers ? :} */}
                 <EditRideModal showEdit={showEdit} handleEditClose={handleEditClose} passengers={currentDrive.passengers}
                     ride_id={currentDrive.ride_id} oldSeats={currentDrive.seats} oldPrice={currentDrive.price} oldComments={currentDrive.comments}
                     oldDate={currentDrive.date} oldFrom={currentDrive.start_loc} oldTo={currentDrive.end_loc}/>
-                {/* <FullEditRideModal showFullEdit={showFullEdit} handleFullEditClose={handleFullEditClose} 
-                    ride_id={currentDrive.ride_id} oldSeats={currentDrive.seats} oldPrice={currentDrive.price} oldComments={currentDrive.comments}
-                    oldDate={currentDrive.date} oldFrom={currentDrive.start_loc} oldTo={currentDrive.end_loc}/> */}
                 </div>
             </td>
             <td>{currentDrive.start_loc} -> {currentDrive.end_loc}</td>
@@ -141,8 +134,6 @@ function RadioButton({request_id, setAlertColor, setAlertStatus, setShowAlert}){
 }
 
 function EditRideModal({showEdit, handleEditClose, ride_id, oldSeats, oldPrice, oldComments, passengers, oldDate, oldFrom, oldTo}){
-
-    console.log('PASSENGERERSGGRGSRSG', passengers)
 
     const [seats, setSeats] = useState(oldSeats)
     const [price, setPrice] = useState(oldPrice)

@@ -29,7 +29,7 @@ function RequestModal({showRequest, handleClose, rideID, setAlertColor, setAlert
     return(
         <Modal show={showRequest} onHide={handleClose}>
             <Modal.Header closeButton>
-            <Modal.Title>USER LOGIN</Modal.Title>
+            <Modal.Title>REQUEST RIDE</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                     <form onSubmit={sendRequest} method="post">       

@@ -51,7 +51,7 @@ function RideListItem({currentRide}){
         <td>
             {currentRide.status}
             <div className="pull-right">
-            <Button className="btn-theme" onClick={handleShow}> {currentRide.status === 'Cancelled' ? 'Delete From Table' : 'Cancel Request'}</Button>
+            <button className="btn btn-theme" onClick={handleShow}> {currentRide.status === 'Cancelled' ? 'Delete From Table' : 'Cancel Request'}</button>
             </div>   
             <CnclModal key={currentRide.request_id} show={show} handleClose={handleClose} request_id={currentRide.request_id} status={currentRide.status}/>
         </td>      
@@ -92,7 +92,7 @@ function CnclModal({show, handleClose, request_id, status}){
                         </div>   
                         <div className="form-group mb-4">
                             <button type="submit" className="btn btn-theme form-control" onClick={handleClose}>
-                            {status === 'Cancelled' ? 'Delete Entry' : 'Are you sure you want to cancel?'}
+                            {status === 'Cancelled' ? 'Delete Entry' : 'Cancel Ride?'}
                             </button> 
                         </div>  
                     </form>
