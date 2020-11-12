@@ -307,6 +307,28 @@ def confirm_rides():
     
     return resp
 
+@app.route('/edit-ride', methods=['POST'])
+def edit_ride():
+
+    data = request.json
+    ride_id = data['ride_id']
+    seats = data['seats']
+    price = data['price']
+    comments = data['comments']
+
+    ride = crud.get_ride_by_id(ride_id)
+    print('BEFORE RIDE INFO', ride)
+
+    ride.seats = seats
+    ride.price = price
+    ride.comments = comments
+
+    db.session.commit()
+    print('UPDATED RIDE INFO', ride)
+
+    return jsonify({'msg': 'Ride successfully edited.'})
+    
+
 @app.route('/delete-request', methods=['POST'])
 def delete_request():
 

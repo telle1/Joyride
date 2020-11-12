@@ -171,7 +171,7 @@ function DelRideModal({show, handleClose, ride_id}){
     )}
 
 
-function EditRideModal({showEdit, handleEditClose, request_id}){
+function EditRideModal({showEdit, handleEditClose, ride_id}){
 
 
     const [seats, setSeats] = useState(0)
@@ -180,14 +180,17 @@ function EditRideModal({showEdit, handleEditClose, request_id}){
 
     const editRide = (evt) => {
         evt.preventDefault()     
-        console.log('THIS IS THE REQUST ID', request_id)
-        fetch("/delete-request", {
+        console.log('THIS IS THE RIDE INFO', 'RIDE_ID', ride_id, 'seats', seats, 'price', price, 'comments', comments)
+        fetch("/edit-ride", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                request_id: request_id
+                ride_id: ride_id,
+                seats: seats,
+                price: price,
+                comments: comments
             }) 
         })
         .then(res => res.json())
