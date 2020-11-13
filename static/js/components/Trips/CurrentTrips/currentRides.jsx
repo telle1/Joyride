@@ -51,7 +51,10 @@ function RideListItem({currentRide}){
         <td>
             {currentRide.status}
             <div className="pull-right">
-            <button className="btn btn-theme" onClick={handleShow}> {currentRide.status === 'Cancelled' ? 'Delete From Table' : 'Cancel Request'}</button>
+            {/* <button className="btn btn-theme" onClick={handleShow}> {(currentRide.status === 'Pending' || currentRide.status === 'Approved') ? 'Cancel Request' : 'Delete From Table' }</button> */}
+            {(currentRide.status === 'Pending' || currentRide.status === 'Approved') ?
+                <button className="btn btn-danger" onClick={handleShow}> Cancel Request </button> : 
+                <button className="btn btn-theme" onClick={handleShow}> Delete Entry </button> }
             </div>   
             <CnclModal key={currentRide.request_id} show={show} handleClose={handleClose} request_id={currentRide.request_id} status={currentRide.status}/>
         </td>      
@@ -86,18 +89,40 @@ function CnclModal({show, handleClose, request_id, status}){
             <Modal.Title>CANCEL CONFIRMATION </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                    <form onSubmit={handleRemove} method="post">       
-                        <div className="input-group input-group-lg mb-4 ml-2">
-                            {/* need to add status = removed and denied */}
-                            <p>{status === 'Cancelled' ? 'Sorry for the inconvenience. We hope you find another joyride!' : 'Are you sure you want to cancel?'}</p>
-                        </div>   
-                        <div className="form-group mb-4">
-                            <button type="submit" className="btn btn-theme form-control" onClick={handleClose}>
-                            {status === 'Cancelled' ? 'Delete Entry' : 'Cancel Ride?'}
-                            </button> 
-                        </div>  
+                    <form onSubmit={handleRemove} method="post">    
+                        {(status === 'Pending' || status === 'Approved') ?
+                            (<div><div className="input-group input-group-lg mb-4 ml-2">
+                                <p>Are you sure you want to cancel?</p>
+                            </div>   
+                            <div className="form-group mb-4">
+                                <button type="submit" className="btn btn-theme form-control" onClick={handleClose}>
+                                    Cancel Ride
+                                </button> 
+                            </div></div> ) : 
+                            (
+                                <div><div className="input-group input-group-lg mb-4 ml-2">
+                                <p>Sorry for the inconvenience. We hope you find another joyride!</p>
+                            </div>   
+                            <div className="form-group mb-4">
+                                <button type="submit" className="btn btn-theme form-control" onClick={handleClose}>
+                                    Remove Request
+                                </button> 
+                            </div></div> 
+                            )}
                     </form>
             </Modal.Body>
         </Modal>
     )}
 
+
+
+//     <form onSubmit={handleRemove} method="post">    
+//     {(status === 'Pending' || status === 'Approved') ?
+//     <div className="input-group input-group-lg mb-4 ml-2">
+//         <p>{(status === 'Pending' || status === 'Approved') ? 
+//             'Are you sure you want to cancel?' : 'Sorry for the inconvenience. We hope you find another joyride!'}</p>
+//     </div>   
+//     <div className="form-group mb-4">
+//         <button type="submit" className="btn btn-theme form-control" onClick={handleClose}></button> 
+//     </div>  
+// </form>
