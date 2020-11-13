@@ -73,6 +73,10 @@ form h3 {
 
 
 /*Profile page---Profile page---Profile page---Profile page---Profile page---Profile page---*/
+.profile-page{
+    padding-top: 100px;
+}
+
 .inner {
     border-radius: 20px;
     padding: 10px;

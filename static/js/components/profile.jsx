@@ -1,5 +1,8 @@
 const {Container, Row, Col} = ReactBootstrap
 const { useEffect, useState } = React
+// const {FullCalendar} = FullCalendar
+// const {dayGridPlugin} = FullCalendarDayGrid
+// const {CountUp} = ReactCountUp
 
 function Profile(){
 
@@ -30,7 +33,7 @@ function Profile(){
 
     return(
         <Container>
-            <div className="text-center text-header animated bounce">
+            <div className="text-center text-header animated bounce profile-page">
                 <h1>WHERE TO NEXT, {firstName} {lastName}?</h1>
             </div>
             <Row>
@@ -41,7 +44,7 @@ function Profile(){
             </Row>
             <Row className="row mt-4">
                 <Col>
-                    <div className="bio p-2">
+                    {/* <div className="bio p-2">
                         <h4 className="text-center font-weight-bold travel-header">Travel List</h4>
 
                         <form action="/travel-list" id="travel-list" method="post">
@@ -54,11 +57,10 @@ function Profile(){
                             <li>test</li>
                         </ul>
 
-                    </div>
+                    </div> */}
+                    {/* <TestCalendar/> */}
+                    {/* <CountUp end={100}/> */}
                 </Col>
-                {/* // <Col xs={9}>
-                //     <div id="map"></div>
-                // </Col> */}
             </Row>
         </Container>
     )
@@ -76,3 +78,16 @@ function StatSquare({stat, description, color}){
 }
 
         
+// function TestCalendar(){
+//     return (
+//         <FullCalendar
+//             plugins={[ dayGridPlugin ]}
+//             initialView="dayGridMonth"
+//             weekends={false}
+//             events={[
+//                 { title: 'event 1', date: '2019-04-01' },
+//                 { title: 'event 2', date: '2019-04-02' }
+//             ]}
+//         />
+//     )
+// }

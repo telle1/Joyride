@@ -1,4 +1,4 @@
-function RadioButton({request_id, setAlertColor, setAlertStatus, setShowAlert}){
+function RadioButton({request_id, seats, setAlertColor, setAlertStatus, setShowAlert}){
 
     const [rideStatus, setRideStatus] = useState(null)
 
@@ -6,6 +6,7 @@ function RadioButton({request_id, setAlertColor, setAlertStatus, setShowAlert}){
         evt.preventDefault()
 
         console.log('REQUEST ID WHEN SUBMITTED', request_id)
+        console.log('SEATS WHEN SUBMITTED', seats)
         console.log('STATUS WHEN SUBMITTED', rideStatus)
 
         fetch("/confirm-rides", {
@@ -15,7 +16,8 @@ function RadioButton({request_id, setAlertColor, setAlertStatus, setShowAlert}){
             },
             body: JSON.stringify({
                 request_id: request_id,
-                status: rideStatus
+                status: rideStatus,
+                seats: seats
             })
         })
         .then(res => res.json())

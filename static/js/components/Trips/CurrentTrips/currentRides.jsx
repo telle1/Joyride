@@ -23,7 +23,7 @@ function CurrentRides(){
         <div className="riding">
             <h3 className="table-header">RIDING</h3>
             <table className="table table-bordered table-striped">
-                <TableHeader col2="From" col3="To" col4="Driver" col5="Cost"></TableHeader>
+                <TableHeader col2="Location" col3="Driver" col4="Seats Requested" col5="Cost(Total)"></TableHeader>
                 <tbody>
                     {currentRides.map(currentRide => (
                         <RideListItem key={currentRide.request_id} currentRide = {currentRide}/>
@@ -44,10 +44,10 @@ function RideListItem({currentRide}){
     return (
     <tr key={currentRide.request_id}> 
         <td>{currentRide.date}</td>
-        <td>{currentRide.start_loc}</td>
-        <td>{currentRide.end_loc}</td>
+        <td>{currentRide.start_loc} -> {currentRide.end_loc}</td>
         <td>{currentRide.driver[0]} {currentRide.driver[1]}</td>
-        <td>${currentRide.cost} </td>
+        <td>{currentRide.seats_requested}</td>
+        <td>${currentRide.cost * currentRide.seats_requested} </td>
         <td>
             {currentRide.status}
             <div className="pull-right">
@@ -56,14 +56,15 @@ function RideListItem({currentRide}){
                 <button className="btn btn-danger" onClick={handleShow}> Cancel Request </button> : 
                 <button className="btn btn-theme" onClick={handleShow}> Delete Entry </button> }
             </div>   
-            <CnclModal key={currentRide.request_id} show={show} handleClose={handleClose} request_id={currentRide.request_id} status={currentRide.status}/>
+            <CnclModal key={currentRide.request_id} show={show} handleClose={handleClose} 
+            request_id={currentRide.request_id} seats={currentRide.seats_requested} status={currentRide.status}/>
         </td>      
     </tr>
 
     )
 }
 
-function CnclModal({show, handleClose, request_id, status}){
+function CnclModal({show, handleClose, request_id, status, seats}){
 
     const handleRemove = (evt) => {
         evt.preventDefault()     
@@ -74,7 +75,8 @@ function CnclModal({show, handleClose, request_id, status}){
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                request_id: request_id
+                request_id: request_id,
+                seats: seats
             }) 
         })
         .then(res => res.json())

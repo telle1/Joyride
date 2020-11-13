@@ -28,3 +28,4 @@ function MatchingRide({date, driverFirstName, driverLastName, seats, price, comm
             </Col>
     )
 }
+

@@ -69,13 +69,14 @@ class Request(db.Model): #Change to UserRides/UserRequests? change rider_id to u
     request_id = db.Column(db.Integer, primary_key = True, autoincrement = True, unique = True)
     ride_id = db.Column(db.Integer, db.ForeignKey('rides.ride_id'), nullable = False)
     rider_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
+    seats_requested = db.Column(db.Integer, nullable=False)
     status = db.Column(db.String)
 
     user = db.relationship('User') #backreffed
     ride = db.relationship('Ride') #backreffed
     
     def __repr__(self):
-        return f'<Requests request_id = {self.request_id} ride_id = {self.ride_id} rider_id = {self.rider_id} status = {self.status}>'
+        return f'<Requests request_id = {self.request_id} ride_id = {self.ride_id} rider_id = {self.rider_id} status = {self.status} seats_requested={self.seats_requested}>'
 
 def connect_to_db(flask_app, db_uri='postgresql:///joyride', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri

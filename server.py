@@ -84,7 +84,8 @@ def register_user():
     user = crud.get_user_by_email(email)
     #hash password
     if user is None:
-        crud.create_user(first_name = first_name, last_name = last_name, email = email, password = password, phone_num = phone_num)
+        crud.create_user(first_name = first_name, last_name = last_name, email = email, 
+                        password = password, phone_num = phone_num)
         resp = jsonify({'msg': 'You have successfully registered! Log in to continue.', 'success': 'success'})
     else:
         resp = jsonify({'msg': 'A user with that email has already been registered.'})
@@ -102,8 +103,9 @@ def post_ride_to_database():
     seats = data['seats']
     price = data['price']
     comments = data['comments']
-
-    crud.create_ride(driver_id = session['user_id'], seats = seats, date = date, start_loc = start_loc, end_loc = end_loc, price= price, comments = comments)
+    
+    crud.create_ride(driver_id = session['user_id'], seats = seats, date = date, 
+                    start_loc = start_loc, end_loc = end_loc, price= price, comments = comments)
     
     return jsonify({'msg': 'Ride successfully added.'})
 
@@ -130,7 +132,10 @@ def request_ride():
     data = request.json
     ride_id = data['ride_id']
     rider_msg = data['rider_msg']
-
+    seats_str = data['seats']
+    seats = int(seats_str)
+    print('TYPE OF SEATS')
+    print(type(seats))
     ride = crud.get_ride_by_id(ride_id)
     driver_id = ride.driver_id
 
@@ -140,8 +145,8 @@ def request_ride():
     print('THIS IS THE RIDER MESSAGE', rider_msg)
     print('THIS IS THE RIDE ID', ride, 'THIS IS THE DRIVER ID', driver_id)
     if req is None:
-        if driver_id != session['user_id']:
-            add_req = Request(ride_id = ride_id, rider_id = session['user_id'], status = 'Pending')
+        if driver_id != session['user_id'] and 1 <= seats <= ride.seats:
+            add_req = Request(ride_id = ride_id, rider_id = session['user_id'], status = 'Pending', seats_requested= seats)
             db.session.add(add_req)
             db.session.commit()
             resp = jsonify({'msg': "Ride successfully requested.", 'alert': 'success'})
@@ -151,6 +156,8 @@ def request_ride():
             #     to= add_req.ride.user.phone_num, 
             #     from_= twilio_phone_num , #(rider aka session['user_id']) add_req.user.phone_num
             #     body= rider_msg)
+        elif seats > ride.seats or seats <= 0:
+            resp = jsonify({'msg': "You cannot request that number of seats.", 'alert': 'danger'})
         else:
             resp = jsonify({'msg': "You cannot request your own ride.", 'alert': 'danger'})
     else:
@@ -175,17 +182,17 @@ def get_user_profile():
         # print('RIDE PRICE', ride.price)
         for req in ride.request: #find all the requests for that ride 
             if req.status == 'Approved': #if the status is approved,
-                people_met +=1 #add one to number of people met
-                dollars_earned += req.ride.price #add the ride price (for each approved passenger, add the ride price)
+                people_met += req.seats_requested #add one to number of people met
+                dollars_earned += (req.ride.price * req.seats_requested) #add the ride price (for each approved passenger, add the ride price)
     for req in user.request: #for the rides that I am a passenger
+        print('REQUEST INFO***REQUEST INFO***REQUEST INFO***', req)
+        print('FOR THIS RIDE INFO***RIDE INFO***RIDE INFO***', req.ride)
         if req.status == 'Approved': #add one to destination if my req was approved
             destinations += 1
-        print('REQUEST INFO***REQUEST INFO***REQUEST INFO***', req)
-        print('RIDE INFO***RIDE INFO***RIDE INFO***', req.ride)
-        for req in req.ride.request: #get all the requests for each ride I am in
-            print('ALL THE REQUESTS FOR THAT RIDE I AM A PASSENGER OF', req)
-            if req.status == 'Approved':
-                people_met +=1 #(-1 for me as the passenger but +1 for the driver balances to 0)
+            for req in req.ride.request: #get all the requests for each ride I am in
+                print('ALL THE REQUESTS FOR THAT RIDE I AM A PASSENGER OF', req)
+                if req.status == 'Approved':
+                    people_met += req.seats_requested #(-1 for me as the passenger but +1 for the driver balances to 0)
 
     #travel_list = crud.get_user_travel_list(user_id = session['user_id'])
 
@@ -223,21 +230,23 @@ def get_user_current_rides():
             if req.status == 'Approved':
                 if 'passengers' in serialize_drive:
                     serialize_drive['passengers'].append({'name': [req.user.first_name, req.user.last_name],
-                                                       'email': req.user.email, 
-                                                       'phone_num': req.user.phone_num, 'req_id': req.request_id})
+                                                        'email': req.user.email, 
+                                                        'phone_num': req.user.phone_num, 'req_id': req.request_id,
+                                                        'seats_requested': req.seats_requested})
                 else:
                     serialize_drive['passengers'] = [{'name': [req.user.first_name, req.user.last_name],
-                                                       'email': req.user.email, 'phone_num': req.user.phone_num,
-                                                       'req_id': req.request_id}]
+                                                    'email': req.user.email, 'phone_num': req.user.phone_num,
+                                                    'req_id': req.request_id, 'seats_requested': req.seats_requested}]
             elif req.status == 'Pending':
                 if 'requests' in serialize_drive:
                     serialize_drive['requests'].append({'id': req.request_id, 
-                                                       'name': [req.user.first_name, req.user.last_name],
-                                                       'email': req.user.email, 
-                                                       'phone_num': req.user.phone_num})
+                                                    'name': [req.user.first_name, req.user.last_name],
+                                                    'email': req.user.email, 
+                                                    'phone_num': req.user.phone_num,
+                                                    'seats_requested': req.seats_requested})
                 else:
                     serialize_drive['requests'] = [{'id': req.request_id, 'name': [req.user.first_name, req.user.last_name],
-                                                    'email': req.user.email, 'phone_num': req.user.phone_num}]
+                                                    'email': req.user.email, 'phone_num': req.user.phone_num, 'seats_requested': req.seats_requested}]
             else:
                 print('Request deniedddddddddd')
             
@@ -256,7 +265,8 @@ def get_user_current_rides():
             'driver': [req.ride.user.first_name, req.ride.user.last_name],
             'cost': req.ride.price,
             'status': req.status,
-            'request_id': req.request_id
+            'request_id': req.request_id,
+            'seats_requested': req.seats_requested
         }
         current_rides_list.append(req_serialized)
 
@@ -297,19 +307,20 @@ def confirm_rides():
     data = request.json
     status = data['status']
     request_id = data['request_id']
-    print('******************************STATUS AND REQUEST_ID LINE330', status, request_id)
+    seats_requested = data['seats']
+    print('******************************STATUS /SEATS/ AND REQUEST_ID LINE330', status, request_id, seats_requested)
 
     get_request_to_update = crud.get_request_by_request_id(request_id = request_id)
 
     if status == 'Approved':
-        if get_request_to_update.ride.seats > 0:
-            get_request_to_update.ride.seats -= 1
+        if get_request_to_update.ride.seats - seats_requested >= 0:
+            get_request_to_update.ride.seats -= seats_requested
             get_request_to_update.status = 'Approved'
             db.session.commit()
             resp = jsonify({'msg': 'Ride successfully approved.', 'alert_color': "success"})
         else:
-            resp = jsonify({'msg': 'Seat capacity has been reached for this ride.', 'alert_color': "warning"})
-            get_request_to_update.status = 'Denied'
+            resp = jsonify({'msg': 'Seat capacity will be over the limit.', 'alert_color': "warning"})
+            # get_request_to_update.status = 'Denied' #maybe don't deny it, driver can remove rides to add this one instead or choose to delete it themselves
             db.session.commit()
     else:
         get_request_to_update.status = 'Denied'
@@ -350,6 +361,7 @@ def remove_passenger():
 
     data = request.json
     request_id = data['request_id']
+    seats_to_add = data['seatsToAdd']
     print('THIS IS THE REQUEST ID LINE 353', request_id)
     req_to_update = crud.get_request_by_request_id(request_id)
     print(req_to_update)
@@ -358,7 +370,7 @@ def remove_passenger():
     req_to_update.status = 'Removed'
 
     ride_of_req = req_to_update.ride
-    ride_of_req.seats +=1
+    ride_of_req.seats += seats_to_add
     # db.session.add(ride_of_req)
     db.session.commit()
     print('INCREMENTED SEATS', ride_of_req.seats)
@@ -375,14 +387,16 @@ def delete_request():
 
     data = request.json
     request_id = data['request_id']
+    seats_to_add = data['seats']
+
     print('THIS IS THE REQUEST ID LINE 277', request_id)
     req_to_delete = crud.get_request_by_request_id(request_id)
     print(req_to_delete)
-    print('SEATS', req_to_delete.ride.seats)
+    print('SEATS ORIGINALLY', req_to_delete.ride.seats)
 
     if req_to_delete.status == 'Approved':
         ride_of_req = req_to_delete.ride
-        ride_of_req.seats +=1
+        ride_of_req.seats += seats_to_add
         # db.session.add(ride_of_req)
         db.session.commit()
         print('INCREMENTED SEATS', ride_of_req.seats)

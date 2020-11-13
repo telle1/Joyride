@@ -62,9 +62,9 @@ function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert
                 const handleInfoClose = () => setShowInfo(false) 
 
                 requestList.push(<p>
-                    <button className="btn btn-transparent mr-2" onClick={handleInfoShow}>{request.name[0]} {request.name[1]} {request.id}</button>
+                    <button className="btn btn-transparent mr-2" onClick={handleInfoShow}>{request.name[0]} {request.name[1]} ({request.seats_requested}) ID:{request.id}</button>
                     <ContactInfoModal showInfo={showInfo} handleInfoClose={handleInfoClose} request={request}/>
-                    <RadioButton request_id={request.id}
+                    <RadioButton request_id={request.id} seats={request.seats_requested}
                     setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
                     </p>)
             }
@@ -83,7 +83,7 @@ function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert
                 
                 passengerList.push(
                     <span>
-                    <button className="btn btn-transparent mr-2" onClick={handleInfoShow}>{passenger.name[0]} {passenger.name[1]}</button>
+                    <button className="btn btn-transparent mr-2" onClick={handleInfoShow}>{passenger.name[0]} {passenger.name[1]} ({passenger.seats_requested})</button>
                     <ContactInfoModal showInfo={showInfo} handleInfoClose={handleInfoClose} request={passenger}/>
                     </span>
                 )
@@ -101,7 +101,7 @@ function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert
                     <p>
                         <Container><Row>
                         <Col> <p className="ml-4 pt-2">{passenger.name[0]} {passenger.name[1]} {passenger.req_id}</p></Col> 
-                        <Col> <button className="btn btn-theme" onDoubleClick={() => removePassenger(passenger.req_id)}>Remove from ride</button></Col>
+                        <Col> <button className="btn btn-theme" onDoubleClick={() => removePassenger(passenger.req_id, passenger.seats_requested)}>Remove from ride</button></Col>
                         </Row></Container>
                     </p>
                 )
@@ -110,9 +110,10 @@ function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert
         return passengerList
     }
 
-    const removePassenger = (id) => {
+    const removePassenger = (id, seats) => {
 
         console.log('THIS IS THE ID', id)
+        console.log('SEATS TO ADD', seats)
 
         fetch("/remove-passenger", {
             method: "POST",
@@ -120,7 +121,8 @@ function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                request_id: id
+                request_id: id,
+                seatsToAdd: seats
             }) 
         })
         .then(res => res.json())
@@ -154,15 +156,3 @@ function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert
 
 
 
-function ManageRideModal({showManage, handleManageClose, passengers}){
-
-
-    return(
-        <Modal show={showManage} onHide={handleManageClose}>
-            <Modal.Header closeButton>
-            <Modal.Title>MANAGE PASSENGERS </Modal.Title>
-            </Modal.Header>
-            <Modal.Body> {passengers} </Modal.Body>
-            <Modal.Footer> Double click to remove a passenger. This action is <span>permanent.</span> </Modal.Footer>
-        </Modal>
-    )}
