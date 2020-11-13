@@ -227,30 +227,35 @@ def get_user_current_rides():
         serialize_drive = drive.serialize()
     
         for req in drive.request:
+            print('THIS IS THE REQUEST', req)
             if req.status == 'Approved':
                 if 'passengers' in serialize_drive:
                     serialize_drive['passengers'].append({'name': [req.user.first_name, req.user.last_name],
                                                         'email': req.user.email, 
                                                         'phone_num': req.user.phone_num, 'req_id': req.request_id,
-                                                        'seats_requested': req.seats_requested})
+                                                        'seats_requested': req.seats_requested, 'status': 'Approved'})
                 else:
                     serialize_drive['passengers'] = [{'name': [req.user.first_name, req.user.last_name],
                                                     'email': req.user.email, 'phone_num': req.user.phone_num,
-                                                    'req_id': req.request_id, 'seats_requested': req.seats_requested}]
+                                                    'req_id': req.request_id, 'seats_requested': req.seats_requested,
+                                                    'status': 'Approved'}]
             elif req.status == 'Pending':
                 if 'requests' in serialize_drive:
                     serialize_drive['requests'].append({'id': req.request_id, 
                                                     'name': [req.user.first_name, req.user.last_name],
                                                     'email': req.user.email, 
                                                     'phone_num': req.user.phone_num,
-                                                    'seats_requested': req.seats_requested
+                                                    'seats_requested': req.seats_requested,
+                                                    'status': req.status
                                                     })
                 else:
                     serialize_drive['requests'] = [{'id': req.request_id, 'name': [req.user.first_name, req.user.last_name],
-                                                    'email': req.user.email, 'phone_num': req.user.phone_num, 'seats_requested': req.seats_requested
+                                                    'email': req.user.email, 'phone_num': req.user.phone_num, 'seats_requested': req.seats_requested,
+                                                    'status': req.status
                                                     }]
             else:
                 print('Request deniedddddddddd')
+
             
         
         current_drives_list.append(serialize_drive)

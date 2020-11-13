@@ -27,17 +27,17 @@ function SeatsModal({showEdit, handleEditClose, request_id, oldSeats, seatsAvail
     return(
         <Modal show={showEdit} onHide={handleEditClose}>
             <Modal.Header closeButton>
-            <Modal.Title>UPDATE SEAT REQUEST </Modal.Title>
+            <Modal.Title>UPDATE SEATS</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                     <form onSubmit={editSeats} method="post">   
-                        <p>Seats available: {seatsAvailable} </p> 
+                        <p>Seats Available: {seatsAvailable} </p> 
                         <div>
-                            <label htmlFor="seats" className="mr-2 mb-2">New Seat Request:</label>
-                            <input type="number" placeholder={oldSeats} value={seats} onChange={(e) => setSeats(e.target.value)}></input>    
+                            <label htmlFor="seats">New Request:</label>
+                            <input type="number" className="ml-2" placeholder={oldSeats} value={seats} onChange={(e) => setSeats(e.target.value)}></input>    
                         </div>  
-                        <div className="form-group mb-4">
-                            <button type="submit" className="btn btn-theme form-control" onClick={handleEditClose}>Confirm</button> 
+                        <div className="form-group mb-2 mt-3">
+                            <button type="submit" className="btn btn-theme form-control" onClick={handleEditClose}>Request</button> 
                         </div>
                     </form>
             </Modal.Body>

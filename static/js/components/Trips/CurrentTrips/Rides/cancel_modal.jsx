@@ -27,19 +27,19 @@ function CnclModal({show, handleClose, request_id, status, seats}){
             <Modal.Body>
                     <form onSubmit={handleRemove} method="post">    
                         {(status === 'Pending' || status === 'Approved') ?
-                            (<div><div className="input-group input-group-lg mb-4 ml-2">
+                            (<React.Fragment><div className="form-group ml-2">
                                 <p>Are you sure you want to cancel?</p>
                             </div>   
-                            <div className="form-group mb-4">
+                            <div className="form-group mb-2">
                                 <button type="submit" className="btn btn-theme form-control" onClick={handleClose}>
                                     Cancel Ride
                                 </button> 
-                            </div></div> ) : 
+                            </div></React.Fragment> ) : 
                             (
-                                <div><div className="input-group input-group-lg mb-4 ml-2">
+                                <div><div className="form-group ml-2">
                                 <p>Sorry for the inconvenience. We hope you find another joyride!</p>
                             </div>   
-                            <div className="form-group mb-4">
+                            <div className="form-group mb-2">
                                 <button type="submit" className="btn btn-theme form-control" onClick={handleClose}>
                                     Remove Request
                                 </button> 

@@ -94,10 +94,10 @@ function HowItWorks(){
         <Row className="py-5 align-items-center">
           <Col className= "d-none d-md-block">
             <div className = "how-steps">
-              <HowStep key="search" icon="fas fa-search fa-4x mr-4" description={["Simply ", <span>check</span>, " for rides travelling to your destination."]}/>
-              <HowStep key="match" icon="fas fa-car fa-4x mr-4" description={[<span>Match</span>, " with a driver."]}/>
-              <HowStep key="negotiate" icon="far fa-handshake fa-4x mr-2" description={[<span>Negotiate</span>, " on a great price."]}/>
-              <HowStep ket="reach" icon="fas fa-flag-checkered fa-4x mr-4" description={["Happily ", <span>reach</span>, " your destination."]}/>
+              <HowStep key="search" icon="fas fa-search fa-4x mr-4" description={["Simply ", <span className="yellow">check</span>, " for rides travelling to your destination."]}/>
+              <HowStep key="match" icon="fas fa-car fa-4x mr-4" description={[<span className="yellow">Match</span>, " with a driver."]}/>
+              <HowStep key="negotiate" icon="far fa-handshake fa-4x mr-2" description={[<span className="yellow">Negotiate</span>, " on a great price."]}/>
+              <HowStep ket="reach" icon="fas fa-flag-checkered fa-4x mr-4" description={["Happily ", <span className="yellow">reach</span>, " your destination."]}/>
             </div>
           </Col>
           <Col className= "vid">

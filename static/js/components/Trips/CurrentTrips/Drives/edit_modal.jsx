@@ -3,7 +3,6 @@ function EditRideModal({showEdit, handleEditClose, currentDrive}){
     const [seats, setSeats] = useState(currentDrive.seats)
     const [price, setPrice] = useState(currentDrive.price)
     const [comments, setComments] = useState(currentDrive.comments)
-
     const [date, setDate] = useState(currentDrive.date)
     const [from, setFrom] = useState(currentDrive.start_loc)
     const [to, setTo] = useState(currentDrive.end_loc)

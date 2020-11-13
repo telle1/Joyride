@@ -28,7 +28,7 @@ function DelRideModal({show, handleClose, ride_id}){
                         <div className="form-group- mb-2">
                             <p className="ml-1 mr-1">Are you sure you want to <span className="font-weight-bold">permanently</span> delete this ride? Joyriders are counting on you!</p>
                         </div>   
-                        <div className="form-group mb-4">
+                        <div className="form-group mb-2">
                             <button type="submit" className="btn btn-theme form-control" onClick={handleClose}>Cancel ride</button> 
                         </div>  
                     </form>

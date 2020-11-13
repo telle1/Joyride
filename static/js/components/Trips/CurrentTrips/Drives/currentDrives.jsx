@@ -4,6 +4,7 @@ const {Popover, OverlayTrigger} = ReactBootstrap
 function CurrentDrives({setAlertColor, setAlertStatus, setShowAlert}){
 
     const [currentDrives, setCurrentDrives] = useState([])
+    console.log(JSON.stringify(currentDrives));
 
     useEffect(() =>{
         fetch("/current-rides", {
@@ -13,13 +14,16 @@ function CurrentDrives({setAlertColor, setAlertStatus, setShowAlert}){
             },
         })
         .then(res => res.json())
+            
         .then(data => {
+            console.log('CURRENT DRIVESSSSSSSSS')
             setCurrentDrives(data.drives)
+            
         })
-    }, []) //currentDrives 
+    }, []) //currentDrives //[JSON.stringify(currentDrives)]
     
     return (
-        <div>
+        <React.Fragment>
             <h3 className="table-header">DRIVING</h3>
             <table className="table table-bordered table-striped">
                 <TableHeader col2="Location" col3="Seats" col4="Price" col5="Passengers"></TableHeader>
@@ -30,7 +34,7 @@ function CurrentDrives({setAlertColor, setAlertStatus, setShowAlert}){
                     ))}
                 </tbody>
             </table>
-        </div>
+        </React.Fragment>
     )
 }
 
@@ -61,12 +65,13 @@ function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert
                 const handleInfoShow = () => setShowInfo(true)
                 const handleInfoClose = () => setShowInfo(false) 
 
-                requestList.push(<p>
-                    <button className="btn btn-transparent mr-2" onClick={handleInfoShow}>{request.name[0]} {request.name[1]} ({request.seats_requested}) ID:{request.id}</button>
-                    <ContactInfoModal showInfo={showInfo} handleInfoClose={handleInfoClose} request={request}/>
-                    <RadioButton request_id={request.id} seats={request.seats_requested}
-                    setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
-                    </p>)
+                requestList.push(
+                    <React.Fragment>
+                        <button className="btn-transparent mr-2" onClick={handleInfoShow}>{request.name[0]} {request.name[1]} ({request.seats_requested}) ID:{request.id}</button>
+                        <ContactInfoModal showInfo={showInfo} handleInfoClose={handleInfoClose} request={request}/>
+                        <RadioButton request_id={request.id} seats={request.seats_requested}
+                        setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
+                    </React.Fragment>)
             }
         }
         return requestList
@@ -82,10 +87,11 @@ function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert
                 const handleInfoClose = () => setShowInfo(false) 
                 
                 passengerList.push(
-                    <span>
-                    <button className="btn btn-transparent mr-2" onClick={handleInfoShow}>{passenger.name[0]} {passenger.name[1]} ({passenger.seats_requested})</button>
-                    <ContactInfoModal showInfo={showInfo} handleInfoClose={handleInfoClose} request={passenger}/>
-                    </span>
+                    <React.Fragment>
+                        <button className="btn-transparent shadow-none" onClick={handleInfoShow}>{passenger.name[0]} {passenger.name[1]} ({passenger.seats_requested})</button>
+                        <ContactInfoModal showInfo={showInfo} handleInfoClose={handleInfoClose} request={passenger}/>
+                        <br/>
+                    </React.Fragment>
                 )
             }
         }   
@@ -98,12 +104,12 @@ function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert
         if (currentDrive.passengers){
             for (const passenger of currentDrive.passengers){                
                 passengerList.push(
-                    <p>
+                    <React.Fragment>
                         <Container><Row>
-                        <Col> <p className="ml-4 pt-2">{passenger.name[0]} {passenger.name[1]} {passenger.req_id}</p></Col> 
-                        <Col> <button className="btn btn-theme" onDoubleClick={() => removePassenger(passenger.req_id, passenger.seats_requested)}>Remove from ride</button></Col>
+                            <Col><p className="ml-4 pt-2">{passenger.name[0]} {passenger.name[1]} {passenger.req_id}</p></Col> 
+                            <Col><button className="btn btn-theme" onDoubleClick={() => removePassenger(passenger.req_id, passenger.seats_requested)}>Remove from ride</button></Col>
                         </Row></Container>
-                    </p>
+                    </React.Fragment>
                 )
             }
         }   
@@ -133,20 +139,20 @@ function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert
 
     return(
         <tr>
-            <td>
-                {currentDrive.date} RIDE ID{currentDrive.ride_id}
-                <div>
-                <button className="btn btn-theme mr-2" onClick={handleEditShow}>Edit</button>
-                <button className="btn btn-yellow mr-2" onClick={handleManageShow}>Manage</button>
-                <button className="btn btn-danger" onClick={handleShow}>Delete</button>
-                <DelRideModal show={show} handleClose={handleClose} ride_id={currentDrive.ride_id}/>
-                <EditRideModal showEdit={showEdit} handleEditClose={handleEditClose} currentDrive={currentDrive}/>
-                <ManageRideModal showManage={showManage} handleManageClose={handleManageClose} passengers={managePassengers()}/>
-                </div>
+            <td>{currentDrive.date} 
+                <React.Fragment>
+                    <div>RIDE ID{currentDrive.ride_id}</div>
+                    <button className="btn btn-theme mr-2" onClick={handleEditShow}>Edit</button>
+                    <button className="btn btn-yellow mr-2" onClick={handleManageShow}>Manage</button>
+                    <button className="btn btn-danger" onClick={handleShow}>Delete</button>
+                    <DelRideModal show={show} handleClose={handleClose} ride_id={currentDrive.ride_id}/>
+                    <EditRideModal showEdit={showEdit} handleEditClose={handleEditClose} currentDrive={currentDrive}/>
+                    <ManageRideModal showManage={showManage} handleManageClose={handleManageClose} passengers={managePassengers()}/>
+                </React.Fragment>
             </td>
             <td>{currentDrive.start_loc} -> {currentDrive.end_loc}</td>
             <td>{currentDrive.seats}</td>
-            <td>{currentDrive.price}</td>
+            <td>${currentDrive.price}</td>
             <td>{passenger()}</td>
             <td>{request()}</td>
         </tr>
