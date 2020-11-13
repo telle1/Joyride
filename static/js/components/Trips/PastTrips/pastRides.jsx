@@ -18,7 +18,7 @@ function PastRides(){
 
     return(
         <div className="Rode">
-            <h3 className="table-header">RIDING</h3>
+            <h3 className="table-header">RODE</h3>
             <table className="table table-bordered table-striped">
             <thead>
                 <tr>

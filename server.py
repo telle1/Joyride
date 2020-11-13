@@ -243,10 +243,12 @@ def get_user_current_rides():
                                                     'name': [req.user.first_name, req.user.last_name],
                                                     'email': req.user.email, 
                                                     'phone_num': req.user.phone_num,
-                                                    'seats_requested': req.seats_requested})
+                                                    'seats_requested': req.seats_requested
+                                                    })
                 else:
                     serialize_drive['requests'] = [{'id': req.request_id, 'name': [req.user.first_name, req.user.last_name],
-                                                    'email': req.user.email, 'phone_num': req.user.phone_num, 'seats_requested': req.seats_requested}]
+                                                    'email': req.user.email, 'phone_num': req.user.phone_num, 'seats_requested': req.seats_requested
+                                                    }]
             else:
                 print('Request deniedddddddddd')
             
@@ -266,7 +268,10 @@ def get_user_current_rides():
             'cost': req.ride.price,
             'status': req.status,
             'request_id': req.request_id,
-            'seats_requested': req.seats_requested
+            'seats_requested': req.seats_requested,
+            'seats_available': req.ride.seats,
+            'driver': {'first_name': req.ride.user.first_name, 'last_name': req.ride.user.last_name,
+                'email': req.ride.user.email, 'phone_num': req.ride.user.phone_num}
         }
         current_rides_list.append(req_serialized)
 
@@ -381,6 +386,24 @@ def remove_passenger():
 
     return jsonify({'msg': 'Deleted ride.'})
     
+@app.route('/delete-ride', methods=['POST'])
+def delete_ride():
+    data = request.json
+    ride_id = data['ride_id']
+
+    ride = crud.get_ride_by_id(ride_id)
+    print('THIS IS THE RIDE DELETED LINE339', ride)
+
+    reqs_for_ride = ride.request
+    print('REQUESTS FOR RIDE TO DELETE', reqs_for_ride)
+    for req in reqs_for_ride:
+        req.status = 'Cancelled'
+        db.session.commit() #do not add since we are updating the ride
+
+    db.session.delete(ride)
+    db.session.commit()
+
+    return jsonify({'msg': 'Ride successfully cancelled.'})
 
 @app.route('/delete-request', methods=['POST'])
 def delete_request():
@@ -407,25 +430,26 @@ def delete_request():
 
     return jsonify({'msg': 'Deleted ride.'})
 
-@app.route('/delete-ride', methods=['POST'])
-def delete_ride():
+@app.route('/edit-seats-request', methods=['POST'])
+def edit_seats_request():
     data = request.json
-    ride_id = data['ride_id']
+    request_id = data['request_id']
+    seats_str= data['seats']
+    seats_request = int(seats_str)
+    print(type(seats_request))
+    ride_req = crud.get_request_by_request_id(request_id)
 
-    ride = crud.get_ride_by_id(ride_id)
-    print('THIS IS THE RIDE DELETED LINE339', ride)
+    if 0 < seats_request <= ride_req.ride.seats:
+        ride_req.seats_requested = seats_request
+        db.session.commit()
+        resp = jsonify({'msg': 'Seats request pending approval.', 'alert': 'success'})
+    else:
+        resp = jsonify({'msg': 'You cannot request that number of seats.', 'alert': 'danger'})
 
-    reqs_for_ride = ride.request
-    print('REQUESTS FOR RIDE TO DELETE', reqs_for_ride)
-    for req in reqs_for_ride:
-        req.status = 'Cancelled'
-        db.session.commit() #do not add since we are updating the ride
+    print(ride_req)
+    print(ride_req.ride)
 
-    db.session.delete(ride)
-    db.session.commit()
-
-    return jsonify({'msg': 'Ride successfully cancelled.'})
-
+    return resp
 
 @app.route('/logout')
 def logout_user():
