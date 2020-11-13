@@ -15,34 +15,49 @@ function PastDrives(){
             setPastDrives(data.drives)
         })
     }, [])
-    
+
     return (
         <div>
-            <h3 className="table-header">DROVE</h3>
-            <table className="table table-bordered table-striped">
-                <thead>
-                <tr>
-                    <th scope="col">Date</th>
-                    <th scope="col">From</th>
-                    <th scope="col">To</th>
-                    <th scope="col">Seats</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Passengers</th>
-                </tr>
-                </thead>
-                <tbody>
-                    {pastDrives.map(pastDrive => (
-                    <tr>
-                        <td>{pastDrive.date}</td>
-                        <td>{pastDrive.start_loc}</td>
-                        <td>{pastDrive.end_loc}</td>
-                        <td>{pastDrive.seats}</td>
-                        <td>{pastDrive.price}</td>
-                        <td>{pastDrive.passengers}</td>
-                    </tr>
-                    ))}
-                </tbody>
+        <h3 className="table-header">DROVE</h3>
+        <table className="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">From</th>
+                <th scope="col">To</th>
+                <th scope="col">Seats</th>
+                <th scope="col">Price</th>
+                <th scope="col">Passengers</th>
+            </tr>
+            </thead>
+            <tbody>
+                {pastDrives.map(pastDrive => <PastDrive pastDrive={pastDrive}/>)}
+            </tbody>
             </table>
         </div>
+    )          
+}
+
+function PastDrive({pastDrive}){
+
+    const passenger = () => {
+        const passengerList = []
+        if (pastDrive.passengers){
+            for (const passenger of pastDrive.passengers){                
+                passengerList.push(<p>{passenger[0]} {passenger[1]}</p>)
+            }
+        }   
+        return passengerList
+    }
+
+    return (
+            <tr>
+                <td>{pastDrive.date}</td>
+                <td>{pastDrive.start_loc}</td>
+                <td>{pastDrive.end_loc}</td>
+                <td>{pastDrive.seats}</td>
+                <td>{pastDrive.price}</td>
+                <td>{passenger()}</td>
+            </tr>
     )
 }

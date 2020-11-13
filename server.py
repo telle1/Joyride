@@ -290,9 +290,13 @@ def get_user_past_rides():
         drive_ser = drive.serialize()
         for req in drive.request:
             if req.status == 'Approved':
-                drive_ser['passengers'] = [req.user.first_name, req.user.last_name]
+                if 'passengers' in drive_ser:
+                    drive_ser['passengers'].append([req.user.first_name, req.user.last_name])
+                else:
+                    drive_ser['passengers'] = [[req.user.first_name, req.user.last_name]]
         past_drives_ser.append(drive_ser)
-    
+
+
     past_rides_ser = []
     for req in past_ride_requests:
         req_serialized = {
@@ -303,6 +307,9 @@ def get_user_past_rides():
             'cost': req.ride.price,
         }
         past_rides_ser.append(req_serialized)
+    
+    print('PAST DRIVES.........', past_drives_ser)
+    print('PAST REQUESTSPAST REQUESTSPAST REQUESTS', past_rides_ser)
 
     return jsonify({'drives': past_drives_ser, 'rides': past_rides_ser})
 
