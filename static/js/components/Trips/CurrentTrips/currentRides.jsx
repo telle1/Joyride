@@ -88,6 +88,7 @@ function CnclModal({show, handleClose, request_id, status}){
             <Modal.Body>
                     <form onSubmit={handleRemove} method="post">       
                         <div className="input-group input-group-lg mb-4 ml-2">
+                            {/* need to add status = removed and denied */}
                             <p>{status === 'Cancelled' ? 'Sorry for the inconvenience. We hope you find another joyride!' : 'Are you sure you want to cancel?'}</p>
                         </div>   
                         <div className="form-group mb-4">

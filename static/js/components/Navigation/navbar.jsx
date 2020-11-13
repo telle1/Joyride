@@ -42,7 +42,7 @@ function NavBarNoUser({setUser, setShowAlert, setAlertStatus, setAlertColor}){
     <div>
       <Navbar expand="lg" className="fixed-top navbar-custom">
         <Container>
-          <Navbar.Brand><Link to="/" className="navbar-brand">Joyride</Link></Navbar.Brand>
+          <Navbar.Brand><Link to="/home" className="navbar-brand">Joyride</Link></Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">  
               <Nav className="ml-auto">
@@ -63,7 +63,7 @@ function NavBarUser({handleLogout}){
   return (
     <Navbar expand="lg" className="fixed-top navbar-custom">
       <Container>
-        <Navbar.Brand><Link to="/" className="navbar-brand">Joyride</Link></Navbar.Brand>
+        <Navbar.Brand><Link to="/home" className="navbar-brand">Joyride</Link></Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">

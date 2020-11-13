@@ -1,4 +1,5 @@
 const { useState, useEffect } = React 
+const {Popover, OverlayTrigger} = ReactBootstrap
 
 function CurrentDrives({setAlertColor, setAlertStatus, setShowAlert}){
 
@@ -15,7 +16,7 @@ function CurrentDrives({setAlertColor, setAlertStatus, setShowAlert}){
         .then(data => {
             setCurrentDrives(data.drives)
         })
-    }, []) //set to currentDrives
+    }, []) //currentDrives 
     
     return (
         <div>
@@ -36,14 +37,18 @@ function CurrentDrives({setAlertColor, setAlertStatus, setShowAlert}){
 
 function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert}){
 
-    //Cancel Modal
+    //Delete Ride Modal
     const [show, setShow] = useState(false)
     const handleShow = () => setShow(true)
     const handleClose = () => setShow(false) 
-    //Edit Modal
+    //Edit Ride Modal
     const [showEdit, setShowEdit] = useState(false)
     const handleEditShow = () => setShowEdit(true)
     const handleEditClose = () => setShowEdit(false) 
+    //Manage Passengers Modal
+    const [showManage, setShowManage] = useState(false)
+    const handleManageShow = () => setShowManage(true)
+    const handleManageClose = () => setShowManage(false) 
 
 
     const request = () => {
@@ -57,7 +62,7 @@ function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert
                 const handleInfoClose = () => setShowInfo(false) 
 
                 requestList.push(<p>
-                    <button className="btn btn-transparent mr-2" onClick={handleInfoShow}>{request.name} {request.id}</button>
+                    <button className="btn btn-transparent mr-2" onClick={handleInfoShow}>{request.name[0]} {request.name[1]} {request.id}</button>
                     <ContactInfoModal showInfo={showInfo} handleInfoClose={handleInfoClose} request={request}/>
                     <RadioButton request_id={request.id}
                     setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
@@ -71,10 +76,57 @@ function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert
         const passengerList = []
         if (currentDrive.passengers){
             for (const passenger of currentDrive.passengers){
-                passengerList.push(<p className="mb-0">{passenger[0]} {passenger[1]}</p>)
+                //Passenger Info Modal
+                const [showInfo, setShowInfo] = useState(false)
+                const handleInfoShow = () => setShowInfo(true)
+                const handleInfoClose = () => setShowInfo(false) 
+                
+                passengerList.push(
+                    <span>
+                    <button className="btn btn-transparent mr-2" onClick={handleInfoShow}>{passenger.name[0]} {passenger.name[1]}</button>
+                    <ContactInfoModal showInfo={showInfo} handleInfoClose={handleInfoClose} request={passenger}/>
+                    </span>
+                )
             }
         }   
         return passengerList
+    }
+
+
+    const managePassengers = () => {
+        const passengerList = []
+        if (currentDrive.passengers){
+            for (const passenger of currentDrive.passengers){                
+                passengerList.push(
+                    <p>
+                        <Container><Row>
+                        <Col> <p className="ml-4 pt-2">{passenger.name[0]} {passenger.name[1]} {passenger.req_id}</p></Col> 
+                        <Col> <button className="btn btn-theme" onDoubleClick={() => removePassenger(passenger.req_id)}>Remove from ride</button></Col>
+                        </Row></Container>
+                    </p>
+                )
+            }
+        }   
+        return passengerList
+    }
+
+    const removePassenger = (id) => {
+
+        console.log('THIS IS THE ID', id)
+
+        fetch("/remove-passenger", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                request_id: id
+            }) 
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data.msg) 
+        })      
     }
 
     return(
@@ -82,12 +134,12 @@ function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert
             <td>
                 {currentDrive.date} RIDE ID{currentDrive.ride_id}
                 <div>
-                <button className="btn btn-theme mr-2" onClick={handleEditShow}>Edit Ride</button>
-                <button className="btn btn-yellow" onClick={handleShow}>Delete Ride</button>
+                <button className="btn btn-theme mr-2" onClick={handleEditShow}>Edit</button>
+                <button className="btn btn-yellow mr-2" onClick={handleManageShow}>Manage</button>
+                <button className="btn btn-danger" onClick={handleShow}>Delete</button>
                 <DelRideModal show={show} handleClose={handleClose} ride_id={currentDrive.ride_id}/>
-                <EditRideModal showEdit={showEdit} handleEditClose={handleEditClose} passengers={currentDrive.passengers}
-                    ride_id={currentDrive.ride_id} oldSeats={currentDrive.seats} oldPrice={currentDrive.price} oldComments={currentDrive.comments}
-                    oldDate={currentDrive.date} oldFrom={currentDrive.start_loc} oldTo={currentDrive.end_loc}/>
+                <EditRideModal showEdit={showEdit} handleEditClose={handleEditClose} currentDrive={currentDrive}/>
+                <ManageRideModal showManage={showManage} handleManageClose={handleManageClose} passengers={managePassengers()}/>
                 </div>
             </td>
             <td>{currentDrive.start_loc} -> {currentDrive.end_loc}</td>
@@ -102,10 +154,15 @@ function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert
 
 
 
+function ManageRideModal({showManage, handleManageClose, passengers}){
 
 
-
-
-    
-    
-    
+    return(
+        <Modal show={showManage} onHide={handleManageClose}>
+            <Modal.Header closeButton>
+            <Modal.Title>MANAGE PASSENGERS </Modal.Title>
+            </Modal.Header>
+            <Modal.Body> {passengers} </Modal.Body>
+            <Modal.Footer> Double click to remove a passenger. This action is <span>permanent.</span> </Modal.Footer>
+        </Modal>
+    )}

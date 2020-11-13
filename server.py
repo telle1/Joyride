@@ -103,7 +103,8 @@ def post_ride_to_database():
     price = data['price']
     comments = data['comments']
 
-    ride = crud.create_ride(driver_id = session['user_id'], seats = seats, date = date, start_loc = start_loc, end_loc = end_loc, price= price, comments = comments)
+    crud.create_ride(driver_id = session['user_id'], seats = seats, date = date, start_loc = start_loc, end_loc = end_loc, price= price, comments = comments)
+    
     return jsonify({'msg': 'Ride successfully added.'})
 
 @app.route('/search-results', methods=['POST'])
@@ -221,10 +222,14 @@ def get_user_current_rides():
         for req in drive.request:
             if req.status == 'Approved':
                 if 'passengers' in serialize_drive:
-                    serialize_drive['passengers'].append([req.user.first_name, req.user.last_name])
+                    serialize_drive['passengers'].append({'name': [req.user.first_name, req.user.last_name],
+                                                       'email': req.user.email, 
+                                                       'phone_num': req.user.phone_num, 'req_id': req.request_id})
                 else:
-                    serialize_drive['passengers'] = [[req.user.first_name, req.user.last_name]]
-            if req.status == 'Pending':
+                    serialize_drive['passengers'] = [{'name': [req.user.first_name, req.user.last_name],
+                                                       'email': req.user.email, 'phone_num': req.user.phone_num,
+                                                       'req_id': req.request_id}]
+            elif req.status == 'Pending':
                 if 'requests' in serialize_drive:
                     serialize_drive['requests'].append({'id': req.request_id, 
                                                        'name': [req.user.first_name, req.user.last_name],
@@ -233,6 +238,9 @@ def get_user_current_rides():
                 else:
                     serialize_drive['requests'] = [{'id': req.request_id, 'name': [req.user.first_name, req.user.last_name],
                                                     'email': req.user.email, 'phone_num': req.user.phone_num}]
+            else:
+                print('Request deniedddddddddd')
+            
         
         current_drives_list.append(serialize_drive)
 
@@ -336,6 +344,30 @@ def edit_ride():
     print('UPDATED RIDE INFO', ride)
 
     return jsonify({'msg': 'Ride successfully edited.'})
+
+@app.route('/remove-passenger', methods=['POST'])
+def remove_passenger():
+
+    data = request.json
+    request_id = data['request_id']
+    print('THIS IS THE REQUEST ID LINE 353', request_id)
+    req_to_update = crud.get_request_by_request_id(request_id)
+    print(req_to_update)
+    print('SEATS', req_to_update.ride.seats)
+
+    req_to_update.status = 'Removed'
+
+    ride_of_req = req_to_update.ride
+    ride_of_req.seats +=1
+    # db.session.add(ride_of_req)
+    db.session.commit()
+    print('INCREMENTED SEATS', ride_of_req.seats)
+
+    # db.session.delete(req_to_delete)
+    # db.session.commit()
+    # notify driver?
+
+    return jsonify({'msg': 'Deleted ride.'})
     
 
 @app.route('/delete-request', methods=['POST'])
@@ -351,13 +383,13 @@ def delete_request():
     if req_to_delete.status == 'Approved':
         ride_of_req = req_to_delete.ride
         ride_of_req.seats +=1
-        db.session.add(ride_of_req)
+        # db.session.add(ride_of_req)
         db.session.commit()
         print('INCREMENTED SEATS', ride_of_req.seats)
 
     db.session.delete(req_to_delete)
     db.session.commit()
-    #notify driver?
+    # notify driver?
 
     return jsonify({'msg': 'Deleted ride.'})
 

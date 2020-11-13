@@ -32,6 +32,10 @@ function App(){
                 <NavBar setUser={setUser} user={user} alertColor={alertColor} setAlertColor={setAlertColor} alertStatus={alertStatus} setAlertStatus={setAlertStatus}/>
                 <Switch>
                     <Route exact path="/">
+                        {/* <HomePage/> */}
+                        {user ? <Redirect to="/profile"/> : <HomePage/>}
+                    </Route>
+                    <Route exact path="/home">
                         <HomePage/>
                     </Route>
                     <Route path="/search">

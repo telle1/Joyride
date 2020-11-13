@@ -14,10 +14,9 @@ body {
   background-color: #eba92a;
 }
 
-.btn-yellow:hover {
+.btn-danger {
   background-color: #F32013;
   color: white;
-
 }
 
 .btn-transparent {
