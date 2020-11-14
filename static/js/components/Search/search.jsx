@@ -4,6 +4,7 @@ const { Col } = ReactBootstrap
 
 function Search({setAlertStatus, setAlertColor, alertStatus, alertColor}){
     const [matchingRides, setMatchingRides] = useState([])
+    const [search, setSearch] = useState(false) //prevent "No matching rides" from showing on initial render
     const [startInput, setStartInput] = useState("")
     const [endInput, setEndInput] = useState("")
     const [showAlert, setShowAlert] = useState("")
@@ -23,6 +24,7 @@ function Search({setAlertStatus, setAlertColor, alertStatus, alertColor}){
         .then(res => res.json())
         .then(data => {
             setMatchingRides(data.res)
+            setSearch(true)
             console.log(matchingRides)
         })        
     }
@@ -39,7 +41,9 @@ function Search({setAlertStatus, setAlertColor, alertStatus, alertColor}){
                         <button type="submit" className="btn btn-theme my-1">Search</button>
                     </form>
                 </div>
-                {matchingRides.map(matchingRide => (
+                {(matchingRides.length == 0 && search == true) ? 
+                <h3 className="mt-3 yellow">No matching rides found. Try again. </h3> :
+                matchingRides.map(matchingRide => (
                     <MatchingRide 
                         key = {matchingRide.ride_id}
                         rideID = {matchingRide.ride_id}

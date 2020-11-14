@@ -215,17 +215,16 @@ def add_location_to_travel_list():
 
     return jsonify({'list': travel_list_result})
 
-@app.route('/current-rides')
+@app.route('/current-drives')
 @login_required
-def get_user_current_rides():
+def get_user_current_drives():
     """Return current trips page."""
     current_user_drives = crud.get_current_user_drives(driver_id = session['user_id'])
-    current_ride_requests = crud.get_current_user_requests(rider_id = session['user_id'])
 
     current_drives_list = []
     for drive in current_user_drives:
         serialize_drive = drive.serialize()
-    
+
         for req in drive.request:
             print('THIS IS THE REQUEST', req)
             if req.status == 'Approved':
@@ -233,36 +232,35 @@ def get_user_current_rides():
                     serialize_drive['passengers'].append({'name': [req.user.first_name, req.user.last_name],
                                                         'email': req.user.email, 
                                                         'phone_num': req.user.phone_num, 'req_id': req.request_id,
-                                                        'seats_requested': req.seats_requested, 'status': 'Approved'})
+                                                        'seats_requested': req.seats_requested})
                 else:
                     serialize_drive['passengers'] = [{'name': [req.user.first_name, req.user.last_name],
                                                     'email': req.user.email, 'phone_num': req.user.phone_num,
-                                                    'req_id': req.request_id, 'seats_requested': req.seats_requested,
-                                                    'status': 'Approved'}]
+                                                    'req_id': req.request_id, 'seats_requested': req.seats_requested}]
             elif req.status == 'Pending':
                 if 'requests' in serialize_drive:
                     serialize_drive['requests'].append({'id': req.request_id, 
                                                     'name': [req.user.first_name, req.user.last_name],
                                                     'email': req.user.email, 
                                                     'phone_num': req.user.phone_num,
-                                                    'seats_requested': req.seats_requested,
-                                                    'status': req.status
-                                                    })
+                                                    'seats_requested': req.seats_requested})
                 else:
                     serialize_drive['requests'] = [{'id': req.request_id, 'name': [req.user.first_name, req.user.last_name],
-                                                    'email': req.user.email, 'phone_num': req.user.phone_num, 'seats_requested': req.seats_requested,
-                                                    'status': req.status
-                                                    }]
+                                                    'email': req.user.email, 'phone_num': req.user.phone_num, 'seats_requested': req.seats_requested}]
             else:
                 print('Request deniedddddddddd')
 
-            
-        
         current_drives_list.append(serialize_drive)
 
     print('****CURRENT DRIVES LIST', current_drives_list)
 
-    
+
+    return jsonify({'drives': current_drives_list})
+
+@app.route('/current-rides')
+def get_current_rides():
+
+    current_ride_requests = crud.get_current_user_requests(rider_id = session['user_id'])
     current_rides_list = []
     for req in current_ride_requests:
         req_serialized = {
@@ -280,7 +278,7 @@ def get_user_current_rides():
         }
         current_rides_list.append(req_serialized)
 
-    return jsonify({'drives': current_drives_list, 'rides': current_rides_list})
+    return jsonify({'rides': current_rides_list})
 
 @app.route('/past-rides')
 @login_required
@@ -371,7 +369,7 @@ def edit_ride():
     db.session.commit()
     print('UPDATED RIDE INFO', ride)
 
-    return jsonify({'msg': 'Ride successfully edited.'})
+    return jsonify({'msg': 'Ride successfully edited.', 'color': 'success'})
 
 @app.route('/remove-passenger', methods=['POST'])
 def remove_passenger():
@@ -396,7 +394,7 @@ def remove_passenger():
     # db.session.commit()
     # notify driver?
 
-    return jsonify({'msg': 'Deleted ride.'})
+    return jsonify({'msg': 'Successfully removed passenger.', 'color': 'success'})
     
 @app.route('/delete-ride', methods=['POST'])
 def delete_ride():
@@ -415,7 +413,7 @@ def delete_ride():
     db.session.delete(ride)
     db.session.commit()
 
-    return jsonify({'msg': 'Ride successfully cancelled.'})
+    return jsonify({'msg': 'Ride successfully cancelled.', 'color': 'success'})
 
 @app.route('/delete-request', methods=['POST'])
 def delete_request():
@@ -463,17 +461,18 @@ def edit_seats_request():
 
     return resp
 
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
 def logout_user():
     """Logout user."""
 
+    data= request.json
+    user_id = data['user_id']
+    
     if 'user_id' in session:
         #del session['user_id']
         session.pop('user_id', None)
     
-    print(session)
-
-    return redirect('/')
+    return jsonify({'msg': 'Logged out'})
 
 if __name__ == "__main__":
     connect_to_db(app, echo= False)

@@ -1,4 +1,4 @@
-function EditRideModal({showEdit, handleEditClose, currentDrive}){
+function EditRideModal({showEdit, handleEditClose, currentDrive, setAlertColor, setAlertStatus, setShowAlert}){
 
     const [seats, setSeats] = useState(currentDrive.seats)
     const [price, setPrice] = useState(currentDrive.price)
@@ -32,7 +32,10 @@ function EditRideModal({showEdit, handleEditClose, currentDrive}){
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data.msg) 
+            setAlertStatus(data.msg)
+            setAlertColor(data.color)
+            setShowAlert(true)
+
         })      
     }
 

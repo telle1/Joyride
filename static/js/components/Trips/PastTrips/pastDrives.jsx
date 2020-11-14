@@ -23,8 +23,7 @@ function PastDrives(){
             <thead>
             <tr>
                 <th scope="col">Date</th>
-                <th scope="col">From</th>
-                <th scope="col">To</th>
+                <th scope="col">Location</th>
                 <th scope="col">Seats</th>
                 <th scope="col">Price</th>
                 <th scope="col">Passengers</th>
@@ -44,7 +43,7 @@ function PastDrive({pastDrive}){
         const passengerList = []
         if (pastDrive.passengers){
             for (const passenger of pastDrive.passengers){                
-                passengerList.push(<p>{passenger[0]} {passenger[1]}</p>)
+                passengerList.push(<React.Fragment>{passenger[0]} {passenger[1]}<br/></React.Fragment>)
             }
         }   
         return passengerList
@@ -53,10 +52,9 @@ function PastDrive({pastDrive}){
     return (
             <tr>
                 <td>{pastDrive.date}</td>
-                <td>{pastDrive.start_loc}</td>
-                <td>{pastDrive.end_loc}</td>
+                <td>{pastDrive.start_loc} -> {pastDrive.end_loc}</td>
                 <td>{pastDrive.seats}</td>
-                <td>{pastDrive.price}</td>
+                <td>${pastDrive.price}</td>
                 <td>{passenger()}</td>
             </tr>
     )

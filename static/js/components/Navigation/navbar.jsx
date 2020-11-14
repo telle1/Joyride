@@ -5,10 +5,24 @@ function NavBar({setUser, user, alertColor, setAlertColor, alertStatus, setAlert
     const [showAlert, setShowAlert] = useState(false)
 
     const handleLogout = () => {
+
+      fetch("/logout", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          user_id: user
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+          console.log(data.msg)
+      })
+
       setUser(null)
       setShowAlert(false)
       localStorage.removeItem('user_id')
-      console.log('user', user)
     }
 
     if (user){

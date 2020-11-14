@@ -4,8 +4,9 @@ const {Button, Modal } = ReactBootstrap
 function CurrentRides({setShowAlert, setAlertColor, setAlertStatus}){
 
     const [currentRides, setCurrentRides] = useState([])
-    //want to call this everytime currentRides changes...
+ 
     useEffect(() => {
+        console.log('THESE ARE CURRENT RIDES', currentRides)
         fetch("/current-rides", {
             method: "GET",
             headers: {
@@ -17,7 +18,7 @@ function CurrentRides({setShowAlert, setAlertColor, setAlertStatus}){
             setCurrentRides(data.rides)
             console.log(data.rides)
         })
-    }, currentRides) //CHANGE BACK TO currentRides
+    }, [currentRides]) 
 
     return(
         <div className="riding">
@@ -58,7 +59,7 @@ function RideListItem({currentRide, setAlertColor, setAlertStatus, setShowAlert,
         <SeatsModal showEdit={showEdit} handleEditClose={handleEditClose} 
         request_id={currentRide.request_id} oldSeats={currentRide.seats_requested} seatsAvailable={currentRide.seats_available}
         setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/></span>: null}
-    
+
         {(currentRide.status === 'Pending' || currentRide.status === 'Approved') ?
             <button className="btn btn-danger" onClick={handleShow}> Cancel Request </button> : 
             <button className="btn btn-theme" onClick={handleShow}> Delete Entry </button> }
@@ -68,7 +69,7 @@ function RideListItem({currentRide, setAlertColor, setAlertStatus, setShowAlert,
         </td>
         <td>{currentRide.start_loc} -> {currentRide.end_loc}</td>
         <td>
-        <button className="btn btn-transparent mr-2" onClick={handleInfoShow}>{currentRide.driver.first_name} {currentRide.driver.last_name}</button>
+        <button className="btn-transparent mr-2" onClick={handleInfoShow}>{currentRide.driver.first_name} {currentRide.driver.last_name}</button>
                     <ContactInfoModal showInfo={showInfo} handleInfoClose={handleInfoClose} request={currentRide.driver}/>
         </td>
         <td>{currentRide.seats_requested}

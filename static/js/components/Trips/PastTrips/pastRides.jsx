@@ -36,7 +36,7 @@ function PastRides(){
                         <td>{pastRide.start_loc}</td>
                         <td>{pastRide.end_loc}</td>
                         <td>{pastRide.driver[0]} {pastRide.driver[1]}</td>
-                        <td>{pastRide.cost}</td>
+                        <td>${pastRide.cost}</td>
                     </tr>
                 ))}
                 </tbody>

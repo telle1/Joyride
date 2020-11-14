@@ -1,13 +1,13 @@
 const { useState, useEffect } = React 
-const {Popover, OverlayTrigger} = ReactBootstrap
+const {Popover, OverlayTrigger} = ReactBootstrap 
 
 function CurrentDrives({setAlertColor, setAlertStatus, setShowAlert}){
 
     const [currentDrives, setCurrentDrives] = useState([])
-    console.log(JSON.stringify(currentDrives));
+    console.log(currentDrives);
 
     useEffect(() =>{
-        fetch("/current-rides", {
+        fetch("/current-drives", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -20,7 +20,7 @@ function CurrentDrives({setAlertColor, setAlertStatus, setShowAlert}){
             setCurrentDrives(data.drives)
             
         })
-    }, []) //currentDrives //[JSON.stringify(currentDrives)]
+    }, [currentDrives]) 
     
     return (
         <React.Fragment>
@@ -54,89 +54,6 @@ function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert
     const handleManageShow = () => setShowManage(true)
     const handleManageClose = () => setShowManage(false) 
 
-
-    const request = () => {
-
-        const requestList = []
-        if (currentDrive.requests){
-            for (const request of currentDrive.requests){
-                //Contact Info Modal
-                const [showInfo, setShowInfo] = useState(false)
-                const handleInfoShow = () => setShowInfo(true)
-                const handleInfoClose = () => setShowInfo(false) 
-
-                requestList.push(
-                    <React.Fragment>
-                        <button className="btn-transparent mr-2" onClick={handleInfoShow}>{request.name[0]} {request.name[1]} ({request.seats_requested}) ID:{request.id}</button>
-                        <ContactInfoModal showInfo={showInfo} handleInfoClose={handleInfoClose} request={request}/>
-                        <RadioButton request_id={request.id} seats={request.seats_requested}
-                        setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
-                    </React.Fragment>)
-            }
-        }
-        return requestList
-    }
-
-    const passenger = () => {
-        const passengerList = []
-        if (currentDrive.passengers){
-            for (const passenger of currentDrive.passengers){
-                //Passenger Info Modal
-                const [showInfo, setShowInfo] = useState(false)
-                const handleInfoShow = () => setShowInfo(true)
-                const handleInfoClose = () => setShowInfo(false) 
-                
-                passengerList.push(
-                    <React.Fragment>
-                        <button className="btn-transparent shadow-none" onClick={handleInfoShow}>{passenger.name[0]} {passenger.name[1]} ({passenger.seats_requested})</button>
-                        <ContactInfoModal showInfo={showInfo} handleInfoClose={handleInfoClose} request={passenger}/>
-                        <br/>
-                    </React.Fragment>
-                )
-            }
-        }   
-        return passengerList
-    }
-
-
-    const managePassengers = () => {
-        const passengerList = []
-        if (currentDrive.passengers){
-            for (const passenger of currentDrive.passengers){                
-                passengerList.push(
-                    <React.Fragment>
-                        <Container><Row>
-                            <Col><p className="ml-4 pt-2">{passenger.name[0]} {passenger.name[1]} {passenger.req_id}</p></Col> 
-                            <Col><button className="btn btn-theme" onDoubleClick={() => removePassenger(passenger.req_id, passenger.seats_requested)}>Remove from ride</button></Col>
-                        </Row></Container>
-                    </React.Fragment>
-                )
-            }
-        }   
-        return passengerList
-    }
-
-    const removePassenger = (id, seats) => {
-
-        console.log('THIS IS THE ID', id)
-        console.log('SEATS TO ADD', seats)
-
-        fetch("/remove-passenger", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                request_id: id,
-                seatsToAdd: seats
-            }) 
-        })
-        .then(res => res.json())
-        .then(data => {
-            console.log(data.msg) 
-        })      
-    }
-
     return(
         <tr>
             <td>{currentDrive.date} 
@@ -145,20 +62,113 @@ function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert
                     <button className="btn btn-theme mr-2" onClick={handleEditShow}>Edit</button>
                     <button className="btn btn-yellow mr-2" onClick={handleManageShow}>Manage</button>
                     <button className="btn btn-danger" onClick={handleShow}>Delete</button>
-                    <DelRideModal show={show} handleClose={handleClose} ride_id={currentDrive.ride_id}/>
-                    <EditRideModal showEdit={showEdit} handleEditClose={handleEditClose} currentDrive={currentDrive}/>
-                    <ManageRideModal showManage={showManage} handleManageClose={handleManageClose} passengers={managePassengers()}/>
+                    <DelRideModal show={show} handleClose={handleClose} ride_id={currentDrive.ride_id}
+                    setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
+                    <EditRideModal showEdit={showEdit} handleEditClose={handleEditClose} currentDrive={currentDrive}
+                    setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
+                    <ManageRideModal showManage={showManage} handleManageClose={handleManageClose} currentDrive={currentDrive}/>
                 </React.Fragment>
             </td>
             <td>{currentDrive.start_loc} -> {currentDrive.end_loc}</td>
             <td>{currentDrive.seats}</td>
             <td>${currentDrive.price}</td>
-            <td>{passenger()}</td>
-            <td>{request()}</td>
+            {/* <td>{passenger()}</td>
+            <td>{request()}</td> */}
+            <td><Passengers currentDrive={currentDrive}/></td>
+            <td><Requests currentDrive={currentDrive} setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/></td>
         </tr>
     )
 }
 
 
 
+function Requests({currentDrive, setAlertColor, setAlertStatus, setShowAlert}){
+ 
+    return (
+        <React.Fragment>
+        {currentDrive.requests ? currentDrive.requests.map(request => <Request request={request}
+            setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>) : null}
+        </React.Fragment>
+    )}
 
+function Request({request, setAlertColor, setAlertStatus, setShowAlert}){
+
+    const [showInfo, setShowInfo] = useState(false)
+    const handleInfoShow = () => setShowInfo(true)
+    const handleInfoClose = () => setShowInfo(false) 
+
+    return (
+        <React.Fragment>
+            <button className="btn-transparent mr-2" onClick={handleInfoShow}>{request.name[0]} {request.name[1]} ({request.seats_requested}) ID:{request.id}</button>
+            <ContactInfoModal showInfo={showInfo} handleInfoClose={handleInfoClose} request={request}/>
+            <RadioButton request_id={request.id} seats={request.seats_requested}
+            setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
+        </React.Fragment>
+    )}
+
+
+function Passengers({currentDrive}){
+    return (
+        <React.Fragment>
+        {currentDrive.passengers ? currentDrive.passengers.map(passenger => <Passenger passenger={passenger}/>) : null}   
+        </React.Fragment>
+    )}
+
+function Passenger({passenger}){
+    const [showInfo, setShowInfo] = useState(false)
+    const handleInfoShow = () => setShowInfo(true)
+    const handleInfoClose = () => setShowInfo(false) 
+
+    return (
+        <React.Fragment>
+        <button className="btn-transparent shadow-none" onClick={handleInfoShow}>{passenger.name[0]} {passenger.name[1]} ({passenger.seats_requested})</button>
+        <ContactInfoModal showInfo={showInfo} handleInfoClose={handleInfoClose} request={passenger}/>
+        <br/>
+        </React.Fragment>
+    )
+}
+
+
+
+    // const request = () => {
+
+    //     const requestList = []
+    //     if (currentDrive.requests){
+    //         for (const request of currentDrive.requests){
+    //             //Contact Info Modal
+    //             const [showInfo, setShowInfo] = useState(false)
+    //             const handleInfoShow = () => setShowInfo(true)
+    //             const handleInfoClose = () => setShowInfo(false) 
+
+    //             requestList.push(
+    //                 <React.Fragment>
+    //                     <button className="btn-transparent mr-2" onClick={handleInfoShow}>{request.name[0]} {request.name[1]} ({request.seats_requested}) ID:{request.id}</button>
+    //                     <ContactInfoModal showInfo={showInfo} handleInfoClose={handleInfoClose} request={request}/>
+    //                     <RadioButton request_id={request.id} seats={request.seats_requested}
+    //                     setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
+    //                 </React.Fragment>)
+    //         }
+    //     }
+    //     return requestList
+    // }
+
+    // const passenger = () => {
+    //     const passengerList = []
+    //     if (currentDrive.passengers){
+    //         for (const passenger of currentDrive.passengers){
+    //             //Passenger Info Modal
+    //             const [showInfo, setShowInfo] = useState(false)
+    //             const handleInfoShow = () => setShowInfo(true)
+    //             const handleInfoClose = () => setShowInfo(false) 
+                
+    //             passengerList.push(
+    //                 <React.Fragment>
+    //                     <button className="btn-transparent shadow-none" onClick={handleInfoShow}>{passenger.name[0]} {passenger.name[1]} ({passenger.seats_requested})</button>
+    //                     <ContactInfoModal showInfo={showInfo} handleInfoClose={handleInfoClose} request={passenger}/>
+    //                     <br/>
+    //                 </React.Fragment>
+    //             )
+    //         }
+    //     }   
+    //     return passengerList
+    // }

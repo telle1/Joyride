@@ -1,4 +1,4 @@
-function DelRideModal({show, handleClose, ride_id}){
+function DelRideModal({show, handleClose, ride_id, setAlertColor, setAlertStatus, setShowAlert}){
 
     const handleRemove = (evt) => {
         evt.preventDefault()     
@@ -15,6 +15,9 @@ function DelRideModal({show, handleClose, ride_id}){
         .then(res => res.json())
         .then(data => {
             console.log(data.msg) 
+            setAlertColor(data.color)
+            setAlertStatus(data.msg)
+            setShowAlert(true)
         })      
     }
 
