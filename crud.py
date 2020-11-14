@@ -1,4 +1,4 @@
-from model import db, User, Ride, TravelList, Request, connect_to_db
+from model import db, User, Ride, TravelList, Request, Feedback, connect_to_db
 from datetime import datetime
 
 current_time = datetime.now()
@@ -81,4 +81,13 @@ def get_user_travel_list(user_id):
     """Get the current user's travel list."""
     return TravelList.query.filter(TravelList.user_id == user_id).all()
 
+def create_new_feedback(feedback, rating, feedback_giver, ride_id, feedback_receiver):
+    
+    new_feedback = Feedback(feedback = feedback, rating = rating, 
+    feedback_giver = feedback_giver, feedback_receiver = feedback_receiver, ride_id = ride_id)
+    db.session.add(new_feedback)
+    db.session.commit()
 
+def get_user_feedback(user_id):
+
+    return Feedback.query.filter(Feedback.feedback_receiver == user_id).all()

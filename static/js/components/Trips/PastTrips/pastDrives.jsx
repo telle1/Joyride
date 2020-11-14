@@ -48,7 +48,7 @@ function PastDrive({pastDrive}){
             <tr>
                 <td>{pastDrive.date}
                     <div><button className="btn btn-yellow" onClick={handleShow}>Feedback</button></div>
-                    <FeedbackModal show={show} handleClose={handleClose} pastDrive={pastDrive}/>
+                    <DriverFeedbackModal show={show} handleClose={handleClose} pastDrive={pastDrive}/>
                 </td>
                 <td>{pastDrive.start_loc} -> {pastDrive.end_loc}</td>
                 <td>{pastDrive.seats}</td>
@@ -68,7 +68,7 @@ function Passengers({pastDrive}){
 }
 
 
-function FeedbackModal({show, handleClose, pastDrive}){
+function DriverFeedbackModal({show, handleClose, pastDrive}){
 
     return(
         <Modal show={show} onHide={handleClose}>

@@ -48,7 +48,7 @@ function App(){
                         <AllCurrentTrips alertColor={alertColor} setAlertColor={setAlertColor} alertStatus={alertStatus} setAlertStatus={setAlertStatus}/>
                     </Route> 
                     <Route path="/past-rides">
-                        <PastTrips/>
+                        <PastTrips user={user}/>
                     </Route>
                    <Route path="/profile">
                         <Profile/>

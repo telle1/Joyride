@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, flash, session, request, jsonify, url_for
 from functools import wraps #for log-inrequired
-from model import db, User, Ride, Request, TravelList, connect_to_db
+from model import db, User, Ride, Request, TravelList, Feedback, connect_to_db
 import crud
 from twilio.rest import Client
 from sqlalchemy import func, distinct
@@ -302,14 +302,17 @@ def get_user_past_rides():
 
     past_rides_ser = []
     for req in past_ride_requests:
-        req_serialized = {
-            'date': req.ride.date,
-            'start_loc': req.ride.start_loc,
-            'end_loc': req.ride.end_loc,
-            'driver': [req.ride.user.first_name, req.ride.user.last_name],
-            'cost': req.ride.price,
-        }
-        past_rides_ser.append(req_serialized)
+        if req.status == 'Approved':
+            req_serialized = {
+                'id': req.request_id,
+                'ride': {'ride_id': req.ride.ride_id, 
+                            'date': req.ride.date,
+                            'start_loc': req.ride.start_loc,
+                            'end_loc': req.ride.end_loc,
+                            'driver': {'id': req.ride.user.user_id, 'f_name': req.ride.user.first_name, 'l_name': req.ride.user.last_name},
+                            'cost': req.ride.price}
+            }
+            past_rides_ser.append(req_serialized)
     
     print('PAST DRIVES.........', past_drives_ser)
     print('PAST REQUESTSPAST REQUESTSPAST REQUESTS', past_rides_ser)
@@ -461,13 +464,40 @@ def edit_seats_request():
 
     return resp
 
+@app.route('/create-feedback', methods=['POST'])
+def save_user_feedback():
+    data = request.json
+    print(data)
+    feedback = data['feedback']
+    rating = data['rating']
+    feedback_giver = data['giver']
+    receiver = data['receiver']
+    ride_id = data['ride_id']
+
+    crud.create_new_feedback(feedback = feedback, rating= rating, ride_id = ride_id, 
+    feedback_receiver = receiver, feedback_giver = feedback_giver)
+
+    return jsonify({'msg': 'Added feedback'})
+
+@app.route('/get-user-feedback')
+def get_user_feedback():
+
+    all_feedback = crud.get_user_feedback(user_id = session['user_id'])
+    feedback_list = []
+    for feedback in all_feedback:
+        feedback_ser = {'feedback': feedback.feedback, 'rating': feedback.rating}
+        feedback_list.append(feedback_ser)
+
+    return jsonify({'msg': feedback_list})
+
+
 @app.route('/logout', methods=['POST'])
 def logout_user():
     """Logout user."""
 
     data= request.json
     user_id = data['user_id']
-    
+
     if 'user_id' in session:
         #del session['user_id']
         session.pop('user_id', None)

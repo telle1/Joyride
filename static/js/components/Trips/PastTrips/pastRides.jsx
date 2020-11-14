@@ -1,4 +1,4 @@
-function PastRides(){
+function PastRides({user}){
 
     const [pastRides, setPastRides] = useState([])
 
@@ -30,17 +30,85 @@ function PastRides(){
                 </tr>
             </thead>
             <tbody>
-                {pastRides.map(pastRide => (
-                    <tr>
-                        <td>{pastRide.date}</td>
-                        <td>{pastRide.start_loc}</td>
-                        <td>{pastRide.end_loc}</td>
-                        <td>{pastRide.driver[0]} {pastRide.driver[1]}</td>
-                        <td>${pastRide.cost}</td>
-                    </tr>
-                ))}
+                 {pastRides.map(pastRide => <PastRide key= {pastRide.id} pastRide={pastRide} user={user}/>)}
                 </tbody>
             </table>
         </div>
     )
 }
+
+function PastRide({pastRide, user}){
+
+    //Feedback Modal
+    const [show, setShow] = useState(false)
+    const handleShow = () => setShow(true)
+    const handleClose = () => setShow(false) 
+    const [showButton, setShowButton] = useState(true) //Hides button after feedback is given
+
+    return (
+        <tr>
+        <td>{pastRide.ride.date}
+        <React.Fragment>
+            <div> {showButton ? <button className="btn btn-yellow" onClick={handleShow}>Feedback</button> : null}</div>
+            <FeedbackModal show={show} handleClose={handleClose} pastRide={pastRide} user={user} setShowButton={setShowButton}/>
+        </React.Fragment>
+        </td>
+        <td>{pastRide.ride.start_loc}</td>
+        <td>{pastRide.ride.end_loc}</td>
+        <td>{pastRide.ride.driver.f_name} {pastRide.ride.driver.l_name}</td>
+        <td>${pastRide.ride.cost}</td>
+    </tr>
+    )
+}
+
+function FeedbackModal({show, handleClose, user, pastRide, setShowButton}){
+
+    const [rating, setRating] = useState(1)
+    const [feedback, setFeedback] = useState("")
+
+    const sendFeedback = (e) => {
+        e.preventDefault();
+        fetch('/create-feedback',  {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'feedback': feedback,
+                'rating': rating,
+                'giver': user,
+                'receiver': pastRide.ride.driver.id,
+                'ride_id': pastRide.ride.ride_id
+            }),
+        })
+        .then(res => res.json())
+        .then(data => {
+            setShowButton(false)
+            console.log(data.msg)
+        })
+    }
+
+
+    return(
+        <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+            <Modal.Title>FEEDBACK </Modal.Title>
+            </Modal.Header>
+            <Modal.Body> 
+                <form onSubmit={sendFeedback} method="post">  
+                        <p>{pastRide.ride.driver.f_name} {pastRide.ride.driver.l_name}</p>
+                        <div>
+                            <label htmlFor="rating" className="mr-2 mb-2">Rating</label>
+                            <input type="number" placeholder="1" value={rating} onChange={(e) => setRating(e.target.value)}></input>    
+                        </div>
+                        <div className="form-group mb-4 mt-2">
+                            <textarea className="form-control" placeholder="Feedback for driver" rows="3" value={feedback} onChange={(e) => setFeedback(e.target.value)}></textarea>  
+                        </div>   
+                        <div className="form-group mb-4">
+                            <button type="submit" className="btn btn-theme form-control" onClick={handleClose}>Submit</button> 
+                        </div>  
+                </form>
+            </Modal.Body>
+        </Modal>
+    )}
+

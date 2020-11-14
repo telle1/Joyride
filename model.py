@@ -78,6 +78,20 @@ class Request(db.Model): #Change to UserRides/UserRequests? change rider_id to u
     def __repr__(self):
         return f'<Requests request_id = {self.request_id} ride_id = {self.ride_id} rider_id = {self.rider_id} status = {self.status} seats_requested={self.seats_requested}>'
 
+class Feedback(db.Model):
+    """A list of user feedback for rides."""
+    __tablename__ = "feedback"
+
+    feedback_id = db.Column(db.Integer, primary_key = True, autoincrement = True, unique = True)
+    feedback = db.Column(db.Text, nullable = False)
+    rating = db.Column(db.Integer, nullable= False)
+    feedback_giver = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)    
+    feedback_receiver = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)    
+    ride_id = db.Column(db.Integer, db.ForeignKey('rides.ride_id'), nullable = False)
+
+    def __repr__(self):
+        return f"<Feedback msg={self.feedback} rating={self.rating} giver={self.feedback_giver} receiver={self.feedback_receiver} ride_id={self.ride_id}>"
+
 def connect_to_db(flask_app, db_uri='postgresql:///joyride', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     flask_app.config['SQLALCHEMY_ECHO'] = echo
