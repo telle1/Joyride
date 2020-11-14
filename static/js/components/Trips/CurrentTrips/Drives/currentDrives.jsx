@@ -74,15 +74,15 @@ function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert
             <td>${currentDrive.price}</td>
             {/* <td>{passenger()}</td>
             <td>{request()}</td> */}
-            <td><Passengers currentDrive={currentDrive}/></td>
-            <td><Requests currentDrive={currentDrive} setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/></td>
+            <td><PassengersList currentDrive={currentDrive}/></td>
+            <td><RequestsList currentDrive={currentDrive} setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/></td>
         </tr>
     )
 }
 
 
 
-function Requests({currentDrive, setAlertColor, setAlertStatus, setShowAlert}){
+function RequestsList({currentDrive, setAlertColor, setAlertStatus, setShowAlert}){
  
     return (
         <React.Fragment>
@@ -107,7 +107,7 @@ function Request({request, setAlertColor, setAlertStatus, setShowAlert}){
     )}
 
 
-function Passengers({currentDrive}){
+function PassengersList({currentDrive}){
     return (
         <React.Fragment>
         {currentDrive.passengers ? currentDrive.passengers.map(passenger => <Passenger passenger={passenger}/>) : null}   
@@ -128,7 +128,7 @@ function Passenger({passenger}){
     )
 }
 
-
+    //THIS ORIGINALLY GAVE ME AN ERROR FOR MY MANAGE MODAL => RENDERED FEWER HOOKS THAN EXPECTED
 
     // const request = () => {
 

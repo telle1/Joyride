@@ -84,13 +84,26 @@ form h3 {
     color: white;
 }
 
-.inner-0, .inner-2 {
-    background-color: #eba92a;
+.inner-1 {
+    background-image: linear-gradient(to right, #74ebd5 0%, #9face6 100%);
+    background-color: #eec0c6;
+    background-image: linear-gradient(315deg, #eec0c6 0%, #e58c8a 74%);
+
 }
 
+.inner-0 {
+    background-color: #f39f86;
+    background-image: linear-gradient(315deg, #f39f86 0%, #f9d976 74%);    
+}
 
-.inner-1, .inner-3 {
-    background-color: #388087;
+.inner-2 {
+    background-color: #f8ceec;
+    background-image: linear-gradient(315deg, #f8ceec 0%, #a88beb 74%);
+}
+
+.inner-3 {
+    background-color: #6a93cb;
+    background-image: linear-gradient(315deg, #6a93cb 0%, #a4bfef 74%);
 }
 
 .inner h1 {
@@ -106,9 +119,15 @@ form h3 {
 
 .text-header h1{
     font-weight: bold;
+    font-family: 'Pacifico', cursive;
     font-size: 80px;
     color: white;
     text-shadow: 0 0 3px #388087, 0 0 8px #388087;
+
+}
+
+.text-header span {
+    text-shadow: 0 0 3px #eba92a, 0 0 8px #eba92a;
 
 }
 

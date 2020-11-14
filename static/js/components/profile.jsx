@@ -33,8 +33,8 @@ function Profile(){
 
     return(
         <Container>
-            <div className="text-center text-header animated bounce profile-page">
-                <h1>WHERE TO NEXT, {firstName} {lastName}?</h1>
+            <div className="text-center text-header animated bounce profile-page mb-5">
+                <h1>Where to next, <span>{firstName} {lastName}?</span></h1>
             </div>
             <Row>
                 <StatSquare stat={destinations} description="destinations discovered." color="inner inner-0"/>

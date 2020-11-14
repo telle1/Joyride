@@ -3,6 +3,7 @@ const { useHistory, useParams, Redirect, Switch, Prompt, Link, Route } = ReactRo
 const {Carousel, Container, Row, Col} = ReactBootstrap
 // const {Typed} = TypedJS
 // const {Checkbox, Box, Typography} = MaterialUI;
+// const {Rating} = SemanticUI;
 
 function HomePage(){
     return(
@@ -12,6 +13,7 @@ function HomePage(){
             <Features/>
             <HowItWorks/>
             <ControlledCarousel/>
+            {/* <RatingExampleStar/> */}
         </div>
     )}
 
@@ -194,3 +196,9 @@ function TestimonialPerson({imageSource, text, name}){
 //     );
 // };
 
+// const RatingExampleStar = () => (
+//   <div>
+//   <p>THIS IS A TEST</p>
+//   <Rating icon='star' defaultRating={3} maxRating={4} />
+//   </div>
+// )
