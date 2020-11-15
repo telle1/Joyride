@@ -290,12 +290,16 @@ def get_user_past_rides():
     past_drives_ser = []
     for drive in past_user_drives:
         drive_ser = drive.serialize()
+        drive_ser['feedback_count'] = 0
         for req in drive.request:
             if req.status == 'Approved':
                 if 'passengers' in drive_ser:
                     drive_ser['passengers'].append({'id': req.user.user_id, 'first_name': req.user.first_name, 'last_name': req.user.last_name})
                 else:
                     drive_ser['passengers'] = [{'id': req.user.user_id, 'first_name': req.user.first_name, 'last_name': req.user.last_name}]
+            feedback_count = crud.check_if_driver_gave_feedback(ride_id = req.ride_id, passenger = req.user.user_id)
+            if feedback_count:
+                drive_ser['feedback_count'] += 1
         past_drives_ser.append(drive_ser)
 
 
@@ -481,11 +485,27 @@ def save_user_feedback():
     crud.create_new_feedback(feedback = feedback, rating= rating, ride_id = ride_id, 
     feedback_receiver = receiver, feedback_giver = feedback_giver)
 
-
-
-    #if user for this ride already gave feedback, then add to pastRide.feedback
-
     return jsonify({'msg': 'Added feedback'})
+
+@app.route('/give-passenger-feedback', methods=['POST'])
+def give_passenger_feedback():
+    data = request.json
+    print(data)
+    feedback = data['feedback']
+    rating = data['rating']
+    feedback_giver = data['giver']
+    receiver = data['receiver']
+    ride_id = data['ride_id']
+
+    feedback_duplicate = crud.check_if_driver_gave_feedback(ride_id = ride_id, passenger= receiver)
+    if feedback_duplicate:
+        resp = jsonify({'msg': 'You already gave feedback for this passenger.'})
+    else:
+        crud.create_new_feedback(feedback = feedback, rating= rating, ride_id = ride_id, 
+        feedback_receiver = receiver, feedback_giver = feedback_giver)
+        resp = jsonify({'msg': 'Added feedback'})
+
+    return resp
 
 @app.route('/get-user-feedback')
 def get_user_feedback():

@@ -41,7 +41,9 @@ function PastDrive({pastDrive, user}){
 
     return (
             <tr>
-                <td>{pastDrive.date} {pastDrive.ride_id}</td>
+                <td>{pastDrive.date} {pastDrive.ride_id}
+                    <br/>{pastDrive.passengers ? <span className="yellow">{pastDrive.feedback_count} of {pastDrive.passengers.length} feedback received.</span> : null}
+                </td>
                 <td>{pastDrive.start_loc} -> {pastDrive.end_loc}</td>
                 <td>{pastDrive.seats}</td>
                 <td>${pastDrive.price}</td>
@@ -81,7 +83,7 @@ function DriverFeedbackModal({show, handleClose, pastDrive, user, passenger}){
 
     const sendFeedback = (e) => {
         e.preventDefault();
-        fetch('/create-feedback',  {
+        fetch('/give-passenger-feedback',  {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

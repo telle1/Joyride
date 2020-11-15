@@ -58,8 +58,8 @@ function FeedbackRow({feedbacks}){
         <React.Fragment>    
         {feedbacks.map(feedback => 
         <tr>
-            <td>{feedback.feedback}<br/>
-                {feedback.rating}
+            <td>{feedback.rating} star<br/>
+                {feedback.feedback}
             </td>
         </tr>)}
         </React.Fragment>
