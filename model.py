@@ -21,21 +21,7 @@ class User(db.Model):
     ride = db.relationship('Ride')
 
     def __repr__(self):
-        return f'<User user_id ={self.user_id} email = {self.email} {self.first_name} {self.first_name}>'
-
-class TravelList(db.Model):
-
-    __tablename__ = "travel_list"
-
-    list_id = db.Column(db.Integer, primary_key=True, autoincrement = True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
-    list_item = db.Column(db.String)
-
-    def __repr__(self):
-        return f'<List_item = {self.list_item} list_id = {self.list_id} user_id = {self.user_id}>'
-
-    def serialize(self):
-        return {'list_id': self.list_id, 'user_id': self.user_id, 'list_item': self.list_item}
+        return f'<User user_id ={self.user_id} email = {self.email} name = {self.first_name} test>'
 
 class Ride(db.Model):
     """A ride."""
@@ -54,7 +40,7 @@ class Ride(db.Model):
     user = db.relationship('User') #in order to get the user's first name and last name for search results
 
     def __repr__(self):
-        return f'<RIDE_ID = {self.ride_id} DRIVER = {self.driver_id} WITH {self.seats} SEATS {self.start_loc} TO {self.end_loc}>'
+        return f'RIDE_ID = {self.ride_id} DRIVER = {self.driver_id} WITH {self.seats} SEATS {self.start_loc} TO {self.end_loc}'
 
     def serialize(self):
         return {'ride_id': self.ride_id, 'driver': self.driver_id, 'seats': self.seats,
@@ -62,7 +48,7 @@ class Ride(db.Model):
         'price': self.price, 'comments': self.comments, "driver_fname" : self.user.first_name, 
         "driver_lname": self.user.last_name }
 
-class Request(db.Model): #Change to UserRides/UserRequests? change rider_id to user_id a
+class Request(db.Model):
     """A list of users requests."""
     __tablename__ = "requests"
 
@@ -112,3 +98,18 @@ if __name__ == '__main__':
 
     connect_to_db(app)
 
+
+
+# class TravelList(db.Model):
+
+#     __tablename__ = "travel_list"
+
+#     list_id = db.Column(db.Integer, primary_key=True, autoincrement = True)
+#     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
+#     list_item = db.Column(db.String)
+
+#     def __repr__(self):
+#         return f'<List_item = {self.list_item} list_id = {self.list_id} user_id = {self.user_id}>'
+
+#     def serialize(self):
+#         return {'list_id': self.list_id, 'user_id': self.user_id, 'list_item': self.list_item}

@@ -72,8 +72,8 @@ form h3 {
 }
 
 
-/*Profile page---Profile page---Profile page---Profile page---Profile page---Profile page---*/
-.profile-page{
+/*Dashboard page---Dashboard page---Dashboard page---Dashboard page---Dashboard page---Dashboard page---*/
+.dashboard-page{
     padding-top: 100px;
 }
 
@@ -138,7 +138,15 @@ li:hover{
 .travel-header{
     color: #eba92a;
 }
+/*Profile page---Profile page---Profile page---Profile page---Profile page---Profile page---*/
+.profile-page{
+    padding-top: 100px;
+}
 
+.table-wrap{
+    height: 400px;
+    overflow: auto;
+}
 
 
 /*Bounce animation - courtesy of https://codepen.io/levineuland*/

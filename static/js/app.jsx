@@ -33,7 +33,7 @@ function App(){
                 <Switch>
                     <Route exact path="/">
                         {/* <HomePage/> */}
-                        {user ? <Redirect to="/profile"/> : <HomePage/>}
+                        {user ? <Redirect to="/dashboard"/> : <HomePage/>}
                     </Route>
                     <Route exact path="/home">
                         <HomePage/>
@@ -52,6 +52,9 @@ function App(){
                     </Route>
                    <Route path="/profile">
                         <Profile/>
+                    </Route> 
+                    <Route path="/dashboard">
+                        <Dashboard/>
                     </Route> 
                 </Switch>
                 <Footer/>

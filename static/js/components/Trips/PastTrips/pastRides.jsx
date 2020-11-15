@@ -39,18 +39,20 @@ function PastRides({user}){
 
 function PastRide({pastRide, user}){
 
+
+
     //Feedback Modal
     const [show, setShow] = useState(false)
     const handleShow = () => setShow(true)
     const handleClose = () => setShow(false) 
-    const [showButton, setShowButton] = useState(true) //Hides button after feedback is given
+    // const [showButton, setShowButton] = useState(true) //Hides button after feedback is given
 
     return (
         <tr>
         <td>{pastRide.ride.date}
         <React.Fragment>
-            <div> {showButton ? <button className="btn btn-yellow" onClick={handleShow}>Feedback</button> : null}</div>
-            <FeedbackModal show={show} handleClose={handleClose} pastRide={pastRide} user={user} setShowButton={setShowButton}/>
+            <div> {pastRide.feedback ? <p className="yellow">Feedback received.</p> : <button className="btn btn-yellow" onClick={handleShow}>Feedback</button>}</div>
+            <FeedbackModal show={show} handleClose={handleClose} pastRide={pastRide} user={user}/>
         </React.Fragment>
         </td>
         <td>{pastRide.ride.start_loc}</td>
@@ -61,7 +63,7 @@ function PastRide({pastRide, user}){
     )
 }
 
-function FeedbackModal({show, handleClose, user, pastRide, setShowButton}){
+function FeedbackModal({show, handleClose, user, pastRide}){
 
     const [rating, setRating] = useState(1)
     const [feedback, setFeedback] = useState("")
@@ -83,7 +85,6 @@ function FeedbackModal({show, handleClose, user, pastRide, setShowButton}){
         })
         .then(res => res.json())
         .then(data => {
-            setShowButton(false)
             console.log(data.msg)
         })
     }

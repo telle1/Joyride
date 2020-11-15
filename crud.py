@@ -1,4 +1,4 @@
-from model import db, User, Ride, TravelList, Request, Feedback, connect_to_db
+from model import db, User, Ride, Request, Feedback, connect_to_db
 from datetime import datetime
 
 current_time = datetime.now()
@@ -71,15 +71,15 @@ def get_past_user_requests(rider_id):
             past_user_requests.append(req)
     return past_user_requests
 
-def create_new_travel_list_item(user_id, list_item):
+# def create_new_travel_list_item(user_id, list_item):
 
-    new_travel_list_item = TravelList(user_id = user_id, list_item = list_item)
-    db.session.add(new_travel_list_item)
-    db.session.commit()
+#     new_travel_list_item = TravelList(user_id = user_id, list_item = list_item)
+#     db.session.add(new_travel_list_item)
+#     db.session.commit()
 
-def get_user_travel_list(user_id):
-    """Get the current user's travel list."""
-    return TravelList.query.filter(TravelList.user_id == user_id).all()
+# def get_user_travel_list(user_id):
+#     """Get the current user's travel list."""
+#     return TravelList.query.filter(TravelList.user_id == user_id).all()
 
 def create_new_feedback(feedback, rating, feedback_giver, ride_id, feedback_receiver):
     
@@ -91,3 +91,13 @@ def create_new_feedback(feedback, rating, feedback_giver, ride_id, feedback_rece
 def get_user_feedback(user_id):
 
     return Feedback.query.filter(Feedback.feedback_receiver == user_id).all()
+
+
+def check_if_user_gave_feedback(ride_id, user_id):
+
+    return Feedback.query.filter(Feedback.ride_id == ride_id, Feedback.feedback_giver == user_id).all()
+
+def check_if_driver_gave_feedback(ride_id, passenger):
+
+    return Feedback.query.filter(Feedback.ride_id == ride_id, Feedback.feedback_receiver == passenger).all()
+

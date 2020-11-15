@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, flash, session, request, jsonify, url_for
 from functools import wraps #for log-inrequired
-from model import db, User, Ride, Request, TravelList, Feedback, connect_to_db
+from model import db, User, Ride, Request, Feedback, connect_to_db
 import crud
 from twilio.rest import Client
 from sqlalchemy import func, distinct
@@ -166,10 +166,10 @@ def request_ride():
 
     return resp
 
-@app.route('/profile')
+@app.route('/dashboard')
 @login_required
-def get_user_profile():
-    """Return profile page."""
+def get_user_dashboard():
+    """Return dashboard page."""
     user = crud.get_user_by_id(user_id = session['user_id'])
 
     destinations = 0 
@@ -287,16 +287,15 @@ def get_user_past_rides():
     past_user_drives = crud.get_past_user_drives(driver_id = session['user_id'])
     past_ride_requests = crud.get_past_user_requests(rider_id = session['user_id'])
 
-   # print('PAST USER DRIVES', past_user_drives)
     past_drives_ser = []
     for drive in past_user_drives:
         drive_ser = drive.serialize()
         for req in drive.request:
             if req.status == 'Approved':
                 if 'passengers' in drive_ser:
-                    drive_ser['passengers'].append([req.user.first_name, req.user.last_name])
+                    drive_ser['passengers'].append({'id': req.user.user_id, 'first_name': req.user.first_name, 'last_name': req.user.last_name})
                 else:
-                    drive_ser['passengers'] = [[req.user.first_name, req.user.last_name]]
+                    drive_ser['passengers'] = [{'id': req.user.user_id, 'first_name': req.user.first_name, 'last_name': req.user.last_name}]
         past_drives_ser.append(drive_ser)
 
 
@@ -312,7 +311,12 @@ def get_user_past_rides():
                             'driver': {'id': req.ride.user.user_id, 'f_name': req.ride.user.first_name, 'l_name': req.ride.user.last_name},
                             'cost': req.ride.price}
             }
+            did_user_give_feedback= crud.check_if_user_gave_feedback(ride_id = req.ride.ride_id, user_id = req.user.user_id)
+            if did_user_give_feedback:
+                req_serialized['feedback'] = 'Done'
+
             past_rides_ser.append(req_serialized)
+
     
     print('PAST DRIVES.........', past_drives_ser)
     print('PAST REQUESTSPAST REQUESTSPAST REQUESTS', past_rides_ser)
@@ -477,6 +481,10 @@ def save_user_feedback():
     crud.create_new_feedback(feedback = feedback, rating= rating, ride_id = ride_id, 
     feedback_receiver = receiver, feedback_giver = feedback_giver)
 
+
+
+    #if user for this ride already gave feedback, then add to pastRide.feedback
+
     return jsonify({'msg': 'Added feedback'})
 
 @app.route('/get-user-feedback')
@@ -487,8 +495,9 @@ def get_user_feedback():
     for feedback in all_feedback:
         feedback_ser = {'feedback': feedback.feedback, 'rating': feedback.rating}
         feedback_list.append(feedback_ser)
+        feedback_list.reverse()
 
-    return jsonify({'msg': feedback_list})
+    return jsonify({'feedback': feedback_list})
 
 
 @app.route('/logout', methods=['POST'])

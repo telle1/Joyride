@@ -96,11 +96,9 @@ function NavBarUser({handleLogout}){
                     <Dropdown.Item><Link to="/past-rides">Past Rides</Link></Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
-                <Nav.Link><Link to="/profile" className="btn navbar-btn shadow-none">Profile</Link>
-                </Nav.Link>
-                <Nav.Link>
-                  <Link to="/" className="btn navbar-btn shadow-none" onClick={handleLogout}>Log Out</Link>
-                </Nav.Link>
+                <Nav.Link><Link to="/profile" className="btn navbar-btn shadow-none">Profile</Link></Nav.Link>
+                <Nav.Link><Link to="/dashboard" className="btn navbar-btn shadow-none">Dashboard</Link></Nav.Link>
+                <Nav.Link><Link to="/" className="btn navbar-btn shadow-none" onClick={handleLogout}>Log Out</Link></Nav.Link>
             </Nav>
          </Navbar.Collapse>
       </Container>
