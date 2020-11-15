@@ -93,11 +93,11 @@ def get_user_feedback(user_id):
     return Feedback.query.filter(Feedback.feedback_receiver == user_id).all()
 
 
-def check_if_user_gave_feedback(ride_id, user_id):
+def check_if_passenger_gave_feedback(ride_id, passenger):
 
-    return Feedback.query.filter(Feedback.ride_id == ride_id, Feedback.feedback_giver == user_id).all()
+    return Feedback.query.filter(Feedback.ride_id == ride_id, Feedback.feedback_giver == passenger).all()
 
 def check_if_driver_gave_feedback(ride_id, passenger):
-
+    #to prevent duplicate entries.
     return Feedback.query.filter(Feedback.ride_id == ride_id, Feedback.feedback_receiver == passenger).all()
 

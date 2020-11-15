@@ -14,7 +14,7 @@ function PastRides({user}){
             setPastRides(data.rides)
             console.log(data.rides)
         })
-    }, [])
+    }, [pastRides])
 
     return(
         <div className="Rode">
@@ -70,7 +70,7 @@ function FeedbackModal({show, handleClose, user, pastRide}){
 
     const sendFeedback = (e) => {
         e.preventDefault();
-        fetch('/create-feedback',  {
+        fetch('/give-driver-feedback',  {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -39,7 +39,7 @@ function Dashboard(){
             <Row>
                 <StatSquare stat={destinations} description="destinations discovered." color="inner inner-0"/>
                 <StatSquare stat={peopleMet} description="new adventurers met." color="inner inner-1"></StatSquare>
-                <StatSquare stat={dollars} description="dollars helping the Earth." color="inner inner-2"></StatSquare>
+                <StatSquare stat={dollars} description="dollars saved." color="inner inner-2"></StatSquare>
                 <StatSquare stat="100" description="percent pure JOY." color="inner inner-3"></StatSquare>
             </Row>
             <Row className="row mt-4">

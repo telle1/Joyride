@@ -48,11 +48,9 @@ function App(){
                         <AllCurrentTrips alertColor={alertColor} setAlertColor={setAlertColor} alertStatus={alertStatus} setAlertStatus={setAlertStatus}/>
                     </Route> 
                     <Route path="/past-rides">
-                        <PastTrips user={user}/>
+                        <PastTrips user={user} alertColor={alertColor} setAlertColor={setAlertColor} alertStatus={alertStatus} setAlertStatus={setAlertStatus}/>
                     </Route>
-                   <Route path="/profile">
-                        <Profile/>
-                    </Route> 
+                    <Route path="/profile/:profileId" component={Profile}/>
                     <Route path="/dashboard">
                         <Dashboard/>
                     </Route> 

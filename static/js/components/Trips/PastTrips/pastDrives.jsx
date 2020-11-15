@@ -1,4 +1,4 @@
-function PastDrives({user}){
+function PastDrives({user, setAlertColor, setAlertStatus, setShowAlert}){
 
     const [pastDrives, setPastDrives] = useState([])
 
@@ -14,7 +14,7 @@ function PastDrives({user}){
         .then(data => {
             setPastDrives(data.drives)
         })
-    }, [])
+    }, [pastDrives])
 
     return (
         <div>
@@ -30,14 +30,15 @@ function PastDrives({user}){
             </tr>
             </thead>
             <tbody>
-                {pastDrives.map(pastDrive => <PastDrive pastDrive={pastDrive} user={user}/>)}
+                {pastDrives.map(pastDrive => <PastDrive pastDrive={pastDrive} user={user}
+                setShowAlert={setShowAlert} setAlertColor={setAlertColor} setAlertStatus={setAlertStatus}/>)}
             </tbody>
             </table>
         </div>
     )          
 }
 
-function PastDrive({pastDrive, user}){
+function PastDrive({pastDrive, user, setAlertColor, setAlertStatus, setShowAlert}){
 
     return (
             <tr>
@@ -47,22 +48,24 @@ function PastDrive({pastDrive, user}){
                 <td>{pastDrive.start_loc} -> {pastDrive.end_loc}</td>
                 <td>{pastDrive.seats}</td>
                 <td>${pastDrive.price}</td>
-                <td><PastPassengersList pastDrive={pastDrive} user={user}/></td>
+                <td><PastPassengersList pastDrive={pastDrive} user={user}
+                setShowAlert={setShowAlert} setAlertColor={setAlertColor} setAlertStatus={setAlertStatus}/></td>
             </tr>
     )
 }
 
-function PastPassengersList({pastDrive, user}){
+function PastPassengersList({pastDrive, user, setAlertColor, setAlertStatus, setShowAlert}){
 
     return (
         <React.Fragment>
-        {pastDrive.passengers ? pastDrive.passengers.map(passenger => <PastPassenger pastDrive={pastDrive} passenger={passenger} user={user}/>)
+        {pastDrive.passengers ? pastDrive.passengers.map(passenger => <PastPassenger pastDrive={pastDrive} passenger={passenger} user={user}
+        setShowAlert={setShowAlert} setAlertColor={setAlertColor} setAlertStatus={setAlertStatus}/>)
             : null}
         </React.Fragment>
     )
 }
 
-function PastPassenger({passenger, pastDrive, user}){
+function PastPassenger({passenger, pastDrive, user, setAlertColor, setAlertStatus, setShowAlert}){
 
     const [show, setShow] = useState(false)
     const handleShow = () => setShow(true)
@@ -71,12 +74,12 @@ function PastPassenger({passenger, pastDrive, user}){
     return (
         <React.Fragment><button className="btn-transparent" onClick={handleShow}>{passenger.first_name} {passenger.last_name}</button><br/>
         <DriverFeedbackModal show={show} handleClose={handleClose} pastDrive={pastDrive} user={user}
-        passenger={passenger}/></React.Fragment>
+        passenger={passenger} setShowAlert={setShowAlert} setAlertColor={setAlertColor} setAlertStatus={setAlertStatus}/></React.Fragment>
     )
 }
 
 
-function DriverFeedbackModal({show, handleClose, pastDrive, user, passenger}){
+function DriverFeedbackModal({show, handleClose, pastDrive, user, passenger, setAlertColor, setAlertStatus, setShowAlert}){
 
     const [rating, setRating] = useState(1)
     const [feedback, setFeedback] = useState("")
@@ -98,7 +101,9 @@ function DriverFeedbackModal({show, handleClose, pastDrive, user, passenger}){
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data.msg)
+            setAlertStatus(data.msg)
+            setAlertColor(data.color)
+            setShowAlert(true)
         })
     }
 

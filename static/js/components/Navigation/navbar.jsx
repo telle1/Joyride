@@ -26,7 +26,7 @@ function NavBar({setUser, user, alertColor, setAlertColor, alertStatus, setAlert
     }
 
     if (user){
-      return <NavBarUser handleLogout={handleLogout}/>
+      return <NavBarUser handleLogout={handleLogout} user={user}/>
     } else {
       return (
         <div>
@@ -36,13 +36,6 @@ function NavBar({setUser, user, alertColor, setAlertColor, alertStatus, setAlert
     }
 }
 
-// function UserAlert({text, setShowAlert, color}){
-//   return (
-//     <Alert className = "alert-position" variant={color} onClose={() => setShowAlert(false)} dismissible>
-//       <Alert.Heading>{text}</Alert.Heading>
-//    </Alert>
-//   )
-// }
 
 function NavBarNoUser({setUser, setShowAlert, setAlertStatus, setAlertColor}){
   const [showLogin, setShowLogin] = useState(false);
@@ -73,7 +66,7 @@ function NavBarNoUser({setUser, setShowAlert, setAlertStatus, setAlertColor}){
   )
 }
 
-function NavBarUser({handleLogout}){
+function NavBarUser({handleLogout, user}){
   return (
     <Navbar expand="lg" className="fixed-top navbar-custom">
       <Container>
@@ -96,7 +89,7 @@ function NavBarUser({handleLogout}){
                     <Dropdown.Item><Link to="/past-rides">Past Rides</Link></Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
-                <Nav.Link><Link to="/profile" className="btn navbar-btn shadow-none">Profile</Link></Nav.Link>
+                <Nav.Link><Link to={`/profile/${user}`} className="btn navbar-btn shadow-none">Profile</Link></Nav.Link>
                 <Nav.Link><Link to="/dashboard" className="btn navbar-btn shadow-none">Dashboard</Link></Nav.Link>
                 <Nav.Link><Link to="/" className="btn navbar-btn shadow-none" onClick={handleLogout}>Log Out</Link></Nav.Link>
             </Nav>

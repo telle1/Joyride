@@ -45,14 +45,7 @@ function Search({setAlertStatus, setAlertColor, alertStatus, alertColor}){
                 <h3 className="mt-3 yellow">No matching rides found. Try again. </h3> :
                 matchingRides.map(matchingRide => (
                     <MatchingRide 
-                        key = {matchingRide.ride_id}
-                        rideID = {matchingRide.ride_id}
-                        date= {matchingRide.date}
-                        driverFirstName= {matchingRide.driver_fname}
-                        driverLastName= {matchingRide.driver_lname}
-                        seats = {matchingRide.seats}
-                        price = {matchingRide.price}
-                        comments = {matchingRide.comments}
+                        key = {matchingRide.ride_id} matchingRide = {matchingRide}
                         setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
                 ))}
             </div>

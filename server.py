@@ -315,8 +315,8 @@ def get_user_past_rides():
                             'driver': {'id': req.ride.user.user_id, 'f_name': req.ride.user.first_name, 'l_name': req.ride.user.last_name},
                             'cost': req.ride.price}
             }
-            did_user_give_feedback= crud.check_if_user_gave_feedback(ride_id = req.ride.ride_id, user_id = req.user.user_id)
-            if did_user_give_feedback:
+            did_passenger_give_feedback= crud.check_if_passenger_gave_feedback(ride_id = req.ride.ride_id, passenger = req.user.user_id)
+            if did_passenger_give_feedback:
                 req_serialized['feedback'] = 'Done'
 
             past_rides_ser.append(req_serialized)
@@ -472,10 +472,9 @@ def edit_seats_request():
 
     return resp
 
-@app.route('/create-feedback', methods=['POST'])
-def save_user_feedback():
+@app.route('/give-driver-feedback', methods=['POST'])
+def give_driver_feedback():
     data = request.json
-    print(data)
     feedback = data['feedback']
     rating = data['rating']
     feedback_giver = data['giver']
@@ -499,21 +498,21 @@ def give_passenger_feedback():
 
     feedback_duplicate = crud.check_if_driver_gave_feedback(ride_id = ride_id, passenger= receiver)
     if feedback_duplicate:
-        resp = jsonify({'msg': 'You already gave feedback for this passenger.'})
+        resp = jsonify({'msg': 'You already gave feedback for this passenger.', 'color': 'danger'})
     else:
         crud.create_new_feedback(feedback = feedback, rating= rating, ride_id = ride_id, 
         feedback_receiver = receiver, feedback_giver = feedback_giver)
-        resp = jsonify({'msg': 'Added feedback'})
+        resp = jsonify({'msg': 'Thank you for the feedback.', 'color': 'success'})
 
     return resp
 
-@app.route('/get-user-feedback')
-def get_user_feedback():
+@app.route('/get-user-feedback/<user_id>')
+def get_user_feedback(user_id):
 
-    all_feedback = crud.get_user_feedback(user_id = session['user_id'])
+    all_feedback = crud.get_user_feedback(user_id = user_id)
     feedback_list = []
     for feedback in all_feedback:
-        feedback_ser = {'feedback': feedback.feedback, 'rating': feedback.rating}
+        feedback_ser = {'id': feedback.feedback_id, 'feedback': feedback.feedback, 'rating': feedback.rating}
         feedback_list.append(feedback_ser)
         feedback_list.reverse()
 
