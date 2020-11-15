@@ -516,6 +516,11 @@ def get_user_feedback(user_id):
 
     return jsonify({'feedback': feedback_list})
 
+@app.route('/get-user-profile-info/<user_id>')
+def get_user_profile_info(user_id):
+
+    return jsonify({'test': 'test'})
+
 
 @app.route('/logout', methods=['POST'])
 def logout_user():

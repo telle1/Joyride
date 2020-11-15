@@ -1,10 +1,25 @@
 const { useEffect, useState } = React
 const {Container, Row, Col} = ReactBootstrap
+const {SettingsIcon, SvgIcon} = MaterialUI
 
 
-function Profile({match}){
+function Profile({match, user}){
 
     const [feedbacks, setFeedbacks] = useState([])
+
+    useEffect(() =>{
+        console.log(match)
+        fetch(`/get-user-feedback/${match.params.profileId}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+        .then(res => res.json())
+        .then(data => {
+            setFeedbacks(data.feedback)
+        })
+    }, [])
 
     useEffect(() =>{
         console.log(match)
@@ -24,7 +39,7 @@ function Profile({match}){
         <Container className="profile-page">
             <Row>
             <Col xs={4}>
-                <UserInfo/> 
+                <UserInfo user={user} match={match}/> 
             </Col>
             <Col>
                 <FeedbackContainer feedbacks={feedbacks}/>
@@ -34,7 +49,10 @@ function Profile({match}){
     )
 }
 
-function UserInfo(){
+function UserInfo({user, match}){
+    console.log('THIS IS THE USER', user)
+    console.log('THIS IS THE PROFILE ID', match.params.profileId)
+
     return (
     <div className="card">
         <div className="card-body">
@@ -45,7 +63,11 @@ function UserInfo(){
             <p className="text-secondary mb-1">Full Stack Developer</p>
             <p className="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
             <button className="btn btn-primary">Follow</button>
-            <button className="btn btn-outline-primary">Message</button>
+            <button className="btn btn-outline-primary">Message</button> 
+            {user == match.params.profileId ? <button className="btn btn-theme">Edit</button>
+            
+            
+            : null}
             </div>
         </div>
         </div>  
@@ -94,3 +116,4 @@ function UserInfo(){
 //     </div>
 
 // }
+

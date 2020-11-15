@@ -1,5 +1,6 @@
 const { useState } = React 
 const {Modal, Button, Alert, Dropdown, Container, Navbar, Nav} = ReactBootstrap
+const {SettingsIcon, SvgIcon, ExitToAppIcon} = MaterialUI
 
 function NavBar({setUser, user, alertColor, setAlertColor, alertStatus, setAlertStatus}){
     const [showAlert, setShowAlert] = useState(false)
@@ -90,13 +91,21 @@ function NavBarUser({handleLogout, user}){
                     </Dropdown.Menu>
                 </Dropdown>
                 <Nav.Link><Link to={`/profile/${user}`} className="btn navbar-btn shadow-none">Profile</Link></Nav.Link>
-                <Nav.Link><Link to="/dashboard" className="btn navbar-btn shadow-none">Dashboard</Link></Nav.Link>
+                <Nav.Link><Link to="/dashboard" className="btn navbar-btn shadow-none"><HomeIcon color="white"/></Link></Nav.Link>
                 <Nav.Link><Link to="/" className="btn navbar-btn shadow-none" onClick={handleLogout}>Log Out</Link></Nav.Link>
             </Nav>
          </Navbar.Collapse>
       </Container>
     </Navbar> 
   )
+}
+
+function HomeIcon(props) {
+  return (
+    <SvgIcon {...props}>
+      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+    </SvgIcon>
+  );
 }
 
 
