@@ -57,7 +57,10 @@ function PastRide({pastRide, user}){
         </td>
         <td>{pastRide.ride.start_loc}</td>
         <td>{pastRide.ride.end_loc}</td>
-        <td>{pastRide.ride.driver.f_name} {pastRide.ride.driver.l_name}</td>
+        <td><Link to={`/profile/${pastRide.ride.driver.id}`}>
+            {pastRide.ride.driver.f_name} {pastRide.ride.driver.l_name}
+            </Link>
+        </td>
         <td>${pastRide.ride.cost}</td>
     </tr>
     )

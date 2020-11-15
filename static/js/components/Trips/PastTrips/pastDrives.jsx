@@ -114,7 +114,7 @@ function DriverFeedbackModal({show, handleClose, pastDrive, user, passenger, set
                 </Modal.Header>
                 <Modal.Body> 
                     <form onSubmit={sendFeedback} method="post">  
-                            <p>{passenger.first_name} {passenger.last_name}</p>
+                            <Link to={`/profile/${passenger.id}`}>{passenger.first_name} {passenger.last_name}</Link>
                             <div>
                                 <label htmlFor="rating" className="mr-2 mb-2">Rating</label>
                                 <input type="number" placeholder="1" value={rating} onChange={(e) => setRating(e.target.value)}></input>    
