@@ -1,0 +1,277 @@
+{% extends 'base.html' %}
+
+{% block title %}Joyride{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="../static/css/homepage.css" />
+{% endblock %}
+
+{% block body %}
+    <!--Start Landing Page-->
+    <section id="homesection">
+            <h1>Enjoy the <span class="animate"></span></h1>
+    </section>
+    <!--End Landing Page-->
+    <!--Start 2 column what it is page-->
+    <section id="what-row">
+      <div class="container-fluid">
+        <div class="row">
+
+          <div class="col-md-6 what">
+            <div class="col-left">
+              <div class="heading-underline"></div>
+              <h3>THE BEST LONG DISTANCE RIDESHARE.</h3>
+              <h5>Join our welcoming community of carpoolers.</h5>
+            </div>
+          </div>
+
+          <div class="col-md-6 what">
+            <div class = "col-right">
+              <div class="heading-underline"></div>
+              <h3>FIND OR GIVE A RIDE.</h3>
+              <h5>Search our user-friendly site for listings.</h5>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>   
+    <!--Start Why Joyride with 3 features page-->
+    <section id = "why">
+        <div class="container">
+          <div class="col-12">
+            <h3 class="heading">Why Joyride?</h3>
+            <div class="heading-underline"></div>
+          </div>
+        <div class="row text-center py-4">
+          <div class="col-md-4">
+            <div class="feature py-4">
+              <i
+                class="fas fa-piggy-bank fa-4x"
+                style="color: #388087"
+                data-fa-transform="shrink-3 up-4"
+              ></i>
+              <h3>Save Money</h3>
+              <p class="text-justify">
+                Less than an Uber or flight. It's not about finding savings at the pump,
+                but finding savings before. Instead of paying for gas all by yourself, 
+                split the cost with Joyride and make your wallet smile.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="feature py-4">
+              <i
+                class="fas fa-users fa-4x"
+                style="color: #388087"
+                data-fa-transform="shrink-3 up-2"
+              ></i>
+         
+              <h3>Connect with Community</h3>
+              <p class="text-justify">
+                Meet new friends along the way. Our riders are always up for new
+                adventures and road trips. Or take along family, friends, coworkers,
+                teammates, and much more. What better way to enjoy the ride?
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="feature py-4">
+              <i
+                class="fas fa-globe-americas fa-4x"
+                style="color: #388087"
+                data-fa-transform="shrink-3 up-2"
+              ></i>
+              <h3>Help the Earth</h3>
+              <p class="text-justify">
+                Reduce your carbon footprint. Did you know that a whopping 28% of greenhouse
+                gas emissions come from transportation? Help save the Earth and fight for
+                climate change by riding with us.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--End Why Joyride with 3 features page-->
+    <!--Start How it Works/Video-->
+    <section id = "how">
+      <div class = "container">
+  
+        <div class="col-12">
+          <h3 class="heading">How It Works</h3>
+          <div class="heading-underline"></div>
+        </div>
+
+        <div class = "row py-5 align-items-center">
+
+          <div class = "col-md-6 d-none d-md-block">
+            <div class = "how-steps">
+            <div class = "how-step">
+                <i
+                class="fas fa-search fa-4x mr-4"
+                style="color: #eba92a"
+                data-fa-transform="shrink-3 up-2"
+                ></i>
+                <h4>Simply <span>check</span> for rides travelling to your destination.</h4>
+            </div>
+
+            <div class = "how-step">
+                <i
+                class="fas fa-car fa-4x mr-4"
+                style="color: #eba92a"
+                data-fa-transform="shrink-3 up-2"
+                ></i>
+                <h4><span>Match</span> with a driver.</h4>
+            </div>
+
+            <div class = "how-step">
+                <i
+                class="far fa-handshake fa-4x mr-2 "
+                style="color: #eba92a"
+                data-fa-transform="shrink-3 up-2 left-2"
+                ></i>
+                <h4><span>Negotiate</span> on a great price.</h4>
+            </div>
+
+            <div class = "how-step">
+                <i
+                class="fas fa-flag-checkered fa-4x mr-4"
+                style="color: #eba92a"
+                data-fa-transform="shrink-3 up-2"
+                ></i>
+                <h4>Happily <span>reach</span> your destination.</h4>
+            </div>
+          </div>
+        </div>
+  
+          <div class = "col-md-6 vid">
+              <iframe
+                width="520"
+                height="420"
+                src="https://www.youtube.com/embed/V_lAhqLXT9A"
+                
+                style = "border: none; margin-left: 30px"
+              >
+              </iframe> 
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--Testimonial Carousel Slider-->
+    <section id = "carousel-slider">
+        <div class="col-12">
+          <h3 class="heading">Testimonials</h3>
+          <div class="heading-underline"></div>
+        </div>
+
+        <div id="testimonials-carousel" class="carousel slide" data-ride="carousel">
+          <div class="container">
+            <div class="carousel-inner">
+              <div class="carousel-item active">    
+                  <div class="row">
+                    <div class="col-md-4 text-center">
+                      <div class="profile">
+                        <img src='../static/images/testimonial_1.jpg' alt="user">
+                        <blockquote>This is exactly the kind of app I was looking for as a fellow money-conscious traveller. 
+                          I've met so many cool people along the way. 
+                        </blockquote>
+                        <h3>User Name</h3>
+                      </div>
+                    </div>
+            
+                    <div class="col-md-4 text-center">
+                      <div class="profile">
+                        <img src='../static/images/testimonial_2.jpg' alt="user">
+                        <blockquote>Joyride has one of the best communities I'ev ever been apart of. All my rides
+                          have been extremely welcoming and on time. 
+                        </blockquote>
+                        <h3>User Name</h3>
+                      </div>
+                    </div>
+            
+                    <div class="col-md-4 text-center">
+                      <div class="profile">
+                        <img src='../static/images/testimonial_3.jpg' alt="user">
+                        <blockquote>I've taken Joyride whenever I've needed to travel for work. I didn't see the point
+                          of paying for a flight when there's a service like this instead. I have absolutely loved my experience.
+                        </blockquote>
+                        <h3>User Name</h3>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="carousel-item">
+                <div class="row">
+                  <div class="col-md-4 text-center">
+                    <div class="profile">
+                      <img src='../static/images/testimonial_4.jpg' alt="user">
+                      <blockquote>I started using this app a year ago and I absolutely love it! It's a super convenient way
+                        to travel long distances while meeting new people and splitting the cost.
+                      </blockquote>
+                      <h3>User Name</h3>
+                    </div>
+                  </div>
+                  <div class="col-md-4 text-center">
+                    <div class="profile">
+                      <img src='../static/images/testimonial_5.jpg' alt="user">
+                      <blockquote>I often travel to SF from LA almost every week. I used to take one of the buses that would
+                        take almost 8 hours and was often poorly ventilated and very uncomfortabe. But then my friend introduced
+                        me to Joyride and my life has since changed!
+                      </blockquote>
+                      <h3>User Name</h3>
+                    </div>
+                  </div>
+                  <div class="col-md-4 text-center">
+                    <div class="profile">
+                      <img src='../static/images/testimonial_6.jpg' alt="user">
+                      <blockquote>Joyride is literally the Uber equivalent for long distance rides. Its so convenient
+                        and has really helped me save money while travelling. The team is very responsive and the
+                        app is super user friendly as well!
+                      </blockquote>
+                      <h3>User Name</h3>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <a class="carousel-control-prev" href="#testimonials-carousel" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon"></span>
+            </a>
+            <a class="carousel-control-next" href="#testimonials-carousel" role="button" data-slide="next">
+              <span class="carousel-control-next-icon"></span>
+            </a>
+          </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block script %}
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11"></script> <!--Animation CDN-->
+    <script>
+        //Animate header
+        var typed = new Typed('.animate', {
+        strings: ['ride.', 'company.', 'savings.'],
+        typeSpeed: 80,
+        backSpeed: 80,
+        loop: true,
+        smartBackspace: true 
+      });
+    </script>
+    <!-- <script>
+    $('.carousel').carousel({
+      interval: 3000,
+      pause: 'hover'
+    })
+    </script> -->
+    <script>
+    $('#password, #confirmpassword').on('keyup', function () {
+      if ($('#password').val() == $('#confirmpassword').val()) {
+        $('#submit-button').prop( "disabled", false)
+        $('#alert-pw').hide();
+      } else {
+      $('#submit-button').prop( "disabled", true)
+      $('#alert-pw').html('Passwords must match.')
+      }
+    });
+    </script>
+{% endblock %}

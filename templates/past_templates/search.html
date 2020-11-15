@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %} Search Rides {% endblock %}
+{% block head %} 
+<link rel="stylesheet" href="../static/css/inner.css" />
+<style>
+  footer {
+    position: absolute;
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container search-container">
+  <div class="row">
+      <form action='/search-results' class="form-inline mx-auto" id="search-rides">
+          <input type="text" class="form-control mr-2" name="from_input" id = "from_input" placeholder="Start Location" required>
+          <input type="text" class="form-control mr-2" name="to_input" id= "to_input" placeholder="Destination" required>
+          <input type="date" class="form-control mr-2" name="date">
+          <button type="submit" class="btn btn-theme my-1">Search</button>
+      </form>
+  </div>
+  <div id="msg" class="mt-3"></div>
+</div>
+{% endblock %}
+
+{% block script %}
+<!-- <script>
+  function returnSearch(evt){
+
+    evt.preventDefault();
+    let url = '/search-results';
+    let formData = {
+      "from_input": $("#from_input").val(),
+      "to_input": $("#to_input").val(),
+    };
+
+    let htmlData = ""
+
+    $.get(url, formData, (res) => {
+      $.each(res.res, function(i, item){
+        console.log(res)
+        htmlData += `
+        <div class="col-md-6">
+            <div class="card mb-3">
+              <form action='/request-ride.json' method = "post" id="form-request">
+                <h5 class="card-header">${res.res[i].start_loc}</h5>
+                <div class="card-body">
+                  <h5 class="card-title">${res.res[i].end_loc}</h5>
+                  <p class="card-text">${res.res[i].ride_id}</p>
+                  <p class="card-text">${res.res[i].driver}</p>
+                  <input type="hidden" value = ${res.res[i].driver} name = "driver_id" id = "driver_id"> 
+                  <input type="hidden" value = ${res.res[i].ride_id} name = "ride_id" id = "ride_id"> 
+                  <button class = 'btn btn-theme' type = "submit" id="submit-button">Request ride</button>
+                </div>
+              </form>
+            </div> 
+        </div> ` 
+      });
+      
+      $('#msg').append(htmlData);
+    })
+  $('#search-rides').on('submit', returnSearch); 
+</script> -->
+{% endblock %}
