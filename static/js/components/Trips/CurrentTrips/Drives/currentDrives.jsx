@@ -6,21 +6,19 @@ function CurrentDrives({setAlertColor, setAlertStatus, setShowAlert}){
     const [currentDrives, setCurrentDrives] = useState([])
     console.log(currentDrives);
 
-    useEffect(() =>{
-        fetch("/current-drives", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            },
-        })
-        .then(res => res.json())
-            
+    const fetchDrives = () => {
+        fetch("/current-drives")
+        .then(res => res.json()) 
         .then(data => {
             console.log('CURRENT DRIVESSSSSSSSS')
-            setCurrentDrives(data.drives)
-            
+            setCurrentDrives(data.drives)  
         })
-    }, [currentDrives]) 
+    }
+
+    useEffect(() =>{
+        fetchDrives();
+    }, []) 
+
     
     return (
         <React.Fragment>
@@ -30,7 +28,7 @@ function CurrentDrives({setAlertColor, setAlertStatus, setShowAlert}){
                 <tbody>
                     {currentDrives.map(currentDrive => (
                         <CurrentDrive currentDrive={currentDrive} setAlertColor={setAlertColor} 
-                        setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
+                        setAlertStatus={setAlertStatus} setShowAlert={setShowAlert} fetchDrives={fetchDrives}/>
                     ))}
                 </tbody>
             </table>
@@ -39,7 +37,7 @@ function CurrentDrives({setAlertColor, setAlertStatus, setShowAlert}){
 }
 
 
-function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert}){
+function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert, fetchDrives}){
 
     //Delete Ride Modal
     const [show, setShow] = useState(false)
@@ -63,9 +61,9 @@ function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert
                     <button className="btn btn-yellow mr-2" onClick={handleManageShow}>Manage</button>
                     <button className="btn btn-danger" onClick={handleShow}>Delete</button>
                     <DelRideModal show={show} handleClose={handleClose} ride_id={currentDrive.ride_id}
-                    setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
+                    setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert} fetchDrives={fetchDrives}/>
                     <EditRideModal showEdit={showEdit} handleEditClose={handleEditClose} currentDrive={currentDrive}
-                    setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
+                    setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert} fetchDrives={fetchDrives}/>
                     <ManageRideModal showManage={showManage} handleManageClose={handleManageClose} currentDrive={currentDrive}/>
                 </React.Fragment>
             </td>

@@ -18,7 +18,7 @@ function CurrentRides({setShowAlert, setAlertColor, setAlertStatus}){
             setCurrentRides(data.rides)
             console.log(data.rides)
         })
-    }, [currentRides]) 
+    }, []) 
 
     return(
         <div className="riding">

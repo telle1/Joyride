@@ -50,8 +50,8 @@ function App(){
                     <Route path="/past-rides">
                         <PastTrips user={user} alertColor={alertColor} setAlertColor={setAlertColor} alertStatus={alertStatus} setAlertStatus={setAlertStatus}/>
                     </Route>
-                    {/* <Route path="/profile/:profileId" component={Profile}/> */}
-    <Route path="/profile/:profileId" render={(props) => <Profile {...props} user={user}/>}/>
+                    {/* <Route path="/profile/:userId" component={Profile}/> */}
+                    <Route path="/profile/:userId" render={(props) => <Profile {...props} user={user}/>}/>
                     <Route path="/dashboard">
                         <Dashboard/>
                     </Route> 

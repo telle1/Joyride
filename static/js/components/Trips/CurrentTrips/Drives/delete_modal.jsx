@@ -1,4 +1,4 @@
-function DelRideModal({show, handleClose, ride_id, setAlertColor, setAlertStatus, setShowAlert}){
+function DelRideModal({show, handleClose, ride_id, setAlertColor, setAlertStatus, setShowAlert, fetchDrives}){
 
     const handleRemove = (evt) => {
         evt.preventDefault()     
@@ -18,6 +18,7 @@ function DelRideModal({show, handleClose, ride_id, setAlertColor, setAlertStatus
             setAlertColor(data.color)
             setAlertStatus(data.msg)
             setShowAlert(true)
+            fetchDrives();
         })      
     }
 

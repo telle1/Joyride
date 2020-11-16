@@ -1,4 +1,4 @@
-function EditRideModal({showEdit, handleEditClose, currentDrive, setAlertColor, setAlertStatus, setShowAlert}){
+function EditRideModal({showEdit, handleEditClose, currentDrive, setAlertColor, setAlertStatus, setShowAlert, fetchDrives}){
 
     const [seats, setSeats] = useState(currentDrive.seats)
     const [price, setPrice] = useState(currentDrive.price)
@@ -35,6 +35,7 @@ function EditRideModal({showEdit, handleEditClose, currentDrive, setAlertColor, 
             setAlertStatus(data.msg)
             setAlertColor(data.color)
             setShowAlert(true)
+            fetchDrives();
 
         })      
     }

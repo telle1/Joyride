@@ -172,7 +172,7 @@ def get_user_feedback(user_id):
     if len(all_feedback) > 0:
         average_rating = rating/len(all_feedback)
     else:
-        average_rating = 'Rating unavailable'
+        average_rating = 'N/A'
 
     feedback_info = {'feedback': feedback_list, 'average_rating': average_rating}
     

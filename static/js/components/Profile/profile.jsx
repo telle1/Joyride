@@ -11,11 +11,10 @@ function Profile({match, user}){
     const [userInfo, setUserInfo] = useState({})
     const [drivesCount, setDrivesCount] = useState(0)
     const [ridesCount, setRidesCount] = useState(0)
-    const [pointsCount, setPointsCount] = useState(0)
 
     useEffect(() =>{
         console.log(match)
-        fetch(`/get-user-profile-info/${match.params.profileId}`, {
+        fetch(`/get-user-profile-info/${match.params.userId}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -28,18 +27,19 @@ function Profile({match, user}){
             setUserInfo(data.user_info)
             setDrivesCount(data.drives_count)
             setRidesCount(data.rides_count)
-            setPointsCount(data.community_points)
             setRating(data.average_rating)
-            console.log('USER PROFILE INFO', profile)
+            
         })
     }, [])
+
+    console.log('USER PROFILE INFO', profile)
     
     return (
         <Container className="top-padding">
             <Row>
             <Col xs={4}>
-                <UserInfo user={user} match={match} profile={profile} userInfo={userInfo}  drivesCount={drivesCount} ridesCount={ridesCount} pointsCount={pointsCount} rating={rating}/> 
-                <UserStats drivesCount={drivesCount} ridesCount={ridesCount} pointsCount={pointsCount} rating={rating}/>
+                <UserInfo user={user} match={match} profile={profile} userInfo={userInfo}  drivesCount={drivesCount} ridesCount={ridesCount} rating={rating}/> 
+                <UserStats drivesCount={drivesCount} ridesCount={ridesCount} rating={rating}/>
             </Col>
             
             <Col>
@@ -51,7 +51,7 @@ function Profile({match, user}){
 }
 
 
-function UserStats({drivesCount, ridesCount, pointsCount, rating}){
+function UserStats({drivesCount, ridesCount, rating}){
     return (
         <React.Fragment>
             <Card className="btn-theme">
@@ -72,20 +72,20 @@ function UserStats({drivesCount, ridesCount, pointsCount, rating}){
 
 
 
-function UserInfo({user, match, profile, userInfo, drivesCount, ridesCount, pointsCount, rating}){
+function UserInfo({user, match, profile, userInfo, drivesCount, ridesCount, rating}){
 
     const [showEdit, setShowEdit] = useState(false)
     const handleEditShow = () => setShowEdit(true)
     const handleEditClose = () => setShowEdit(false) 
 
     console.log('THIS IS THE USER', user)
-    console.log('THIS IS THE PROFILE ID', match.params.profileId)
+    console.log('THIS IS THE PROFILE ID', match.params.userId)
 
     return (
     <Card>
         <Card.Body>
             <React.Fragment>
-                {user == match.params.profileId ? <div><button className="btn-transparent float-right" onClick={handleEditShow}>Edit</button><br/><br/></div>
+                {user == match.params.userId ? <div><button className="btn-transparent float-right" onClick={handleEditShow}>Edit</button><br/><br/></div>
                 : null}
                 <EditProfileModal showEdit={showEdit} handleEditClose={handleEditClose} user={user} profile={profile}/>
             </React.Fragment>
@@ -102,15 +102,6 @@ function UserInfo({user, match, profile, userInfo, drivesCount, ridesCount, poin
                 <span>Enter Location Here</span><br/>
                 
             </div>
-            {/* <Row className="py-2 btn-theme">
-                <Col className="text-center"> 
-                    <h2>{drivesCount}</h2> DRIVES
-                </Col>
-                <Col className="text-center"><h2>{ridesCount}</h2> RIDES
-                </Col>
-                <Col className="text-center"><h2>{rating}</h2>STARS
-                </Col>
-            </Row> */}
         </Card.Body>  
     </Card>  
     )
@@ -131,7 +122,7 @@ function UserBio({imageSource, title, location, userInfo}){
 
 
 
-function EditProfileModal({showEdit, handleEditClose, user}){
+function EditProfileModal({showEdit, handleEditClose, user, profile}){
 
     const [image, setImage] = useState("")
     const [title, setTitle] = useState("")

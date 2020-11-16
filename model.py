@@ -134,3 +134,14 @@ if __name__ == '__main__':
 # test = Feedback(feedback = 'test', rating = 1, feedback_giver=8, feedback_receiver=2, ride_id=3)
 # db.session.add(test)
 # db.session.commit()
+
+# request = Request(ride_id = 62, rider_id = 3, seats_requested = 1, status='Approved')
+# db.session.add(request)
+# db.session.commit()
+
+
+    # request_id = db.Column(db.Integer, primary_key = True, autoincrement = True, unique = True)
+    # ride_id = db.Column(db.Integer, db.ForeignKey('rides.ride_id'), nullable = False)
+    # rider_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
+    # seats_requested = db.Column(db.Integer, nullable=False)
+    # status = db.Column(db.String)
