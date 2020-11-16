@@ -12,14 +12,8 @@ function Profile({match, user}){
     const [drivesCount, setDrivesCount] = useState(0)
     const [ridesCount, setRidesCount] = useState(0)
 
-    useEffect(() =>{
-        console.log(match)
-        fetch(`/get-user-profile-info/${match.params.userId}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            },
-        })
+    const fetchUserProfile = () => {
+        fetch(`/get-user-profile-info/${match.params.userId}`)
         .then(res => res.json())
         .then(data => {
             setFeedbacks(data.feedback)
@@ -28,8 +22,12 @@ function Profile({match, user}){
             setDrivesCount(data.drives_count)
             setRidesCount(data.rides_count)
             setRating(data.average_rating)
-            
         })
+    }
+
+    useEffect(() =>{
+        console.log(match)
+        fetchUserProfile();
     }, [])
 
     console.log('USER PROFILE INFO', profile)
@@ -38,7 +36,8 @@ function Profile({match, user}){
         <Container className="top-padding">
             <Row>
             <Col xs={4}>
-                <UserInfo user={user} match={match} profile={profile} userInfo={userInfo}  drivesCount={drivesCount} ridesCount={ridesCount} rating={rating}/> 
+                <UserInfo user={user} match={match} profile={profile} userInfo={userInfo}  
+                drivesCount={drivesCount} ridesCount={ridesCount} rating={rating} fetchUserProfile={fetchUserProfile}/> 
                 <UserStats drivesCount={drivesCount} ridesCount={ridesCount} rating={rating}/>
             </Col>
             
@@ -69,10 +68,7 @@ function UserStats({drivesCount, ridesCount, rating}){
     )
 }
 
-
-
-
-function UserInfo({user, match, profile, userInfo, drivesCount, ridesCount, rating}){
+function UserInfo({user, match, profile, userInfo, drivesCount, ridesCount, rating, fetchUserProfile}){
 
     const [showEdit, setShowEdit] = useState(false)
     const handleEditShow = () => setShowEdit(true)
@@ -87,7 +83,8 @@ function UserInfo({user, match, profile, userInfo, drivesCount, ridesCount, rati
             <React.Fragment>
                 {user == match.params.userId ? <div><button className="btn-transparent float-right" onClick={handleEditShow}>Edit</button><br/><br/></div>
                 : null}
-                <EditProfileModal showEdit={showEdit} handleEditClose={handleEditClose} user={user} profile={profile}/>
+                <EditProfileModal showEdit={showEdit} handleEditClose={handleEditClose} user={user} 
+                profile={profile} fetchUserProfile={fetchUserProfile}/>
             </React.Fragment>
             <div className="d-flex flex-column align-items-center text-center">
                 {profile ? <UserBio imageSource={`../static/uploads/${profile.image}`} title={profile.title} location={profile.location} userInfo={userInfo}/>
@@ -122,7 +119,7 @@ function UserBio({imageSource, title, location, userInfo}){
 
 
 
-function EditProfileModal({showEdit, handleEditClose, user, profile}){
+function EditProfileModal({showEdit, handleEditClose, user, profile, fetchUserProfile}){
 
     const [image, setImage] = useState("")
     const [title, setTitle] = useState("")
@@ -142,7 +139,9 @@ function EditProfileModal({showEdit, handleEditClose, user, profile}){
             body: formData
         })
         .then(res => res.json())
-        .then(data => console.log(data))
+        .then(data => {
+            fetchUserProfile();
+        })
     }
 
     return (
