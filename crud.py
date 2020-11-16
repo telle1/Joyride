@@ -34,6 +34,8 @@ def get_matching_rides(start_loc, end_loc):
     rides_list = []
     for ride in matching_rides:
         ride_serialized = ride.serialize()
+        if ride.user.profile:
+            ride_serialized['driver_picture'] = ride.user.profile.image
         rides_list.append(ride_serialized)
     return rides_list
 

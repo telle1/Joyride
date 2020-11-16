@@ -6,11 +6,18 @@ import crud
 from twilio.rest import Client
 from sqlalchemy import func, distinct
 from datetime import datetime
-import jinja2
+# import jinja2
 import json
 import os
 
 app = Flask(__name__)
+
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_FOLDER = os.path.join(APP_ROOT, 'static/uploads')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
 
 # A secret key is needed to use Flask sessioning features
 #access by source secrets.sh
@@ -25,11 +32,14 @@ twilio_phone_num = os.environ['twilio_phone_num']
 # Jinja silently ignores this. This makes debugging difficult, so we'll
 # set an attribute of the Jinja environment that says to make this an
 # error.
-app.jinja_env.undefined = jinja2.StrictUndefined
+# app.jinja_env.undefined = jinja2.StrictUndefined
 
 # This configuration option makes the Flask interactive debugger
 # more useful (you should remove this line in production though)
-app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
+
+
+
+
 
 current_time = datetime.now()
 
@@ -42,6 +52,10 @@ def login_required(f):
             flash("You must be logged in first.")
             return redirect('/')
     return decorated_function
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/')
 def index():
@@ -114,6 +128,7 @@ def post_search_to_page():
     start_loc = data['startInput']
     end_loc = data['endInput']
     matching_rides = crud.get_matching_rides(start_loc = start_loc, end_loc = end_loc)
+    print(matching_rides)
     
     return jsonify({'res': matching_rides})
 
@@ -446,13 +461,10 @@ def get_user_info(user_id):
 @app.route('/edit-profile', methods=['POST'])
 def edit_user_profile():
     
-    image = request.files['image']
-    print(image, 'imageeeeeee')
-    # location = request.form.get['location']
-    # print(location)
-    # data = request.json
-    print(image.filename)
-    # print(image.read())
+
+    # print(image, 'imageeeeeee')
+    # print(image.filename) #user.jpg
+
 
     data = request.form.to_dict()
     title = data['title']
@@ -463,14 +475,26 @@ def edit_user_profile():
     profile_id = data['profile_id']
     print('PROFILE-ID', profile_id)
 
-    # profile = crud.get_user_profile(profile_id = profile_id)
-    # if profile:
-    #     profile.title = title 
-    #     profile.location = location
-    #     profile.image = image
-    #     db.session.commit()
-    # else:
-    #     crud.create_user_profile(profile_id = profile_id, image = image, title = title, location = location)
+
+    # if user does not select file, browser also
+    # # submit an empty part without filename
+    # if 'file' not in request.files:
+    #     print('No file part')
+    image = request.files['image']
+    if image.filename == '':
+        print('No selected file')
+    if image and allowed_file(image.filename):
+        filename = secure_filename(image.filename)
+        image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+    profile = crud.get_user_profile(profile_id = profile_id)
+    if profile:
+        profile.title = title 
+        profile.location = location
+        profile.image = image.filename
+        db.session.commit()
+    else:
+        crud.create_user_profile(profile_id = profile_id, image = image.filename, title = title, location = location)
 
     return jsonify({'test': 'hello'})
 

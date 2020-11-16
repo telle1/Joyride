@@ -31,7 +31,7 @@ function Profile({match, user}){
             setPointsCount(data.community_points)
             console.log('USER PROFILE INFO', profile)
         })
-    }, [])
+    }, [profile])
     
     return (
         <Container className="top-padding">
@@ -81,7 +81,7 @@ function UserInfo({user, match, profile, userInfo}){
                 <EditProfileModal showEdit={showEdit} handleEditClose={handleEditClose} user={user} profile={profile}/>
             </React.Fragment>
             <div className="d-flex flex-column align-items-center text-center">
-                {profile ? <UserBio imageSource={profile.image} title={profile.title} location={profile.location} userInfo={userInfo}/>
+                {profile ? <UserBio imageSource={`../static/uploads/${profile.image}`} title={profile.title} location={profile.location} userInfo={userInfo}/>
                     : <UserBio imageSource={'../static/images/user.jpg'} title={""} location={""} userInfo={userInfo}/>}
                 Email: {userInfo.email} <br/>
                 Phone Number: {userInfo.phone_num}

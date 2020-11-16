@@ -11,7 +11,9 @@ function MatchingRide({matchingRide, setAlertColor, setAlertStatus, setShowAlert
                 <div className="card-body">
                     <div className="row">
                         <div className="col-md-4">
-                            <img src={'../static/images/user.jpg'} alt="Admin" className="profile-image" width="150" height="150"/>
+                            {matchingRide.driver_picture ?
+                            <img src={`../static/uploads/${matchingRide.driver_picture}`} alt="Driver Picure" className="profile-image" width="150" height="150"/>
+                            : <img src={'../static/images/user.jpg'} alt="Driver Picture" className="profile-image" width="150" height="150"/>}
 
                         </div>
 

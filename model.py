@@ -19,6 +19,7 @@ class User(db.Model):
 
     request = db.relationship('Request')
     ride = db.relationship('Ride')
+    profile = db.relationship('UserProfile', uselist=False)
 
     def serialize(self):
         return {'first_name': self.first_name, 'last_name': self.last_name, 'email': self.email, 'phone_num': self.phone_num}
@@ -49,7 +50,7 @@ class Ride(db.Model):
         return {'ride_id': self.ride_id, 'driver': self.driver_id, 'seats': self.seats,
         'date': self.date, 'start_loc': self.start_loc, 'end_loc': self.end_loc, 
         'price': self.price, 'comments': self.comments, "driver_fname" : self.user.first_name, 
-        "driver_lname": self.user.last_name }
+        "driver_lname": self.user.last_name}
 
 class Request(db.Model):
     """A list of users requests."""
@@ -88,6 +89,8 @@ class UserProfile(db.Model):
     title = db.Column(db.String)
     image = db.Column(db.String)
     location = db.Column(db.String)
+
+    user = db.relationship('User', uselist=False)
 
     def __repr__(self):
         return f"<Profile id={self.profile_id} location={self.location} title={self.title}>"
