@@ -5,9 +5,15 @@ function RegisterModal({showRegister, handleRegisterClose, setAlertStatus, setSh
     const [phoneNumber, setPhoneNumber] = useState(null)
     const [password, setPassword] = useState(null)
     const [confirmPassword, setConfirmPassword] = useState(null)
+    const [disable, setDisabled] = useState(false)
 
     const handleRegistration = (e) => {
         e.preventDefault()
+
+        if (password !== confirmPassword){
+
+        }
+
         fetch("/process-signup", {
             method: "POST",
             headers: {
@@ -84,7 +90,7 @@ function RegisterModal({showRegister, handleRegisterClose, setAlertStatus, setSh
               <input type="password" className="form-control" placeholder="Re-enter Password" name="confirmpassword" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required/>
           </div>  
           <div className="form-group mb-4">
-              <button type="submit" className="btn btn-theme form-control" onClick={handleRegisterClose}>Signup</button> 
+              <button type="submit" disabled={disable} className="btn btn-theme form-control" onClick={handleRegisterClose}>Signup</button> 
           </div> 
         </form>
         </Modal.Body>

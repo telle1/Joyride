@@ -33,7 +33,7 @@ function MatchingRide({matchingRide, setAlertColor, setAlertStatus, setShowAlert
                     <Row>
                     <Col><p className="pl-5 pt-2">5 stars</p></Col>
                     <Col>
-                        <button className="btn btn-theme float-right" onClick={handleShow}>Request Ride</button>
+                        <button className="btn btn-theme-outline float-right" onClick={handleShow}>Request Ride</button>
                         <button className="btn btn-yellow float-right"><Link to={`/profile/${matchingRide.driver}`} className="text-white">View Profile</Link></button>
                     </Col>
                     <RequestModal rideID = {matchingRide.ride_id} showRequest={showRequest} handleClose={handleClose} setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>

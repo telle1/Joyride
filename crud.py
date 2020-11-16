@@ -30,7 +30,13 @@ def get_ride_by_id(ride_id):
 
 def get_matching_rides(start_loc, end_loc):
     """Return matching rides via start and end loc."""
-    return Ride.query.filter(Ride.start_loc == start_loc, Ride.end_loc == end_loc, Ride.date > current_time).all()
+    matching_rides = Ride.query.filter(Ride.start_loc == start_loc, Ride.end_loc == end_loc, Ride.date > current_time).all()
+    rides_list = []
+    for ride in matching_rides:
+        ride_serialized = ride.serialize()
+        rides_list.append(ride_serialized)
+    return rides_list
+
 
 def get_request(ride_id, rider_id):
     """Return requests for a certain ride made by a certain user."""
@@ -71,15 +77,78 @@ def get_past_user_requests(rider_id):
             past_user_requests.append(req)
     return past_user_requests
 
-# def create_new_travel_list_item(user_id, list_item):
+def delete_user_ride(ride_id):
 
-#     new_travel_list_item = TravelList(user_id = user_id, list_item = list_item)
-#     db.session.add(new_travel_list_item)
-#     db.session.commit()
+    ride = get_ride_by_id(ride_id)
+    reqs_for_ride = ride.request
+    for req in reqs_for_ride:
+        req.status = 'Cancelled'
+        db.session.commit() 
 
-# def get_user_travel_list(user_id):
-#     """Get the current user's travel list."""
-#     return TravelList.query.filter(TravelList.user_id == user_id).all()
+    db.session.delete(ride)
+    db.session.commit()
+
+def delete_user_request(request_id, seats_to_add):
+
+    print('THIS IS THE REQUEST ID LINE 277', request_id)
+    req_to_delete = get_request_by_request_id(request_id)
+    print(req_to_delete)
+    print('SEATS ORIGINALLY', req_to_delete.ride.seats)
+
+    if req_to_delete.status == 'Approved':
+        ride_of_req = req_to_delete.ride
+        ride_of_req.seats += seats_to_add
+        # db.session.add(ride_of_req)
+        db.session.commit()
+        print('INCREMENTED SEATS', ride_of_req.seats)
+
+    db.session.delete(req_to_delete)
+    db.session.commit()
+    # notify driver?
+
+def edit_driver_ride(ride_id, seats, price, comments, date, start_loc, end_loc):
+
+    ride = get_ride_by_id(ride_id = ride_id)
+
+    ride.seats = seats
+    ride.price = price
+    ride.comments = comments
+    ride.date = date
+    ride.start_loc = start_loc
+    ride.end_loc = end_loc
+
+    db.session.commit()
+
+
+def get_dashboard_info(user_id):
+
+    user = get_user_by_id(user_id = user_id)
+    destinations = 0 
+    rides = 0
+    drives = 0
+    people_met = 0
+    dollars_earned = 0  
+
+    for ride in user.ride: #for rides where the user drives
+        drives += 1
+        destinations += 1 #db.session.query(db.func.count(distinct(ride.end_loc))).count()
+        for req in ride.request: #find all the requests for that ride 
+            if req.status == 'Approved': #if the status is approved,
+                people_met += req.seats_requested #add one to number of people met
+                dollars_earned += (req.ride.price * req.seats_requested) #add the ride price (for each approved passenger, add the ride price)
+    for req in user.request: #for the rides that I am a passenger
+        if req.status == 'Approved': #add one to destination if my req was approved
+            destinations += 1
+            rides += 1
+            for req in req.ride.request: #get all the requests for each ride I am in
+                if req.status == 'Approved':
+                    people_met += req.seats_requested #(-1 for me as the passenger but +1 for the driver balances to 0)
+    
+    user_info = {'rides': rides, 'drives': drives, 'destinations': destinations, 'people_met': people_met,
+                'dollars_earned': dollars_earned}
+
+    return user_info
+
 
 def create_new_feedback(feedback, rating, feedback_giver, ride_id, feedback_receiver):
     
@@ -90,7 +159,26 @@ def create_new_feedback(feedback, rating, feedback_giver, ride_id, feedback_rece
 
 def get_user_feedback(user_id):
 
-    return Feedback.query.filter(Feedback.feedback_receiver == user_id).all()
+    all_feedback = Feedback.query.filter(Feedback.feedback_receiver == user_id).all()
+    feedback_list = []
+    rating = 0
+    for feedback in all_feedback:
+        feedback_ser = {'id': feedback.feedback_id, 'feedback': feedback.feedback, 'rating': feedback.rating}
+        feedback_list.append(feedback_ser)
+        feedback_list.reverse()
+        rating += feedback_ser['rating']
+    if len(all_feedback) > 0:
+        average_rating = rating/len(all_feedback)
+    else:
+        average_rating = 'Rating unavailable'
+
+    feedback_info = {'feedback': feedback_list, 'average_rating': average_rating}
+    
+    return feedback_info
+
+def get_user_gives_feedback_count(user_id):
+
+    return Feedback.query.filter(Feedback.feedback_giver == user_id).count()
 
 
 def check_if_passenger_gave_feedback(ride_id, passenger):
@@ -100,6 +188,7 @@ def check_if_passenger_gave_feedback(ride_id, passenger):
 def check_if_driver_gave_feedback(ride_id, passenger):
     #to prevent duplicate entries.
     return Feedback.query.filter(Feedback.ride_id == ride_id, Feedback.feedback_receiver == passenger).all()
+
 
 def get_user_profile(profile_id):
 

@@ -10,6 +10,12 @@ body {
     background-color: #388087;
 }
 
+.btn-theme-outline {
+  border-color: #388087;
+  background-color: white;
+  color: #388087;
+}
+
 .btn-yellow {
   color: white;
   background-color: #eba92a;

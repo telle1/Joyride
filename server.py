@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, flash, session, request, jsonify, url_for
 from functools import wraps #for log-inrequired
 from model import db, User, Ride, Request, Feedback, connect_to_db
+from werkzeug.utils import secure_filename #to upload files securely
 import crud
 from twilio.rest import Client
 from sqlalchemy import func, distinct
@@ -72,9 +73,6 @@ def login_user():
 def register_user():
     """Allow new users to register."""
     data = request.json
-
-    print(data)
-
     first_name = data['firstName']
     last_name = data['lastName']
     email = data['email']
@@ -116,14 +114,8 @@ def post_search_to_page():
     start_loc = data['startInput']
     end_loc = data['endInput']
     matching_rides = crud.get_matching_rides(start_loc = start_loc, end_loc = end_loc)
-    print('**************************************************************MATCHING RIDES NON-SERIALIZED \n', matching_rides, '\n*********************************** ***************************') 
     
-    rides_list = []
-    for rides in matching_rides:
-        res_data = rides.serialize()
-        rides_list.append(res_data)
-    print('*********MATCHING RIDES********', rides_list)
-    return jsonify({'res': rides_list})
+    return jsonify({'res': matching_rides})
 
 @app.route('/request-ride', methods = ['POST'])
 @login_required #returns undefined, but does not redirect
@@ -134,16 +126,11 @@ def request_ride():
     rider_msg = data['rider_msg']
     seats_str = data['seats']
     seats = int(seats_str)
-    print('TYPE OF SEATS')
-    print(type(seats))
     ride = crud.get_ride_by_id(ride_id)
     driver_id = ride.driver_id
 
     req = crud.get_request(rider_id = session['user_id'], ride_id = ride_id)
 
-    print('THIS IS THE REQUEST INFORMATION:', req)
-    print('THIS IS THE RIDER MESSAGE', rider_msg)
-    print('THIS IS THE RIDE ID', ride, 'THIS IS THE DRIVER ID', driver_id)
     if req is None:
         if driver_id != session['user_id'] and 1 <= seats <= ride.seats:
             add_req = Request(ride_id = ride_id, rider_id = session['user_id'], status = 'Pending', seats_requested= seats)
@@ -166,55 +153,6 @@ def request_ride():
 
     return resp
 
-@app.route('/dashboard')
-@login_required
-def get_user_dashboard():
-    """Return dashboard page."""
-    user = crud.get_user_by_id(user_id = session['user_id'])
-
-    destinations = 0 
-    people_met = 0
-    dollars_earned = 0  
-    for ride in user.ride: #for rides where the user drives
-        destinations += db.session.query(db.func.count(distinct(ride.end_loc))).count()
-        #print(destinations)
-        # print('REQUESTS FOR RIDE #', ride.ride_id, ride.request)
-        # print('RIDE PRICE', ride.price)
-        for req in ride.request: #find all the requests for that ride 
-            if req.status == 'Approved': #if the status is approved,
-                people_met += req.seats_requested #add one to number of people met
-                dollars_earned += (req.ride.price * req.seats_requested) #add the ride price (for each approved passenger, add the ride price)
-    for req in user.request: #for the rides that I am a passenger
-        print('REQUEST INFO***REQUEST INFO***REQUEST INFO***', req)
-        print('FOR THIS RIDE INFO***RIDE INFO***RIDE INFO***', req.ride)
-        if req.status == 'Approved': #add one to destination if my req was approved
-            destinations += 1
-            for req in req.ride.request: #get all the requests for each ride I am in
-                print('ALL THE REQUESTS FOR THAT RIDE I AM A PASSENGER OF', req)
-                if req.status == 'Approved':
-                    people_met += req.seats_requested #(-1 for me as the passenger but +1 for the driver balances to 0)
-
-    #travel_list = crud.get_user_travel_list(user_id = session['user_id'])
-
-    return jsonify({'first_name': user.first_name, 'last_name': user.last_name, 
-                  'destinations': destinations, 'people_met': people_met, 'dollars_earned': dollars_earned})
-
-@app.route('/travel-list', methods=['POST'])
-def add_location_to_travel_list():
-
-    list_item = request.form.get('list_item')
-
-    crud.create_new_travel_list_item(user_id = session['user_id'], list_item = list_item)
-    travel_list = crud.get_user_travel_list(user_id = session['user_id'])
-
-    travel_list_result = []
-    for item in travel_list:
-        serialize_item = item.serialize()
-        travel_list_result.append(serialize_item)
-    print(travel_list_result)
-
-    return jsonify({'list': travel_list_result})
-
 @app.route('/current-drives')
 @login_required
 def get_user_current_drives():
@@ -226,7 +164,6 @@ def get_user_current_drives():
         serialize_drive = drive.serialize()
 
         for req in drive.request:
-            print('THIS IS THE REQUEST', req)
             if req.status == 'Approved':
                 if 'passengers' in serialize_drive:
                     serialize_drive['passengers'].append({'name': [req.user.first_name, req.user.last_name], 'user_id': req.user.user_id,                                      
@@ -252,8 +189,6 @@ def get_user_current_drives():
         current_drives_list.append(serialize_drive)
 
     print('****CURRENT DRIVES LIST', current_drives_list)
-
-
     return jsonify({'drives': current_drives_list})
 
 @app.route('/current-rides')
@@ -365,18 +300,8 @@ def edit_ride():
     start_loc = data['from']
     end_loc = data['to']
 
-    ride = crud.get_ride_by_id(ride_id)
-    print('BEFORE RIDE INFO', ride)
-
-    ride.seats = seats
-    ride.price = price
-    ride.comments = comments
-    ride.date = date
-    ride.start_loc = start_loc
-    ride.end_loc = end_loc
-
-    db.session.commit()
-    print('UPDATED RIDE INFO', ride)
+    crud.edit_driver_ride(ride_id = ride_id, seats = seats, price = price, comments = comments, date = date,
+        start_loc = start_loc, end_loc = end_loc)
 
     return jsonify({'msg': 'Ride successfully edited.', 'color': 'success'})
 
@@ -386,7 +311,7 @@ def remove_passenger():
     data = request.json
     request_id = data['request_id']
     seats_to_add = data['seatsToAdd']
-    print('THIS IS THE REQUEST ID LINE 353', request_id)
+
     req_to_update = crud.get_request_by_request_id(request_id)
     print(req_to_update)
     print('SEATS', req_to_update.ride.seats)
@@ -395,13 +320,8 @@ def remove_passenger():
 
     ride_of_req = req_to_update.ride
     ride_of_req.seats += seats_to_add
-    # db.session.add(ride_of_req)
     db.session.commit()
     print('INCREMENTED SEATS', ride_of_req.seats)
-
-    # db.session.delete(req_to_delete)
-    # db.session.commit()
-    # notify driver?
 
     return jsonify({'msg': 'Successfully removed passenger.', 'color': 'success'})
     
@@ -410,17 +330,7 @@ def delete_ride():
     data = request.json
     ride_id = data['ride_id']
 
-    ride = crud.get_ride_by_id(ride_id)
-    print('THIS IS THE RIDE DELETED LINE339', ride)
-
-    reqs_for_ride = ride.request
-    print('REQUESTS FOR RIDE TO DELETE', reqs_for_ride)
-    for req in reqs_for_ride:
-        req.status = 'Cancelled'
-        db.session.commit() #do not add since we are updating the ride
-
-    db.session.delete(ride)
-    db.session.commit()
+    crud.delete_user_ride(ride_id = ride_id)
 
     return jsonify({'msg': 'Ride successfully cancelled.', 'color': 'success'})
 
@@ -431,21 +341,7 @@ def delete_request():
     request_id = data['request_id']
     seats_to_add = data['seats']
 
-    print('THIS IS THE REQUEST ID LINE 277', request_id)
-    req_to_delete = crud.get_request_by_request_id(request_id)
-    print(req_to_delete)
-    print('SEATS ORIGINALLY', req_to_delete.ride.seats)
-
-    if req_to_delete.status == 'Approved':
-        ride_of_req = req_to_delete.ride
-        ride_of_req.seats += seats_to_add
-        # db.session.add(ride_of_req)
-        db.session.commit()
-        print('INCREMENTED SEATS', ride_of_req.seats)
-
-    db.session.delete(req_to_delete)
-    db.session.commit()
-    # notify driver?
+    crud.delete_user_request(request_id = request_id, seats_to_add = seats_to_add)
 
     return jsonify({'msg': 'Deleted ride.'})
 
@@ -504,47 +400,77 @@ def give_passenger_feedback():
 
     return resp
 
+@app.route('/dashboard')
+@login_required
+def get_user_dashboard():
+    """Return dashboard page."""
+    user = crud.get_user_by_id(user_id = session['user_id'])
+
+    user_info = crud.get_dashboard_info(user_id = session['user_id'])
+    destinations = user_info['destinations']
+    people_met = user_info['people_met']
+    dollars_earned = user_info['dollars_earned']
+
+
+    return jsonify({'first_name': user.first_name, 'last_name': user.last_name, 
+                  'destinations': destinations, 'people_met': people_met, 'dollars_earned': dollars_earned})
+
 @app.route('/get-user-profile-info/<user_id>')
 def get_user_info(user_id):
-
-    all_feedback = crud.get_user_feedback(user_id = user_id)
-    feedback_list = []
-    for feedback in all_feedback:
-        feedback_ser = {'id': feedback.feedback_id, 'feedback': feedback.feedback, 'rating': feedback.rating}
-        feedback_list.append(feedback_ser)
-        feedback_list.reverse()
-
+    #Feedback and rating info
+    feedback_info = crud.get_user_feedback(user_id = user_id)
+    feedback_list = feedback_info['feedback']
+    average_rating = feedback_info['average_rating']
+    #Profile picture, location, and title info
     profile = crud.get_user_profile(profile_id = user_id)
     if profile:
         profile_ser = {'image': profile.image, 'location': profile.location, 'title': profile.title}
     else:
         profile_ser = None
-
     print('SERIALIZED', profile_ser)
-
+    #Email and phone number info
     user = crud.get_user_by_id(user_id = user_id)
     user_info = user.serialize()
+    #Stats: total drives and rides count
+    user_stats = crud.get_dashboard_info(user_id = user_id)
+    user_drives_count = user_stats['drives']
+    user_rides_count = user_stats['rides']
+    #Feedback count (community points)
+    community_points = crud.get_user_gives_feedback_count(user_id = user_id)
+    print(community_points)
 
-    return jsonify({'feedback': feedback_list, 'profile_info': profile_ser, 'user_info': user_info})
+    return jsonify({'feedback': feedback_list, 'profile_info': profile_ser, 
+                    'user_info': user_info, 'average_rating': average_rating, 'drives_count': user_drives_count,
+                    'rides_count': user_rides_count, 'community_points': community_points})
 
 @app.route('/edit-profile', methods=['POST'])
 def edit_user_profile():
+    
+    image = request.files['image']
+    print(image, 'imageeeeeee')
+    # location = request.form.get['location']
+    # print(location)
+    # data = request.json
+    print(image.filename)
+    # print(image.read())
 
-    data = request.json
-    image = data['image']
+    data = request.form.to_dict()
     title = data['title']
+    # print(data)
+    print('tITLE', title)
     location = data['location']
+    print('LOCATION', location)
     profile_id = data['profile_id']
-    print(data)
+    print('PROFILE-ID', profile_id)
 
-    profile = crud.get_user_profile(profile_id = profile_id)
-    if profile:
-        profile.title = title 
-        profile.location = location
-        profile.image = image
-        db.session.commit()
-    else:
-        crud.create_user_profile(profile_id = profile_id, image = image, title = title, location = location)
+    # profile = crud.get_user_profile(profile_id = profile_id)
+    # if profile:
+    #     profile.title = title 
+    #     profile.location = location
+    #     profile.image = image
+    #     db.session.commit()
+    # else:
+    #     crud.create_user_profile(profile_id = profile_id, image = image, title = title, location = location)
 
     return jsonify({'test': 'hello'})
 

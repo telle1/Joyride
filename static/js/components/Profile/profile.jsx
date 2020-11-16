@@ -7,7 +7,11 @@ function Profile({match, user}){
 
     const [feedbacks, setFeedbacks] = useState([])
     const [profile, setProfile] = useState(null)
+    const [rating, setRating] = useState(0)
     const [userInfo, setUserInfo] = useState({})
+    const [drivesCount, setDrivesCount] = useState(0)
+    const [ridesCount, setRidesCount] = useState(0)
+    const [pointsCount, setPointsCount] = useState(0)
 
     useEffect(() =>{
         console.log(match)
@@ -22,6 +26,9 @@ function Profile({match, user}){
             setFeedbacks(data.feedback)
             setProfile(data.profile_info)
             setUserInfo(data.user_info)
+            setDrivesCount(data.drives_count)
+            setRidesCount(data.rides_count)
+            setPointsCount(data.community_points)
             console.log('USER PROFILE INFO', profile)
         })
     }, [])
@@ -31,6 +38,7 @@ function Profile({match, user}){
             <Row>
             <Col xs={4}>
                 <UserInfo user={user} match={match} profile={profile} userInfo={userInfo}/> 
+                <UserStats drivesCount={drivesCount} ridesCount={ridesCount} pointsCount={pointsCount} rating={rating}/>
             </Col>
             <Col>
                 <FeedbackContainer feedbacks={feedbacks}/>
@@ -39,6 +47,21 @@ function Profile({match, user}){
         </Container>
     )
 }
+
+
+function UserStats({drivesCount, ridesCount, pointsCount, rating}){
+    return (
+        <React.Fragment>
+            <p>{drivesCount} drives</p>
+            <p>{ridesCount} rides</p>
+            <p>{pointsCount} community points</p>
+            <p>{rating} stars</p>
+        </React.Fragment>
+    )
+}
+
+
+
 
 function UserInfo({user, match, profile, userInfo}){
 
@@ -58,8 +81,8 @@ function UserInfo({user, match, profile, userInfo}){
                 <EditProfileModal showEdit={showEdit} handleEditClose={handleEditClose} user={user} profile={profile}/>
             </React.Fragment>
             <div className="d-flex flex-column align-items-center text-center">
-                {profile ? <UserStats imageSource={profile.image} title={profile.title} location={profile.location} userInfo={userInfo}/>
-                    : <UserStats imageSource={'../static/images/user.jpg'} title={""} location={""} userInfo={userInfo}/>}
+                {profile ? <UserBio imageSource={profile.image} title={profile.title} location={profile.location} userInfo={userInfo}/>
+                    : <UserBio imageSource={'../static/images/user.jpg'} title={""} location={""} userInfo={userInfo}/>}
                 Email: {userInfo.email} <br/>
                 Phone Number: {userInfo.phone_num}
                 {user == match.params.profileId ? null : <button className="btn btn-yellow">Follow</button>} 
@@ -71,7 +94,7 @@ function UserInfo({user, match, profile, userInfo}){
     )
 }
 
-function UserStats({imageSource, title, location, userInfo}){
+function UserBio({imageSource, title, location, userInfo}){
     return (
         <React.Fragment>
             <img src={imageSource} alt="Profile picture" className="profile-image" width="150" height="150"/>
@@ -86,28 +109,47 @@ function UserStats({imageSource, title, location, userInfo}){
 
 
 
-function EditProfileModal({showEdit, handleEditClose, user, profile}){
+function EditProfileModal({showEdit, handleEditClose, user}){
 
     const [image, setImage] = useState("")
     const [title, setTitle] = useState("")
     const [location, setLocation] = useState("")
 
+    console.log('image', image)
+    console.log('title is', title)
+    console.log('location is', location)
+
     const handleEdit = (e) => {
-        e.preventDefault()
+        e.preventDefault();
+
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('location', location);
+        formData.append('image', image);
+        formData.append('profile_id', user);
+
+        // const config = {     
+        //     headers: { 'content-type': 'multipart/form-data' }
+        // }
+
+        console.log('THIS IS THE FORM DATA', formData)
+
         fetch('/edit-profile', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            },
-            body: JSON.stringify({
-                image: image,
-                title: title,
-                location: location,
-                profile_id: user,
-            }),
+            body: formData
         })
         .then(res => res.json())
         .then(data => console.log(data))
+        // axios.post('url', formData, config)
+        // .then(response => {
+        //     console.log(response);
+        // })
+        // .catch(error => {
+        //     console.log(error);
+        // });
+
+
+
     }
 
     return (
@@ -122,7 +164,7 @@ function EditProfileModal({showEdit, handleEditClose, user, profile}){
                     <label htmlFor="#">Image</label>
                     </div>
                     <div className="col-sm-9">
-                        <input type="file" name="profile_image" accept="image/*" onChange={(e) => setImage(e.target.value)}/>
+                        <input type="file" name="profile_image" accept="image/*" onChange={(e) => setImage(e.target.files[0])}/>
                     </div>
                 </div>
                 <div className="form-group row">
