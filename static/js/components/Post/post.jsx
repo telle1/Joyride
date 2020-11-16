@@ -36,9 +36,9 @@ function Post({setAlertStatus, setAlertColor, alertStatus, alertColor}){
 
     return(
     <React.Fragment>
-        <div className="mt-3" id = "msg"> {showAlert ? <UserAlert text={alertStatus} color={alertColor} setShowAlert={setShowAlert}/> : null}
+        <div className="mt-3"> {showAlert ? <UserAlert text={alertStatus} color={alertColor} setShowAlert={setShowAlert}/> : null}
         </div>    
-        <div className="container post-ride">
+        <div className="container top-padding">
             <div className="row">
             <div className="col-md-5">
                 <form onSubmit={handleSubmit} className="f-grey" method="post">

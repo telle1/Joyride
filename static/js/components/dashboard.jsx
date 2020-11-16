@@ -33,7 +33,7 @@ function Dashboard(){
 
     return(
         <Container>
-            <div className="text-center text-header animated bounce dashboard-page mb-5">
+            <div className="text-center text-header animated bounce top-padding mb-5">
                 <h1>Where to next, <span>{firstName} {lastName}?</span></h1>
             </div>
             <Row>

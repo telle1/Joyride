@@ -1,4 +1,4 @@
-from model import db, User, Ride, Request, Feedback, connect_to_db
+from model import db, User, Ride, Request, Feedback, UserProfile, connect_to_db
 from datetime import datetime
 
 current_time = datetime.now()
@@ -101,3 +101,12 @@ def check_if_driver_gave_feedback(ride_id, passenger):
     #to prevent duplicate entries.
     return Feedback.query.filter(Feedback.ride_id == ride_id, Feedback.feedback_receiver == passenger).all()
 
+def get_user_profile(profile_id):
+
+    return UserProfile.query.filter(UserProfile.profile_id == profile_id).first()
+
+def create_user_profile(image, location, title, profile_id):
+
+    user_profile = UserProfile(profile_id = profile_id, image = image, location = location, title = title)
+    db.session.add(user_profile)
+    db.session.commit()

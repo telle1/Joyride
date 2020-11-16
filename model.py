@@ -20,6 +20,9 @@ class User(db.Model):
     request = db.relationship('Request')
     ride = db.relationship('Ride')
 
+    def serialize(self):
+        return {'first_name': self.first_name, 'last_name': self.last_name, 'email': self.email, 'phone_num': self.phone_num}
+
     def __repr__(self):
         return f'<User user_id ={self.user_id} email = {self.email} name = {self.first_name} test>'
 
@@ -77,6 +80,17 @@ class Feedback(db.Model):
 
     def __repr__(self):
         return f"<Feedback msg={self.feedback} rating={self.rating} giver={self.feedback_giver} receiver={self.feedback_receiver} ride_id={self.ride_id}>"
+
+class UserProfile(db.Model):
+    __tablename__ = 'profiles'
+
+    profile_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), primary_key = True)
+    title = db.Column(db.String)
+    image = db.Column(db.String)
+    location = db.Column(db.String)
+
+    def __repr__(self):
+        return f"<Profile id={self.profile_id} location={self.location} title={self.title}>"
 
 def connect_to_db(flask_app, db_uri='postgresql:///joyride', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri

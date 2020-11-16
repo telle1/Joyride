@@ -4,7 +4,7 @@ const {Container, Tab, Tabs} = ReactBootstrap
 //use for both current and past tables
 function AllTrips(props){
     return(
-        <Container className="rides-table">
+        <Container className="top-padding">
             <Tabs defaultActiveKey="Driving" id="rides-table-comp">
                 <Tab eventKey="Driving" title={props.firstTitle}>
                     {props.firstTab}

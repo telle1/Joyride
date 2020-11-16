@@ -32,7 +32,7 @@ function Search({setAlertStatus, setAlertColor, alertStatus, alertColor}){
     return (
         <React.Fragment>
             {showAlert ? <UserAlert text={alertStatus} color={alertColor} setShowAlert={setShowAlert}/> : null}
-            <div className="container search-container">
+            <div className="container top-padding">
                 <div className="row">
                     <form onSubmit={getMatchingRides} className="form-inline mx-auto" id="search-rides" method="post">
                         <input type="text" className="form-control mr-2" name="from_input" id = "from_input" value={startInput} onChange={(e)=>setStartInput(e.target.value)} placeholder="Start Location" required/>
@@ -43,16 +43,21 @@ function Search({setAlertStatus, setAlertColor, alertStatus, alertColor}){
                 </div>
                 {(matchingRides.length == 0 && search == true) ? 
                 <h3 className="mt-3 yellow">No matching rides found. Try again. </h3> :
-                matchingRides.map(matchingRide => (
+                <Row className="mt-3">
+                {matchingRides.map(matchingRide => (
+                    <Col xs={6} className="mt-3">
                     <MatchingRide 
                         key = {matchingRide.ride_id} matchingRide = {matchingRide}
                         setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
+                    </Col>
                 ))}
+                </Row>
+                }
+           
             </div>
         </React.Fragment>
     )   
 }
-
 
 
 

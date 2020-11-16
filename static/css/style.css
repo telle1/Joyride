@@ -4,6 +4,7 @@ body {
     font-family: 'Karla', sans-serif;
   }
 
+
 .btn-theme {
     color: white;
     background-color: #388087;
@@ -52,18 +53,16 @@ body {
   font-size: 20px;
 }
 
-  /* .login-register-msg{
-    padding-top: 70px;
-    text-align: center;
-    font-weight: bold;
-  } */
-
 /*FOOTER---FOOTER---FOOTER---FOOTER---FOOTER---FOOTER---FOOTER---FOOTER---FOOTER---*/
 footer {
     background-color: #388087;
     color: white;
     padding: 20px;
     opacity: 0.8;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
   }
   
   footer h3 {

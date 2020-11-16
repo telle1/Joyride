@@ -504,8 +504,8 @@ def give_passenger_feedback():
 
     return resp
 
-@app.route('/get-user-feedback/<user_id>')
-def get_user_feedback(user_id):
+@app.route('/get-user-profile-info/<user_id>')
+def get_user_info(user_id):
 
     all_feedback = crud.get_user_feedback(user_id = user_id)
     feedback_list = []
@@ -514,12 +514,39 @@ def get_user_feedback(user_id):
         feedback_list.append(feedback_ser)
         feedback_list.reverse()
 
-    return jsonify({'feedback': feedback_list})
+    profile = crud.get_user_profile(profile_id = user_id)
+    if profile:
+        profile_ser = {'image': profile.image, 'location': profile.location, 'title': profile.title}
+    else:
+        profile_ser = None
 
-@app.route('/get-user-profile-info/<user_id>')
-def get_user_profile_info(user_id):
+    print('SERIALIZED', profile_ser)
 
-    return jsonify({'test': 'test'})
+    user = crud.get_user_by_id(user_id = user_id)
+    user_info = user.serialize()
+
+    return jsonify({'feedback': feedback_list, 'profile_info': profile_ser, 'user_info': user_info})
+
+@app.route('/edit-profile', methods=['POST'])
+def edit_user_profile():
+
+    data = request.json
+    image = data['image']
+    title = data['title']
+    location = data['location']
+    profile_id = data['profile_id']
+    print(data)
+
+    profile = crud.get_user_profile(profile_id = profile_id)
+    if profile:
+        profile.title = title 
+        profile.location = location
+        profile.image = image
+        db.session.commit()
+    else:
+        crud.create_user_profile(profile_id = profile_id, image = image, title = title, location = location)
+
+    return jsonify({'test': 'hello'})
 
 
 @app.route('/logout', methods=['POST'])
