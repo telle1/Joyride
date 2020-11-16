@@ -37,10 +37,6 @@ twilio_phone_num = os.environ['twilio_phone_num']
 # This configuration option makes the Flask interactive debugger
 # more useful (you should remove this line in production though)
 
-
-
-
-
 current_time = datetime.now()
 
 def login_required(f):
@@ -434,6 +430,7 @@ def get_user_dashboard():
 def get_user_info(user_id):
     #Feedback and rating info
     feedback_info = crud.get_user_feedback(user_id = user_id)
+    print('tHIS IS THE FEEDBACK INFO', feedback_info)
     feedback_list = feedback_info['feedback']
     average_rating = feedback_info['average_rating']
     #Profile picture, location, and title info

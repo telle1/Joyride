@@ -131,4 +131,6 @@ if __name__ == '__main__':
 #     def serialize(self):
 #         return {'list_id': self.list_id, 'user_id': self.user_id, 'list_item': self.list_item}
 
-#test = Feedback(feedback_id= 1, feedback = 'test', rating = 1, feedback_giver=8, feedback_receiver=2, ride_id=3)
+# test = Feedback(feedback = 'test', rating = 1, feedback_giver=8, feedback_receiver=2, ride_id=3)
+# db.session.add(test)
+# db.session.commit()

@@ -29,17 +29,19 @@ function Profile({match, user}){
             setDrivesCount(data.drives_count)
             setRidesCount(data.rides_count)
             setPointsCount(data.community_points)
+            setRating(data.average_rating)
             console.log('USER PROFILE INFO', profile)
         })
-    }, [profile])
+    }, [])
     
     return (
         <Container className="top-padding">
             <Row>
             <Col xs={4}>
-                <UserInfo user={user} match={match} profile={profile} userInfo={userInfo}/> 
+                <UserInfo user={user} match={match} profile={profile} userInfo={userInfo}  drivesCount={drivesCount} ridesCount={ridesCount} pointsCount={pointsCount} rating={rating}/> 
                 <UserStats drivesCount={drivesCount} ridesCount={ridesCount} pointsCount={pointsCount} rating={rating}/>
             </Col>
+            
             <Col>
                 <FeedbackContainer feedbacks={feedbacks}/>
             </Col>
@@ -52,10 +54,17 @@ function Profile({match, user}){
 function UserStats({drivesCount, ridesCount, pointsCount, rating}){
     return (
         <React.Fragment>
-            <p>{drivesCount} drives</p>
-            <p>{ridesCount} rides</p>
-            <p>{pointsCount} community points</p>
-            <p>{rating} stars</p>
+            <Card className="btn-theme">
+            <Row className="py-2">
+                <Col className="text-center"> 
+                    <h2>{drivesCount}</h2> DRIVES
+                </Col>
+                <Col className="text-center"><h2>{ridesCount}</h2> RIDES
+                </Col>
+                <Col className="text-center"><h2>{rating}</h2>STARS
+                </Col>
+            </Row>
+            </Card>
         </React.Fragment>
     )
 }
@@ -63,7 +72,7 @@ function UserStats({drivesCount, ridesCount, pointsCount, rating}){
 
 
 
-function UserInfo({user, match, profile, userInfo}){
+function UserInfo({user, match, profile, userInfo, drivesCount, ridesCount, pointsCount, rating}){
 
     const [showEdit, setShowEdit] = useState(false)
     const handleEditShow = () => setShowEdit(true)
@@ -83,12 +92,25 @@ function UserInfo({user, match, profile, userInfo}){
             <div className="d-flex flex-column align-items-center text-center">
                 {profile ? <UserBio imageSource={`../static/uploads/${profile.image}`} title={profile.title} location={profile.location} userInfo={userInfo}/>
                     : <UserBio imageSource={'../static/images/user.jpg'} title={""} location={""} userInfo={userInfo}/>}
-                Email: {userInfo.email} <br/>
-                Phone Number: {userInfo.phone_num}
-                {user == match.params.profileId ? null : <button className="btn btn-yellow">Follow</button>} 
-
-
+            </div>  
+            <div>  
+                <i className="fas fa-envelope fa-2x mr-3 ml-3 mb-2" data-fa-transform="left-2 down-5" style={{color: "#BEBEBE"}}/>
+                <span>{userInfo.email}</span><br/>
+                <i className="fas fa-phone fa-2x mr-3 ml-3 mb-2" data-fa-transform="left-2 down-5" style={{color: "#BEBEBE"}}/>
+                <span>{userInfo.phone_num}</span> <br/>
+                <i className="fas fa-map-pin fa-2x mr-4  ml-3 mb-2" data-fa-transform="down-5" style={{color: "#BEBEBE"}}/>
+                <span>Enter Location Here</span><br/>
+                
             </div>
+            {/* <Row className="py-2 btn-theme">
+                <Col className="text-center"> 
+                    <h2>{drivesCount}</h2> DRIVES
+                </Col>
+                <Col className="text-center"><h2>{ridesCount}</h2> RIDES
+                </Col>
+                <Col className="text-center"><h2>{rating}</h2>STARS
+                </Col>
+            </Row> */}
         </Card.Body>  
     </Card>  
     )
@@ -97,11 +119,11 @@ function UserInfo({user, match, profile, userInfo}){
 function UserBio({imageSource, title, location, userInfo}){
     return (
         <React.Fragment>
-            <img src={imageSource} alt="Profile picture" className="profile-image" width="150" height="150"/>
+            <img src={imageSource} alt="Profile picture" className="profile-image" width="170" height="170"/>
             <div className="mt-3">
                 <h4>{userInfo.first_name} {userInfo.last_name}</h4>
                 <p className="text-secondary mb-1">{title}</p>
-                <p className="text-muted font-size-sm">{location}</p>
+                {/* <p className="text-muted font-size-sm">{location}</p> */}
             </div>
         </React.Fragment> 
     )
@@ -115,10 +137,6 @@ function EditProfileModal({showEdit, handleEditClose, user}){
     const [title, setTitle] = useState("")
     const [location, setLocation] = useState("")
 
-    console.log('image', image)
-    console.log('title is', title)
-    console.log('location is', location)
-
     const handleEdit = (e) => {
         e.preventDefault();
 
@@ -128,28 +146,12 @@ function EditProfileModal({showEdit, handleEditClose, user}){
         formData.append('image', image);
         formData.append('profile_id', user);
 
-        // const config = {     
-        //     headers: { 'content-type': 'multipart/form-data' }
-        // }
-
-        console.log('THIS IS THE FORM DATA', formData)
-
         fetch('/edit-profile', {
             method: 'POST',
             body: formData
         })
         .then(res => res.json())
         .then(data => console.log(data))
-        // axios.post('url', formData, config)
-        // .then(response => {
-        //     console.log(response);
-        // })
-        // .catch(error => {
-        //     console.log(error);
-        // });
-
-
-
     }
 
     return (
