@@ -1,4 +1,4 @@
-function SeatsModal({showEdit, handleEditClose, request_id, oldSeats, seatsAvailable, setShowAlert, setAlertColor, setAlertStatus}){
+function SeatsModal({showEdit, handleEditClose, request_id, oldSeats, seatsAvailable, setShowAlert, setAlertColor, setAlertStatus, fetchRides}){
 
     const [seats, setSeats]= useState(oldSeats)
 
@@ -20,6 +20,7 @@ function SeatsModal({showEdit, handleEditClose, request_id, oldSeats, seatsAvail
             setAlertStatus(data.msg) 
             setShowAlert(true)
             setAlertColor(data.alert)
+            fetchRides();
 
         })      
     }

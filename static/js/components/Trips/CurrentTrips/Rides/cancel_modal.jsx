@@ -1,4 +1,4 @@
-function CnclModal({show, handleClose, request_id, status, seats}){
+function CnclModal({show, handleClose, request_id, status, seats, fetchRides}){
 
     const handleRemove = (evt) => {
         evt.preventDefault()     
@@ -16,6 +16,7 @@ function CnclModal({show, handleClose, request_id, status, seats}){
         .then(res => res.json())
         .then(data => {
             console.log(data.msg) 
+            fetchRides();
         })      
     }
 

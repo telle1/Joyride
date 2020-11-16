@@ -1,4 +1,4 @@
-function RadioButton({request_id, seats, setAlertColor, setAlertStatus, setShowAlert}){
+function RadioButton({request_id, seats, setAlertColor, setAlertStatus, setShowAlert, fetchDrives}){
 
     const [rideStatus, setRideStatus] = useState(null)
 
@@ -26,6 +26,7 @@ function RadioButton({request_id, seats, setAlertColor, setAlertStatus, setShowA
             setAlertStatus(data.msg)
             setShowAlert(true)
             setAlertColor(data.alert_color)
+            fetchDrives();
         })
     }
 

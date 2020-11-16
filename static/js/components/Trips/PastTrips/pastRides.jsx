@@ -2,19 +2,18 @@ function PastRides({user}){
 
     const [pastRides, setPastRides] = useState([])
 
-    useEffect(() => {
-        fetch("/past-rides", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            },
-        })
+    const fetchPastRides = () => {
+        fetch("/past-rides")
         .then(res => res.json())
         .then(data => {
             setPastRides(data.rides)
             console.log(data.rides)
         })
-    }, [pastRides])
+    }
+
+    useEffect(() => {
+        fetchPastRides();
+    }, [])
 
     return(
         <div className="Rode">
@@ -30,14 +29,14 @@ function PastRides({user}){
                 </tr>
             </thead>
             <tbody>
-                 {pastRides.map(pastRide => <PastRide key= {pastRide.id} pastRide={pastRide} user={user}/>)}
+                 {pastRides.map(pastRide => <PastRide key= {pastRide.id} pastRide={pastRide} user={user} fetchPastRides={fetchPastRides}/>)}
                 </tbody>
             </table>
         </div>
     )
 }
 
-function PastRide({pastRide, user}){
+function PastRide({pastRide, user, fetchPastRides}){
 
 
 
@@ -53,7 +52,7 @@ function PastRide({pastRide, user}){
         <React.Fragment>
             <div> {pastRide.feedback ? <p className="yellow">Feedback received.</p> : 
             <button className="btn btn-yellow" onClick={handleShow}>Feedback</button>}</div>
-            <FeedbackModal show={show} handleClose={handleClose} pastRide={pastRide} user={user}/>
+            <FeedbackModal show={show} handleClose={handleClose} pastRide={pastRide} user={user} fetchPastRides={fetchPastRides}/>
         </React.Fragment>
         </td>
         <td>{pastRide.ride.start_loc}</td>
@@ -67,7 +66,7 @@ function PastRide({pastRide, user}){
     )
 }
 
-function FeedbackModal({show, handleClose, user, pastRide}){
+function FeedbackModal({show, handleClose, user, pastRide, fetchPastRides}){
 
     const [rating, setRating] = useState(1)
     const [feedback, setFeedback] = useState("")
@@ -89,7 +88,7 @@ function FeedbackModal({show, handleClose, user, pastRide}){
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data.msg)
+            fetchPastRides();
         })
     }
 

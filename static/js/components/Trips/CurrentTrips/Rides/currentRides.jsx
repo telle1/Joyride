@@ -5,19 +5,18 @@ function CurrentRides({setShowAlert, setAlertColor, setAlertStatus}){
 
     const [currentRides, setCurrentRides] = useState([])
  
-    useEffect(() => {
-        console.log('THESE ARE CURRENT RIDES', currentRides)
-        fetch("/current-rides", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            },
-        })
+    const fetchRides = () => {
+        fetch("/current-rides")
         .then(res => res.json())
         .then(data => {
             setCurrentRides(data.rides)
             console.log(data.rides)
         })
+    }
+
+    useEffect(() => {
+        console.log('THESE ARE CURRENT RIDES', currentRides)
+        fetchRides();
     }, []) 
 
     return(
@@ -27,7 +26,7 @@ function CurrentRides({setShowAlert, setAlertColor, setAlertStatus}){
                 <TableHeader col2="Location" col3="Driver" col4="Seats Requested" col5="Cost(Total)"></TableHeader>
                 <tbody>
                     {currentRides.map(currentRide => (
-                        <RideListItem key={currentRide.request_id} currentRide = {currentRide}
+                        <RideListItem key={currentRide.request_id} currentRide = {currentRide} fetchRides={fetchRides}
                         setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
                     ))}
                 </tbody>
@@ -37,7 +36,7 @@ function CurrentRides({setShowAlert, setAlertColor, setAlertStatus}){
 }
 
 
-function RideListItem({currentRide, setAlertColor, setAlertStatus, setShowAlert,}){
+function RideListItem({currentRide, setAlertColor, setAlertStatus, setShowAlert, fetchRides}){
     //Cancel ride/Delete ride modal
     const [show, setShow] = useState(false)
     const handleShow = () => setShow(true)
@@ -56,14 +55,14 @@ function RideListItem({currentRide, setAlertColor, setAlertStatus, setShowAlert,
         <td>{currentRide.date} <p>REQUEST{currentRide.request_id} RIDER ID{currentRide.rider_id} FOR RIDE{currentRide.ride_id}</p>
 
         {currentRide.status === 'Pending' ? <span><button className="btn btn-yellow mr-2" onClick={handleEditShow}>Edit Seats</button> 
-        <SeatsModal showEdit={showEdit} handleEditClose={handleEditClose} 
+        <SeatsModal showEdit={showEdit} handleEditClose={handleEditClose} fetchRides={fetchRides}
         request_id={currentRide.request_id} oldSeats={currentRide.seats_requested} seatsAvailable={currentRide.seats_available}
         setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/></span>: null}
 
         {(currentRide.status === 'Pending' || currentRide.status === 'Approved') ?
             <button className="btn btn-danger" onClick={handleShow}> Cancel Request </button> : 
             <button className="btn btn-theme" onClick={handleShow}> Delete Entry </button> }
-        <CnclModal key={currentRide.request_id} show={show} handleClose={handleClose} 
+        <CnclModal key={currentRide.request_id} show={show} handleClose={handleClose} fetchRides={fetchRides}
         request_id={currentRide.request_id} seats={currentRide.seats_requested} status={currentRide.status}/>
 
         </td>

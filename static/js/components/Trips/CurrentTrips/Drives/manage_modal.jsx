@@ -1,4 +1,4 @@
-function ManageRideModal({showManage, handleManageClose, currentDrive}){
+function ManageRideModal({showManage, handleManageClose, currentDrive, fetchDrives}){
 
     return(
         <Modal show={showManage} onHide={handleManageClose}>
@@ -7,13 +7,13 @@ function ManageRideModal({showManage, handleManageClose, currentDrive}){
             </Modal.Header>
             <Modal.Body> 
                 {currentDrive.passengers ? 
-                currentDrive.passengers.map(passenger => <PassengerEntry passenger={passenger}/>) : null}
+                currentDrive.passengers.map(passenger => <PassengerEntry passenger={passenger} fetchDrives={fetchDrives}/>) : null}
             </Modal.Body>
             <Modal.Footer> Double click to remove a passenger. This action is <span className="font-weight-bold">permanent.</span> </Modal.Footer>
         </Modal>
     )}
 
-function PassengerEntry({passenger, handleManageClose}){
+function PassengerEntry({passenger, fetchDrives}){
 
     const removePassenger = (id, seats) => {
 
@@ -30,7 +30,7 @@ function PassengerEntry({passenger, handleManageClose}){
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data.msg) 
+            fetchDrives()
         })      
     }
 
