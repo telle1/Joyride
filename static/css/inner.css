@@ -8,6 +8,16 @@
     padding-top: 100px;
 }
 
+/*Star---*Star---*Star---*Star---*Star---*Star---*Star---*Star---*Star---*Star---*/
+.rating-star-radio{
+    display: none;
+}
+
+.rating-star:hover{
+    cursor: pointer;
+}
+
+
 /*My rides page---My rides page---My rides page---My rides page---My rides page---*/
 /*TABLE*/
 
@@ -100,7 +110,7 @@ form h3 {
 /*Bounce animation - courtesy of https://codepen.io/levineuland*/
 
 .animated {
-    animation-duration: 5s;
+    animation-duration: 3s;
     animation-timing-function: linear;
     animation-iteration-count: 1;
   }

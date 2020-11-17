@@ -35,6 +35,7 @@ function Profile({match, user}){
     return (
         <Container className="top-padding">
             <Row>
+            <Dashboard match={match}/>
             <Col xs={4}>
                 <UserInfo user={user} match={match} profile={profile} userInfo={userInfo}  
                 drivesCount={drivesCount} ridesCount={ridesCount} rating={rating} fetchUserProfile={fetchUserProfile}/> 

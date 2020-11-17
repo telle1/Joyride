@@ -33,7 +33,8 @@ function App(){
                 <Switch>
                     <Route exact path="/">
                         {/* <HomePage/> */}
-                        {user ? <Redirect to="/dashboard"/> : <HomePage/>}
+                        {user ? <Redirect to={`/profile/${user}`}/> : <HomePage/>}
+                        {/* {user ? <Redirect to={`/profile/${user}`}/> : <HomePage/>} */}
                     </Route>
                     <Route exact path="/home">
                         <HomePage/>
@@ -52,11 +53,11 @@ function App(){
                     </Route>
                     {/* <Route path="/profile/:userId" component={Profile}/> */}
                     <Route path="/profile/:userId" render={(props) => <Profile {...props} user={user}/>}/>
-                    <Route path="/dashboard">
+                    {/* <Route path="/dashboard">
                         <Dashboard/>
-                    </Route> 
+                    </Route>  */}
                 </Switch>
-                <Footer/>
+                {/* <Footer/> */}
             </Router>
         </div>
     )

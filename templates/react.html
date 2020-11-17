@@ -14,15 +14,6 @@
     <script src="https://unpkg.com/@material-ui/core@latest/umd/material-ui.development.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@material-ui/lab@4.0.0-alpha.56/index.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@material-ui/icons@4.9.1/index.min.js"></script>
-    <!-- <link
-    async
-    rel="stylesheet"
-    href="//cdn.jsdelivr.net/npm/semantic-ui@${props.versions.sui}/dist/semantic.min.css"
-  />
-  <script
-    async
-    src="//cdn.jsdelivr.net/npm/semantic-ui@${props.versions.sui}/dist/semantic.min.js"
-  ></script> -->
     <!--Fonts + Font Awesome-->
     <link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;700&display=swap" rel="stylesheet">  
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@100&family=Pacifico&display=swap" rel="stylesheet">
@@ -31,21 +22,32 @@
     <link rel="stylesheet" href="../static/css/style.css" />
     <link rel="stylesheet" href="../static/css/inner.css" />
     <link rel="stylesheet" href="../static/css/homepage.css" />
-    <!-- REACT//add script tags when creating components -->
+    <!-- MORE REACT//add script tags when creating components -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js" crossorigin></script>
-    <!-- <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script> -->
     <script src='https://unpkg.com/react-router@5.2.0/umd/react-router.min.js'></script>
     <script src='https://unpkg.com/react-router-dom@5.2.0/umd/react-router-dom.min.js'></script>
     <!--JS script tags/TYPED.JS-->
-    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11"></script> 
-      <!--CALENDAR-->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@5.4.0/main.global.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11"></script>  -->
+    <script src="https://rawgit.com/mattboldt/typed.js/master/lib/typed.js"></script>
+    <script src="https://unpkg.com/prop-types@15.6/prop-types.min.js"></script>
+    <script> src="https://unpkg.com/react-google-autocomplete@1.2.6/src/index.js"</script>
+      <!-- CALENDAR -->
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@5.4.0/main.global.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/react@5.4.0/dist/main.cjs.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.4.0/main.min.js"></script> -->
-    <!-- <script src= "https://cdn.jsdelivr.net/npm/react-countup@4.3.3/build"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.4.0/main.min.js"></script> -->
+    <script src='fullcalendar/main.js'></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@5.4.0/main.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/timegrid@5.4.0/main.global.min.js"></script>
+        <!-- <script src= "https://cdn.jsdelivr.net/npm/react-countup@4.3.3/build"></script> -->
+
 
     <!--JSX SCRIPT TAGS-->
+    <!--Rating-->
+    <script src="/static/js/components/calendar.jsx" type="text/jsx"></script>
+    <script src="/static/js/components/typing.jsx" type="text/jsx"></script>
+    <script src="/static/js/components/rating.jsx" type="text/jsx"></script>
     <!--Navigation-->
     <script src="/static/js/components//Navigation/login_modal.jsx" type="text/jsx"></script>
     <script src="/static/js/components//Navigation/register_modal.jsx" type="text/jsx"></script>
@@ -60,15 +62,14 @@
     <script src="/static/js/components/Trips/PastTrips/PastRides.jsx" type="text/jsx"></script>
     <script src="/static/js/components/Trips/PastTrips/allPast.jsx" type="text/jsx"></script>
     <!--Current Trips-->
-    <!--Drives-->
+      <!--Drives-->
     <script src="/static/js/components/Trips/CurrentTrips/Drives/radio_button.jsx" type="text/jsx"></script>
     <script src="/static/js/components/Trips/CurrentTrips/Drives/contact_modal.jsx" type="text/jsx"></script>
     <script src="/static/js/components/Trips/CurrentTrips/Drives/edit_modal.jsx" type="text/jsx"></script>
     <script src="/static/js/components/Trips/CurrentTrips/Drives/delete_modal.jsx" type="text/jsx"></script>
     <script src="/static/js/components/Trips/CurrentTrips/Drives/manage_modal.jsx" type="text/jsx"></script>
     <script src="/static/js/components/Trips/CurrentTrips/Drives/currentDrives.jsx" type="text/jsx"></script>
-  
-  
+      <!--Rides-->
     <script src="/static/js/components/Trips/CurrentTrips/Rides/seats_modal.jsx" type="text/jsx"></script>
     <script src="/static/js/components/Trips/CurrentTrips/Rides/cancel_modal.jsx" type="text/jsx"></script>
     <script src="/static/js/components/Trips/CurrentTrips/Rides/currentRides.jsx" type="text/jsx"></script>
@@ -76,10 +77,10 @@
     <!--Homepage-->
     <script src="/static/js/components/Homepage/Homepage.jsx" type="text/jsx"></script>
     <!--Search Components-->
+    <script src="/static/js/components/Search/autocomplete.jsx" type="text/jsx"></script>
     <script src="/static/js/components/Search/req_modal.jsx" type="text/jsx"></script>
     <script src="/static/js/components/Search/matching.jsx" type="text/jsx"></script>
     <script src="/static/js/components/Search/search.jsx" type="text/jsx"></script>
-    
     <!--Post Components-->
     <script src="/static/js/components/Post/post.jsx" type="text/jsx"></script>
     <!--Profile Components-->

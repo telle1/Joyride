@@ -4,7 +4,7 @@ const { useEffect, useState } = React
 // const {dayGridPlugin} = FullCalendarDayGrid
 // const {CountUp} = ReactCountUp
 
-function Dashboard(){
+function Dashboard({match}){
 
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
@@ -13,12 +13,7 @@ function Dashboard(){
     const [dollars, setDollars] = useState(0)
 
     useEffect(() =>{
-        fetch("/dashboard", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            },
-        })
+        fetch(`/dashboard/${match.params.userId}`)
         .then(res => res.json())
         .then(data => {
             console.log(data)
@@ -33,9 +28,9 @@ function Dashboard(){
 
     return(
         <Container>
-            <div className="text-center text-header animated bounce top-padding mb-5">
+            {/* <div className="text-center text-header animated bounce top-padding mb-5">
                 <h1>Where to next, <span>{firstName} {lastName}?</span></h1>
-            </div>
+            </div> */}
             <Row>
                 <StatSquare stat={destinations} description="destinations discovered." color="inner inner-0"/>
                 <StatSquare stat={peopleMet} description="new adventurers met." color="inner inner-1"></StatSquare>
@@ -43,24 +38,7 @@ function Dashboard(){
                 <StatSquare stat="100" description="percent pure JOY." color="inner inner-3"></StatSquare>
             </Row>
             <Row className="row mt-4">
-                <Col>
-                    {/* <div className="bio p-2">
-                        <h4 className="text-center font-weight-bold travel-header">Travel List</h4>
-
-                        <form action="/travel-list" id="travel-list" method="post">
-                        <input type="text" name="travel-place"/>
-                        <button type = "submit" className="btn btn-theme">Add</button>
-                        </form>
-                        <br/>
-
-                        <ul id="places-to-go">
-                            <li>test</li>
-                        </ul>
-
-                    </div> */}
-                    {/* <TestCalendar/> */}
-                    {/* <CountUp end={100}/> */}
-                </Col>
+          
             </Row>
         </Container>
     )
@@ -78,16 +56,3 @@ function StatSquare({stat, description, color}){
 }
 
         
-// function TestCalendar(){
-//     return (
-//         <FullCalendar
-//             plugins={[ dayGridPlugin ]}
-//             initialView="dayGridMonth"
-//             weekends={false}
-//             events={[
-//                 { title: 'event 1', date: '2019-04-01' },
-//                 { title: 'event 2', date: '2019-04-02' }
-//             ]}
-//         />
-//     )
-// }

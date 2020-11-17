@@ -411,13 +411,15 @@ def give_passenger_feedback():
 
     return resp
 
-@app.route('/dashboard')
+@app.route('/dashboard/<user_id>')
 @login_required
-def get_user_dashboard():
+def get_user_dashboard(user_id):
     """Return dashboard page."""
-    user = crud.get_user_by_id(user_id = session['user_id'])
+    # user = crud.get_user_by_id(user_id = session['user_id'])
+    user = crud.get_user_by_id(user_id = user_id)
 
-    user_info = crud.get_dashboard_info(user_id = session['user_id'])
+    # user_info = crud.get_dashboard_info(user_id = session['user_id'])
+    user_info = crud.get_dashboard_info(user_id = user_id)
     destinations = user_info['destinations']
     people_met = user_info['people_met']
     dollars_earned = user_info['dollars_earned']
