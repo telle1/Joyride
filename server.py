@@ -53,6 +53,16 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def check_image(image):
+    if image.filename == '':
+        print('No filename')
+        return 'Invalid'
+    else:
+        if image and allowed_file(image.filename):
+            filename = secure_filename(image.filename)
+            image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        return 'Valid'
+
 @app.route('/')
 def index():
     """Return homepage."""
@@ -420,7 +430,6 @@ def get_user_dashboard(user_id):
     people_met = user_info['people_met']
     dollars_earned = user_info['dollars_earned']
 
-
     return jsonify({'destinations': destinations, 'people_met': people_met, 'dollars_earned': dollars_earned})
 
 @app.route('/get-user-profile-info/<user_id>')
@@ -434,7 +443,7 @@ def get_user_info(user_id):
     profile = crud.get_user_profile(profile_id = user_id)
     if profile:
         profile_ser = {'image': profile.image, 'location': profile.location, 'title': profile.title}
-    else:
+    else: #instead of none, pass in empty strings to make it easier on the front end and the edit modal
         profile_ser = None
     print('SERIALIZED', profile_ser)
     #Email and phone number info
@@ -455,34 +464,40 @@ def get_user_info(user_id):
 @app.route('/edit-profile', methods=['POST'])
 def edit_user_profile():
     
-
     data = request.form.to_dict()
     title = data['title']
-    # print(data)
-    print('tITLE', title)
     location = data['location']
-    print('LOCATION', location)
     profile_id = data['profile_id']
-    print('PROFILE-ID', profile_id)
-
-    image = request.files['image']
-    if image.filename == '':
-        print('No selected file')
-    if image and allowed_file(image.filename):
-        filename = secure_filename(image.filename)
-        image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
     profile = crud.get_user_profile(profile_id = profile_id)
     if profile:
-        profile.title = title 
-        profile.location = location
-        profile.image = image.filename
+        if title != "":
+            profile.title = title 
+        if location != "":
+            profile.location = location
+        if 'image' in request.files:
+            image = request.files['image']
+            image_status = check_image(request.files['image'])
+            if image_status == 'Valid':
+                profile.image = image.filename
+            else:
+                resp = {'msg': 'There was something wrong with your image.'}
         db.session.commit()
+        resp = {'msg': 'Successfully uploaded profile.'}
     else:
-        crud.create_user_profile(profile_id = profile_id, image = image.filename, title = title, location = location)
+        if 'image' in request.files:  
+            image = request.files['image']
+            image_status = check_image(request.files['image'])  
+            if image_status == 'Valid':
+                filename = image.filename
+            else: 
+                resp = {'msg': 'There was something wrong with your image.'}
+        else:
+            filename = "user.jpg"
 
-    return jsonify({'test': 'hello'})
-
+        crud.create_user_profile(profile_id = profile_id, image = filename, title = title, location = location)
+        resp = {'msg': 'Successfully uploaded profile.'}
+    return resp
 
 @app.route('/logout', methods=['POST'])
 def logout_user():

@@ -88,8 +88,8 @@ function UserCardInfo({user, match, profile, userInfo, fetchUserProfile}){
                 profile={profile} fetchUserProfile={fetchUserProfile}/>
             </React.Fragment>
             <div className="d-flex flex-column align-items-center text-center">
-                {profile ? <UserBio imageSource={`../static/uploads/${profile.image}`} title={profile.title} location={profile.location} userInfo={userInfo}/>
-                    : <UserBio imageSource={'../static/images/user.jpg'} title={""} location={""} userInfo={userInfo}/>}
+                { profile ? <UserBio imageSource={`../static/uploads/${profile.image}`} title={profile.title} userInfo={userInfo}/>
+                     : <UserBio imageSource={'../static/images/user.jpg'} title={""} location={""} userInfo={userInfo}/>}
             </div>  
             <div>  
                 <i className="fas fa-envelope fa-2x mr-3 ml-3 mb-2" data-fa-transform="left-2 down-5" style={{color: "#BEBEBE"}}/>
@@ -117,8 +117,6 @@ function UserBio({imageSource, title, userInfo}){
     )
 }
 
-
-
 function EditProfileModal({showEdit, handleEditClose, user, fetchUserProfile}){
 
     const [image, setImage] = useState("")
@@ -140,6 +138,7 @@ function EditProfileModal({showEdit, handleEditClose, user, fetchUserProfile}){
         })
         .then(res => res.json())
         .then(data => {
+            console.log('THIS IS THE DATA', data);
             fetchUserProfile();
         })
     }

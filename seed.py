@@ -5,7 +5,7 @@ from faker import Faker
 from datetime import datetime
 
 #import crud
-from model import db, User, Ride, Request, connect_to_db
+from model import db, User, Ride, Request, UserProfile, connect_to_db
 import server
 
 os.system('dropdb joyride')
@@ -15,13 +15,15 @@ db.create_all()
 
 fake = Faker() #initiate a faker object    
 #Create 10 fake users
-for i in range(10):
+for i in range(1,11):
     email = f'user{i}@test.com'
     password = 'test'
     first_name = f'test{i}'
     last_name = f'test{i}'
     fake_user = User(first_name = first_name, last_name = last_name, password= password, email= email, phone_num = '4088893883')
+    # fake_profile = UserProfile(profile_id = i, title = "", image="user.jpg", location="")
     db.session.add(fake_user)
+    # db.session.add(fake_profile)
     db.session.commit()
     #For each user create 10 fake rides
     for _ in range(10):
