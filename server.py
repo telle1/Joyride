@@ -415,18 +415,13 @@ def give_passenger_feedback():
 @login_required
 def get_user_dashboard(user_id):
     """Return dashboard page."""
-    # user = crud.get_user_by_id(user_id = session['user_id'])
-    user = crud.get_user_by_id(user_id = user_id)
-
-    # user_info = crud.get_dashboard_info(user_id = session['user_id'])
     user_info = crud.get_dashboard_info(user_id = user_id)
     destinations = user_info['destinations']
     people_met = user_info['people_met']
     dollars_earned = user_info['dollars_earned']
 
 
-    return jsonify({'first_name': user.first_name, 'last_name': user.last_name, 
-                  'destinations': destinations, 'people_met': people_met, 'dollars_earned': dollars_earned})
+    return jsonify({'destinations': destinations, 'people_met': people_met, 'dollars_earned': dollars_earned})
 
 @app.route('/get-user-profile-info/<user_id>')
 def get_user_info(user_id):
@@ -461,10 +456,6 @@ def get_user_info(user_id):
 def edit_user_profile():
     
 
-    # print(image, 'imageeeeeee')
-    # print(image.filename) #user.jpg
-
-
     data = request.form.to_dict()
     title = data['title']
     # print(data)
@@ -474,11 +465,6 @@ def edit_user_profile():
     profile_id = data['profile_id']
     print('PROFILE-ID', profile_id)
 
-
-    # if user does not select file, browser also
-    # # submit an empty part without filename
-    # if 'file' not in request.files:
-    #     print('No file part')
     image = request.files['image']
     if image.filename == '':
         print('No selected file')

@@ -34,7 +34,6 @@ function App(){
                     <Route exact path="/">
                         {/* <HomePage/> */}
                         {user ? <Redirect to={`/profile/${user}`}/> : <HomePage/>}
-                        {/* {user ? <Redirect to={`/profile/${user}`}/> : <HomePage/>} */}
                     </Route>
                     <Route exact path="/home">
                         <HomePage/>
@@ -53,9 +52,6 @@ function App(){
                     </Route>
                     {/* <Route path="/profile/:userId" component={Profile}/> */}
                     <Route path="/profile/:userId" render={(props) => <Profile {...props} user={user}/>}/>
-                    {/* <Route path="/dashboard">
-                        <Dashboard/>
-                    </Route>  */}
                 </Switch>
                 {/* <Footer/> */}
             </Router>

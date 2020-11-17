@@ -35,11 +35,11 @@ function Profile({match, user}){
     return (
         <Container className="top-padding">
             <Row>
-            <Dashboard match={match}/>
+            <StatSquares match={match}/>
             <Col xs={4}>
-                <UserInfo user={user} match={match} profile={profile} userInfo={userInfo}  
-                drivesCount={drivesCount} ridesCount={ridesCount} rating={rating} fetchUserProfile={fetchUserProfile}/> 
-                <UserStats drivesCount={drivesCount} ridesCount={ridesCount} rating={rating}/>
+                <UserCardInfo user={user} match={match} profile={profile} userInfo={userInfo}  
+                fetchUserProfile={fetchUserProfile}/> 
+                <UserCardStats drivesCount={drivesCount} ridesCount={ridesCount} rating={rating}/>
             </Col>
             
             <Col>
@@ -51,7 +51,7 @@ function Profile({match, user}){
 }
 
 
-function UserStats({drivesCount, ridesCount, rating}){
+function UserCardStats({drivesCount, ridesCount, rating}){
     return (
         <React.Fragment>
             <Card className="btn-theme">
@@ -69,7 +69,7 @@ function UserStats({drivesCount, ridesCount, rating}){
     )
 }
 
-function UserInfo({user, match, profile, userInfo, drivesCount, ridesCount, rating, fetchUserProfile}){
+function UserCardInfo({user, match, profile, userInfo, fetchUserProfile}){
 
     const [showEdit, setShowEdit] = useState(false)
     const handleEditShow = () => setShowEdit(true)
@@ -97,7 +97,7 @@ function UserInfo({user, match, profile, userInfo, drivesCount, ridesCount, rati
                 <i className="fas fa-phone fa-2x mr-3 ml-3 mb-2" data-fa-transform="left-2 down-5" style={{color: "#BEBEBE"}}/>
                 <span>{userInfo.phone_num}</span> <br/>
                 <i className="fas fa-map-pin fa-2x mr-4  ml-3 mb-2" data-fa-transform="down-5" style={{color: "#BEBEBE"}}/>
-                <span>Enter Location Here</span><br/>
+                <span>{profile ? profile.location : ""}</span><br/>
                 
             </div>
         </Card.Body>  
@@ -105,14 +105,13 @@ function UserInfo({user, match, profile, userInfo, drivesCount, ridesCount, rati
     )
 }
 
-function UserBio({imageSource, title, location, userInfo}){
+function UserBio({imageSource, title, userInfo}){
     return (
         <React.Fragment>
             <img src={imageSource} alt="Profile picture" className="profile-image" width="170" height="170"/>
             <div className="mt-3">
                 <h4>{userInfo.first_name} {userInfo.last_name}</h4>
                 <p className="text-secondary mb-1">{title}</p>
-                {/* <p className="text-muted font-size-sm">{location}</p> */}
             </div>
         </React.Fragment> 
     )
@@ -120,7 +119,7 @@ function UserBio({imageSource, title, location, userInfo}){
 
 
 
-function EditProfileModal({showEdit, handleEditClose, user, profile, fetchUserProfile}){
+function EditProfileModal({showEdit, handleEditClose, user, fetchUserProfile}){
 
     const [image, setImage] = useState("")
     const [title, setTitle] = useState("")
