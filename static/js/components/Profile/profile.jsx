@@ -34,6 +34,10 @@ function Profile({match, user}){
     
     return (
         <Container className="top-padding">
+            <StarRating/>
+            <br/><br/>
+            <Star colorInput = "#ECECEC"></Star>
+            <Star colorInput = "#Eba92a"></Star>
             <Row>
             <StatSquares match={match}/>
             <Col xs={4}>
