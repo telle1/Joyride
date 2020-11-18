@@ -13,8 +13,6 @@ function EditRideModal({showEdit, handleEditClose, currentDrive, setAlertColor, 
         console.log('THIS IS THE RIDE INFO UPDATED', 'RIDE_ID', currentDrive.ride_id, 'seats', seats, 'price', 
         price, 'comments', comments, 'date', date, 'from', from, 'to', to)
 
-        //if a field is empty, set it to the old value...
-
         fetch("/edit-ride", {
             method: "POST",
             headers: {

@@ -26,7 +26,7 @@ function CnclModal({show, handleClose, request_id, status, seats, fetchRides}){
             <Modal.Title>CANCEL CONFIRMATION </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                    <form onSubmit={handleRemove} method="post">    
+                    <Form onSubmit={handleRemove} method="post">    
                         {(status === 'Pending' || status === 'Approved') ?
                             (<React.Fragment><div className="form-group ml-2">
                                 <p>Are you sure you want to cancel?</p>
@@ -46,7 +46,7 @@ function CnclModal({show, handleClose, request_id, status, seats, fetchRides}){
                                 </button> 
                             </div></div> 
                             )}
-                    </form>
+                    </Form>
             </Modal.Body>
         </Modal>
     )}

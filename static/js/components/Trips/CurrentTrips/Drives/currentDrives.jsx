@@ -1,5 +1,4 @@
 const { useState, useEffect } = React 
-const {Popover, OverlayTrigger} = ReactBootstrap 
 
 function CurrentDrives({setAlertColor, setAlertStatus, setShowAlert}){
 
@@ -9,21 +8,17 @@ function CurrentDrives({setAlertColor, setAlertStatus, setShowAlert}){
     const fetchDrives = () => {
         fetch("/current-drives")
         .then(res => res.json()) 
-        .then(data => {
-            console.log('CURRENT DRIVESSSSSSSSS')
-            setCurrentDrives(data.drives)  
-        })
+        .then(data => setCurrentDrives(data.drives))
     }
 
     useEffect(() =>{
         fetchDrives();
     }, []) 
 
-    
     return (
         <React.Fragment>
             <h3 className="table-header">DRIVING</h3>
-            <table className="table table-bordered table-striped">
+            <Table striped bordered hover>
                 <TableHeader col2="Location" col3="Seats" col4="Price" col5="Passengers"></TableHeader>
                 <tbody>
                     {currentDrives.map(currentDrive => (
@@ -31,7 +26,7 @@ function CurrentDrives({setAlertColor, setAlertStatus, setShowAlert}){
                         setAlertStatus={setAlertStatus} setShowAlert={setShowAlert} fetchDrives={fetchDrives}/>
                     ))}
                 </tbody>
-            </table>
+            </Table>
         </React.Fragment>
     )
 }
@@ -69,18 +64,15 @@ function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert
                     fetchDrives={fetchDrives}/>
                 </React.Fragment>
             </td>
-            <td>{currentDrive.start_loc} -> {currentDrive.end_loc}</td>
+            <td>{currentDrive.start_loc} -> <br/>{currentDrive.end_loc}</td>
             <td>{currentDrive.seats}</td>
             <td>${currentDrive.price}</td>
-            {/* <td>{passenger()}</td>
-            <td>{request()}</td> */}
             <td><PassengersList currentDrive={currentDrive}/></td>
             <td><RequestsList currentDrive={currentDrive} setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} 
-            fetchDrives={fetchDrives} setShowAlert={setShowAlert}/></td>
+                fetchDrives={fetchDrives} setShowAlert={setShowAlert}/></td>
         </tr>
     )
 }
-
 
 
 function RequestsList({currentDrive, setAlertColor, setAlertStatus, setShowAlert, fetchDrives}){
@@ -103,7 +95,7 @@ function Request({request, setAlertColor, setAlertStatus, setShowAlert, fetchDri
             <button className="btn-transparent mr-2" onClick={handleInfoShow}>{request.name[0]} {request.name[1]} ({request.seats_requested}) ID:{request.id}</button>
             <ContactInfoModal showInfo={showInfo} handleInfoClose={handleInfoClose} request={request}/>
             <RadioButton request_id={request.id} seats={request.seats_requested} fetchDrives={fetchDrives}
-            setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
+                setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
         </React.Fragment>
     )}
 
@@ -130,6 +122,7 @@ function Passenger({passenger}){
 }
 
     //THIS ORIGINALLY GAVE ME AN ERROR FOR MY MANAGE MODAL => RENDERED FEWER HOOKS THAN EXPECTED
+    //CANNOT SET STATE INSIDE A FUNCTION?
 
     // const request = () => {
 

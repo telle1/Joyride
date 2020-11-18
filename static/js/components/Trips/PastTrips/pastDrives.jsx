@@ -15,24 +15,26 @@ function PastDrives({user, setAlertColor, setAlertStatus, setShowAlert}){
     }, [])
 
     return (
-        <div>
-        <h3 className="table-header">DROVE</h3>
-        <table className="table table-bordered table-striped">
-            <thead>
-            <tr>
-                <th scope="col">Date</th>
-                <th scope="col">Location</th>
-                <th scope="col">Seats</th>
-                <th scope="col">Price</th>
-                <th scope="col">Passengers</th>
-            </tr>
-            </thead>
-            <tbody>
-                {pastDrives.map(pastDrive => <PastDrive pastDrive={pastDrive} user={user} fetchPastDrives={fetchPastDrives}
-                setShowAlert={setShowAlert} setAlertColor={setAlertColor} setAlertStatus={setAlertStatus}/>)}
-            </tbody>
-            </table>
-        </div>
+        <React.Fragment>
+            <h3 className="table-header">DROVE</h3>
+            <Table bordered striped hover>
+                <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Location</th>
+                        <th scope="col">Seats</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Passengers</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {pastDrives.map(pastDrive => <PastDrive pastDrive={pastDrive} user={user} 
+                        fetchPastDrives={fetchPastDrives} setShowAlert={setShowAlert} 
+                        setAlertColor={setAlertColor} setAlertStatus={setAlertStatus}/>
+                    )}
+                </tbody>
+            </Table>
+        </React.Fragment>
     )          
 }
 
@@ -40,14 +42,18 @@ function PastDrive({pastDrive, user, setAlertColor, setAlertStatus, setShowAlert
 
     return (
             <tr>
-                <td>{pastDrive.date} {pastDrive.ride_id}
-                    <br/>{pastDrive.passengers ? <span className="yellow">{pastDrive.feedback_count} of {pastDrive.passengers.length} feedback received.</span> : null}
+                <td> 
+                    {pastDrive.date} {pastDrive.ride_id}
+                    <br/>
+                    {pastDrive.passengers ? <span className="yellow">{pastDrive.feedback_count} of {pastDrive.passengers.length} feedback received.</span> 
+                        : null}
                 </td>
-                <td>{pastDrive.start_loc} -> {pastDrive.end_loc}</td>
-                <td>{pastDrive.seats}</td>
-                <td>${pastDrive.price}</td>
-                <td><PastPassengersList pastDrive={pastDrive} user={user} fetchPastDrives={fetchPastDrives}
-                setShowAlert={setShowAlert} setAlertColor={setAlertColor} setAlertStatus={setAlertStatus}/></td>
+                <td> {pastDrive.start_loc} -> {pastDrive.end_loc}</td>
+                <td> {pastDrive.seats}</td>
+                <td> ${pastDrive.price}</td>
+                <td> <PastPassengersList pastDrive={pastDrive} user={user} fetchPastDrives={fetchPastDrives}
+                        setShowAlert={setShowAlert} setAlertColor={setAlertColor} setAlertStatus={setAlertStatus}/>
+                </td>
             </tr>
     )
 }
@@ -56,10 +62,12 @@ function PastPassengersList({pastDrive, user, setAlertColor, setAlertStatus, set
 
     return (
         <React.Fragment>
-        {pastDrive.passengers ? pastDrive.passengers.map(passenger => <PastPassenger pastDrive={pastDrive} 
-        fetchPastDrives={fetchPastDrives} passenger={passenger} user={user}
-        setShowAlert={setShowAlert} setAlertColor={setAlertColor} setAlertStatus={setAlertStatus}/>)
-            : null}
+            {pastDrive.passengers ? 
+                pastDrive.passengers.map(passenger => <PastPassenger pastDrive={pastDrive} 
+                    fetchPastDrives={fetchPastDrives} passenger={passenger} user={user}
+                    setShowAlert={setShowAlert} setAlertColor={setAlertColor} 
+                    setAlertStatus={setAlertStatus}/>)
+                : null}
         </React.Fragment>
     )
 }
@@ -71,9 +79,16 @@ function PastPassenger({passenger, pastDrive, user, setAlertColor, setAlertStatu
     const handleClose = () => setShow(false) 
 
     return (
-        <React.Fragment><button className="btn-transparent" onClick={handleShow}>{passenger.first_name} {passenger.last_name}</button><br/>
-        <DriverFeedbackModal show={show} handleClose={handleClose} pastDrive={pastDrive} user={user} fetchPastDrives={fetchPastDrives}
-        passenger={passenger} setShowAlert={setShowAlert} setAlertColor={setAlertColor} setAlertStatus={setAlertStatus}/></React.Fragment>
+        <React.Fragment>
+            <button className="btn-transparent" onClick={handleShow}>
+                {passenger.first_name} {passenger.last_name}
+            </button>
+            <br/>
+            <DriverFeedbackModal show={show} handleClose={handleClose} pastDrive={pastDrive} 
+                user={user} fetchPastDrives={fetchPastDrives} passenger={passenger} 
+                setShowAlert={setShowAlert} setAlertColor={setAlertColor} 
+                setAlertStatus={setAlertStatus}/>
+        </React.Fragment>
     )
 }
 
@@ -87,9 +102,7 @@ function DriverFeedbackModal({show, handleClose, pastDrive, user, passenger, set
         e.preventDefault();
         fetch('/give-passenger-feedback',  {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 'feedback': feedback,
                 'rating': rating,
@@ -107,27 +120,27 @@ function DriverFeedbackModal({show, handleClose, pastDrive, user, passenger, set
         })
     }
 
-         return(
-            <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                <Modal.Title>FEEDBACK </Modal.Title>
-                </Modal.Header>
-                <Modal.Body> 
-                    <form onSubmit={sendFeedback} method="post">  
-                            <Link to={`/profile/${passenger.id}`}>{passenger.first_name} {passenger.last_name}</Link>
-                            <div>
-                                <StarRating rating={rating} setRating={setRating}/>
-                            </div>
-                            <div className="form-group mb-4 mt-2">
-                                <textarea className="form-control" placeholder="Feedback" rows="3" value={feedback} onChange={(e) => setFeedback(e.target.value)}></textarea>  
-                            </div>   
-                            <div className="form-group mb-4">
-                                <button type="submit" className="btn btn-theme form-control" onClick={handleClose}>Submit</button> 
-                            </div>  
-                    </form>
-                </Modal.Body>
-            </Modal>
-        )}
+    return(
+    <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+        <Modal.Title>FEEDBACK </Modal.Title>
+        </Modal.Header>
+        <Modal.Body> 
+            <Form onSubmit={sendFeedback} method="post">  
+                    <Link to={`/profile/${passenger.id}`}>{passenger.first_name} {passenger.last_name}</Link>
+                    <div>
+                        <StarRating rating={rating} setRating={setRating}/>
+                    </div>
+                    <div className="form-group mb-4 mt-2">
+                        <textarea className="form-control" placeholder="Feedback" rows="3" value={feedback} onChange={(e) => setFeedback(e.target.value)}></textarea>  
+                    </div>   
+                    <div className="form-group mb-4">
+                        <button type="submit" className="btn btn-theme form-control" onClick={handleClose}>Submit</button> 
+                    </div>  
+            </Form>
+        </Modal.Body>
+    </Modal>
+)}
     
     
 

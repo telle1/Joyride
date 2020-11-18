@@ -6,43 +6,43 @@ function MatchingRide({matchingRide, setAlertColor, setAlertStatus, setShowAlert
 
     return (
             <React.Fragment>
-            <div className="card mb-3">
-                <h5 className="card-header btn-theme"> {matchingRide.date} </h5>
-                <div className="card-body">
-                    <div className="row">
-                        <div className="col-md-4">
+            <Card className="mb-3">
+                <Card.Header className="h5 btn-theme"> {matchingRide.date} </Card.Header>
+                <Card.Body>
+                    <Row>
+                        <Col>
                             {matchingRide.driver_picture ?
                             <img src={`../static/uploads/${matchingRide.driver_picture}`} alt="Driver Picure" className="profile-image" width="150" height="150"/>
                             : <img src={'../static/images/user.jpg'} alt="Driver Picture" className="profile-image" width="150" height="150"/>}
+                        </Col>
 
-                        </div>
-
-                        <div className="col-md-4">
-                            <h4 className="card-title font-weight-bold">
+                        <Col>
+                            <Card.Title className="h4 font-weight-bold">
                              {matchingRide.driver_fname} {matchingRide.driver_lname} ID{matchingRide.ride_id}
-                             </h4>
-                             <p className="card-text">Driver comments: {matchingRide.comments}</p>
-                        </div>
+                             </Card.Title>
+                             <Card.Text>Driver comments: {matchingRide.comments}</Card.Text>
+                        </Col>
 
-                        <div className="col-md-4">
-                            <div className="card-text text-right"> 
+                        <Col>
+                            <Card.Text className="text-right"> 
                                 <h3 className = "mb-0 font-weight-bold yellow">{matchingRide.seats} seats </h3>
                                 <h3 className = "font-weight-bold yellow">${matchingRide.price} each</h3>
-                            </div>
-                        </div>
-                    </div>
+                            </Card.Text>
+                        </Col>
+                    </Row>
 
                     <Row>
-                    <Col><p className="pl-5 pt-2">5 stars</p></Col>
-                    <Col>
-                        <button className="btn btn-theme-outline float-right" onClick={handleShow}>Request Ride</button>
-                        <button className="btn btn-yellow float-right"><Link to={`/profile/${matchingRide.driver}`} className="text-white">View Profile</Link></button>
-                    </Col>
-                    <RequestModal rideID = {matchingRide.ride_id} showRequest={showRequest} handleClose={handleClose} setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
+                        <Col>
+                            <p className="pl-5 pt-2">5 stars</p>
+                        </Col>
+                        <Col>
+                            <button className="btn btn-theme-outline float-right" onClick={handleShow}>Request Ride</button>
+                            <RequestModal rideID = {matchingRide.ride_id} showRequest={showRequest} handleClose={handleClose} setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
+                            <button className="btn btn-yellow float-right"><Link to={`/profile/${matchingRide.driver}`} className="text-white">View Profile</Link></button>
+                        </Col>
                     </Row>
-                    
-            </div>
-            </div>
+                </Card.Body>
+            </Card>
             </React.Fragment>
             // <React.Fragment>
             // <div className="card mb-3">

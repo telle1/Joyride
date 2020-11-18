@@ -3,11 +3,11 @@ function ManageRideModal({showManage, handleManageClose, currentDrive, fetchDriv
     return(
         <Modal show={showManage} onHide={handleManageClose}>
             <Modal.Header closeButton>
-            <Modal.Title>MANAGE PASSENGERS </Modal.Title>
+            <Modal.Title> MANAGE PASSENGERS </Modal.Title>
             </Modal.Header>
             <Modal.Body> 
                 {currentDrive.passengers ? 
-                currentDrive.passengers.map(passenger => <PassengerEntry passenger={passenger} fetchDrives={fetchDrives}/>) : null}
+                    currentDrive.passengers.map(passenger => <PassengerEntry passenger={passenger} fetchDrives={fetchDrives}/>) : null}
             </Modal.Body>
             <Modal.Footer> Double click to remove a passenger. This action is <span className="font-weight-bold">permanent.</span> </Modal.Footer>
         </Modal>

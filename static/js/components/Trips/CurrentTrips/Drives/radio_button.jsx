@@ -34,9 +34,7 @@ function RadioButton({request_id, seats, setAlertColor, setAlertStatus, setShowA
     console.log('STATUS', rideStatus)
 
     return (
-    <form onSubmit={handleStatus} method="post">
-        {/* <input type="radio" className="radio-hide ml-2" checked={rideStatus === 'Approved'} name="request_status" value="Approved" onClick={()=>setRideStatus('Approved')} required />
-        <label htmlFor="Approved"><i className="fas fa-check ml-1 mr-2" style={{color: "green"}}></i></label> */}
+    <Form onSubmit={handleStatus} method="post">
          <label htmlFor="Approved" className="radio-check">
             <input type="radio" className="radio-hide ml-2 radio-check" checked={rideStatus === 'Approved'} name="request_status" value="Approved" id="Approved" onClick={()=>setRideStatus('Approved')} required />
             <i className="fas fa-check ml-1 mr-2 radio-check" style={{color: "green"}}></i>
@@ -46,6 +44,6 @@ function RadioButton({request_id, seats, setAlertColor, setAlertStatus, setShowA
         <label htmlFor="Denied"><i className="fas fa-times ml-1" style={{color: "red"}}></i></label>
 
         <button type="submit" className="ml-2 btn btn-theme">Confirm</button>
-    </form>
+    </Form>
     )
 }

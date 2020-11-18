@@ -1,8 +1,5 @@
 const { useEffect, useState } = React
 const {Container, Row, Col, Card} = ReactBootstrap
-const {SettingsIcon, SvgIcon} = MaterialUI
-const {CountUp} = ReactCountUp
-
 
 function Profile({match, user}){
 
@@ -83,14 +80,15 @@ function UserCardInfo({user, match, profile, userInfo, fetchUserProfile}){
     <Card>
         <Card.Body>
             <React.Fragment>
-                {user == match.params.userId ? <div><button className="btn-transparent float-right" onClick={handleEditShow}>Edit</button><br/><br/></div>
-                : null}
+                {user == match.params.userId ? 
+                    <div><button className="btn-transparent float-right" onClick={handleEditShow}>Edit</button><br/><br/></div>
+                    : null}
                 <EditProfileModal showEdit={showEdit} handleEditClose={handleEditClose} user={user} 
-                profile={profile} fetchUserProfile={fetchUserProfile}/>
+                    profile={profile} fetchUserProfile={fetchUserProfile}/>
             </React.Fragment>
             <div className="d-flex flex-column align-items-center text-center">
-                { profile ? <UserBio imageSource={`../static/uploads/${profile.image}`} title={profile.title} userInfo={userInfo}/>
-                     : <UserBio imageSource={'../static/images/user.jpg'} title={""} location={""} userInfo={userInfo}/>}
+                {profile ? <UserBio imageSource={`../static/uploads/${profile.image}`} title={profile.title} userInfo={userInfo}/>
+                    : <UserBio imageSource={'../static/images/user.jpg'} title={""} location={""} userInfo={userInfo}/>}
             </div>  
             <div>  
                 <i className="fas fa-envelope fa-2x mr-3 ml-3 mb-2" data-fa-transform="left-2 down-5" style={{color: "#BEBEBE"}}/>
@@ -98,8 +96,7 @@ function UserCardInfo({user, match, profile, userInfo, fetchUserProfile}){
                 <i className="fas fa-phone fa-2x mr-3 ml-3 mb-2" data-fa-transform="left-2 down-5" style={{color: "#BEBEBE"}}/>
                 <span>{userInfo.phone_num}</span> <br/>
                 <i className="fas fa-map-pin fa-2x mr-4  ml-3 mb-2" data-fa-transform="down-5" style={{color: "#BEBEBE"}}/>
-                <span>{profile ? profile.location : ""}</span><br/>
-                
+                <span>{profile ? profile.location : ""}</span><br/>     
             </div>
         </Card.Body>  
     </Card>  
@@ -147,38 +144,30 @@ function EditProfileModal({showEdit, handleEditClose, user, fetchUserProfile}){
     return (
         <Modal show={showEdit} onHide={handleEditClose}>
         <Modal.Header closeButton>
-        <Modal.Title>EDIT PROFILE </Modal.Title>
+        <Modal.Title> EDIT PROFILE </Modal.Title>
         </Modal.Header>
         <Modal.Body> 
-                <form onSubmit={handleEdit} method="post">
-                <div className = "form-group row">
-                    <div className = "col-md-3 col-form-label">
-                    <label htmlFor="#">Image</label>
-                    </div>
-                    <div className="col-sm-9">
-                        <input type="file" name="profile_image" accept="image/*" onChange={(e) => setImage(e.target.files[0])}/>
-                    </div>
-                </div>
-                <div className="form-group row">
-                    <div className = "col-md-3 col-form-label">
-                    <label htmlFor="#">Title</label>
-                    </div>
-                    <div className="col-sm-9">
-                    <input type="text" className="form-control" name="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
-                    </div>
-                </div>
-                <div className="form-group row">
-                    <div className = "col-md-3 col-form-label">
-                    <label htmlFor="#">Location</label>
-                    </div>
-                    <div className="col-sm-9">
-                    <input type="text" className="form-control" name="location" value={location} onChange={(e) => setLocation(e.target.value)}/>
-                    </div> 
-                </div>
-                <div className="form-group">
+                <Form onSubmit={handleEdit} method="post">
+                    <Form.Group as={Row} controlId="image">
+                    <Form.Label column xs="3"> Image </Form.Label>
+                        <Col xs={9}>
+                            <input type="file" name="profile_image" accept="image/*" onChange={(e) => setImage(e.target.files[0])}/>
+                        </Col>
+                    </Form.Group>
+                    <Form.Group as={Row}>
+                    <Form.Label column xs="3"> Title </Form.Label>
+                        <Col xs={9}>
+                            <input type="text" className="form-control" name="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
+                        </Col>
+                    </Form.Group>
+                    <Form.Group as={Row}>
+                    <Form.Label column xs="3"> Location</Form.Label>
+                        <Col xs={9}>
+                            <input type="text" className="form-control" name="location" value={location} onChange={(e) => setLocation(e.target.value)}/>
+                        </Col> 
+                    </Form.Group>
                     <button type="submit" className="btn btn-theme form-control" onClick={handleEditClose}>Save Changes</button>
-                </div>
-                </form>
+                </Form>
         </Modal.Body>
     </Modal>
     )
