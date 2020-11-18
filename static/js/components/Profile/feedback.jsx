@@ -19,7 +19,11 @@ function FeedbackRow({feedbacks}){
         <React.Fragment>    
         {feedbacks.map(feedback => 
         <tr key={feedback.id}>
-            <td>{feedback.rating} star<br/>
+            <td>
+                {[...Array(feedback.rating)].map(
+                    rating => <Star colorInput="#eba92a"/>
+                )}       
+                <br/>
                 {feedback.feedback}
             </td>
         </tr>)}

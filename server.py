@@ -438,7 +438,7 @@ def get_user_info(user_id):
     feedback_info = crud.get_user_feedback(user_id = user_id)
     print('tHIS IS THE FEEDBACK INFO', feedback_info)
     feedback_list = feedback_info['feedback']
-    average_rating = feedback_info['average_rating']
+    average_rating = "{:.1f}".format(feedback_info['average_rating']) #round the number to one decimal
     #Profile picture, location, and title info
     profile = crud.get_user_profile(profile_id = user_id)
     if profile:

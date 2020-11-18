@@ -34,10 +34,6 @@ function Profile({match, user}){
     
     return (
         <Container className="top-padding">
-            <StarRating/>
-            <br/><br/>
-            <Star colorInput = "#ECECEC"></Star>
-            <Star colorInput = "#Eba92a"></Star>
             <Row>
             <StatSquares match={match}/>
             <Col xs={4}>
@@ -45,7 +41,6 @@ function Profile({match, user}){
                 fetchUserProfile={fetchUserProfile}/> 
                 <UserCardStats drivesCount={drivesCount} ridesCount={ridesCount} rating={rating}/>
             </Col>
-            
             <Col>
                 <FeedbackContainer feedbacks={feedbacks}/>
             </Col>

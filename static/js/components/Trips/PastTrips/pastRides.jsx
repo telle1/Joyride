@@ -68,7 +68,7 @@ function PastRide({pastRide, user, fetchPastRides}){
 
 function FeedbackModal({show, handleClose, user, pastRide, fetchPastRides}){
 
-    const [rating, setRating] = useState(1)
+    const [rating, setRating] = useState(0)
     const [feedback, setFeedback] = useState("")
 
     const sendFeedback = (e) => {
@@ -102,8 +102,9 @@ function FeedbackModal({show, handleClose, user, pastRide, fetchPastRides}){
                 <form onSubmit={sendFeedback} method="post">  
                         <p>{pastRide.ride.driver.f_name} {pastRide.ride.driver.l_name}</p>
                         <div>
-                            <label htmlFor="rating" className="mr-2 mb-2">Rating</label>
-                            <input type="number" placeholder="1" value={rating} onChange={(e) => setRating(e.target.value)}></input>    
+                            {/* <label htmlFor="rating" className="mr-2 mb-2">Rating</label>
+                            <input type="number" placeholder="1" value={rating} onChange={(e) => setRating(e.target.value)}></input>     */}
+                            <StarRating rating={rating} setRating={setRating}/>
                         </div>
                         <div className="form-group mb-4 mt-2">
                             <textarea className="form-control" placeholder="Feedback for driver" rows="3" value={feedback} onChange={(e) => setFeedback(e.target.value)}></textarea>  

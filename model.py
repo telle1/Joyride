@@ -131,13 +131,14 @@ if __name__ == '__main__':
 #     def serialize(self):
 #         return {'list_id': self.list_id, 'user_id': self.user_id, 'list_item': self.list_item}
 
-# test = Feedback(feedback = 'test', rating = 1, feedback_giver=8, feedback_receiver=2, ride_id=3)
+# test = Feedback(feedback = 'test123', rating = 3, feedback_giver=2, feedback_receiver=6, ride_id=54)
 # db.session.add(test)
 # db.session.commit()
 
-# request = Request(ride_id = 1, rider_id = 7, seats_requested = 1, status='Approved')
+# request = Request(ride_id = 2, rider_id = 6, seats_requested = 1, status='Approved')
 # db.session.add(request)
 # db.session.commit()
+
 
 
     # request_id = db.Column(db.Integer, primary_key = True, autoincrement = True, unique = True)
