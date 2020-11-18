@@ -35,13 +35,17 @@ function RadioButton({request_id, seats, setAlertColor, setAlertStatus, setShowA
 
     return (
     <form onSubmit={handleStatus} method="post">
-        <input type="radio" checked={rideStatus === 'Approved'} name="request_status" value="Approved" onClick={()=>setRideStatus('Approved')} required />
-        <label htmlFor="Approved">Approve</label>
+        {/* <input type="radio" className="radio-hide ml-2" checked={rideStatus === 'Approved'} name="request_status" value="Approved" onClick={()=>setRideStatus('Approved')} required />
+        <label htmlFor="Approved"><i className="fas fa-check ml-1 mr-2" style={{color: "green"}}></i></label> */}
+         <label htmlFor="Approved" className="radio-check">
+            <input type="radio" className="radio-hide ml-2 radio-check" checked={rideStatus === 'Approved'} name="request_status" value="Approved" id="Approved" onClick={()=>setRideStatus('Approved')} required />
+            <i className="fas fa-check ml-1 mr-2 radio-check" style={{color: "green"}}></i>
+        </label>
 
-        <input type="radio" checked={rideStatus === 'Denied'} name="request_status" value="Denied" onClick={()=>setRideStatus('Denied')}/>
-        <label htmlFor="Denied">Deny</label>
+        <input type="radio" className="radio-hide" checked={rideStatus === 'Denied'} name="request_status" value="Denied" onClick={()=>setRideStatus('Denied')}/>
+        <label htmlFor="Denied"><i className="fas fa-times ml-1" style={{color: "red"}}></i></label>
 
-        <button type="submit" className="btn btn-theme">Confirm</button>
+        <button type="submit" className="ml-2 btn btn-theme">Confirm</button>
     </form>
     )
 }

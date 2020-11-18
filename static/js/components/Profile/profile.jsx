@@ -1,6 +1,7 @@
 const { useEffect, useState } = React
 const {Container, Row, Col, Card} = ReactBootstrap
 const {SettingsIcon, SvgIcon} = MaterialUI
+const {CountUp} = ReactCountUp
 
 
 function Profile({match, user}){
@@ -35,6 +36,7 @@ function Profile({match, user}){
     return (
         <Container className="top-padding">
             <Row>
+            {/* <CountUp end={100} /> */}
             <StatSquares match={match}/>
             <Col xs={4}>
                 <UserCardInfo user={user} match={match} profile={profile} userInfo={userInfo}  
