@@ -104,9 +104,9 @@ def register_user():
     if user is None:
         crud.create_user(first_name = first_name, last_name = last_name, email = email, 
                         password = password, phone_num = phone_num)
-        resp = jsonify({'msg': 'You have successfully registered! Log in to continue.', 'success': 'success'})
+        resp = jsonify({'msg': 'You have successfully registered! Log in to continue.', 'color': 'success'})
     else:
-        resp = jsonify({'msg': 'A user with that email has already been registered.'})
+        resp = jsonify({'msg': 'A user with that email has already been registered.', 'color': 'danger'})
 
     return resp
 
@@ -267,7 +267,8 @@ def get_user_past_rides():
                             'start_loc': req.ride.start_loc,
                             'end_loc': req.ride.end_loc,
                             'driver': {'id': req.ride.user.user_id, 'f_name': req.ride.user.first_name, 'l_name': req.ride.user.last_name},
-                            'cost': req.ride.price}
+                            'cost': req.ride.price,
+                            'seats': req.seats_requested}
             }
             did_passenger_give_feedback= crud.check_if_passenger_gave_feedback(ride_id = req.ride.ride_id, passenger = req.user.user_id)
             if did_passenger_give_feedback:

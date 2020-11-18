@@ -25,6 +25,16 @@ h3.heading {
   margin: 0 auto;
 }
 
+/*REGISTER MODAL---*REGISTER MODAL---*REGISTER MODAL---*REGISTER MODAL---*REGISTER MODAL---*/
+.error-message{
+  margin-top: -20px;
+  color: red;
+  margin-bottom: 5px;
+}
+
+.error-message::before {
+  content: "⚠ ";
+}
 
 /*LANDING PAGE---LANDING PAGE---LANDING PAGE---LANDING PAGE--- */
 #homesection {

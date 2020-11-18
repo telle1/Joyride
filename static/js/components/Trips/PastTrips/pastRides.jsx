@@ -22,9 +22,9 @@ function PastRides({user}){
             <thead>
                 <tr>
                     <th scope="col">Date</th>
-                    <th scope="col">From</th>
-                    <th scope="col">To</th>
+                    <th scope="col">Location</th>
                     <th scope="col">Driver</th>
+                    <th scope="col">Seats Req.</th>
                     <th scope="col">Cost</th>
                 </tr>
             </thead>
@@ -56,14 +56,14 @@ function PastRide({pastRide, user, fetchPastRides}){
                     </div>
                 </React.Fragment>
             </td>
-            <td> {pastRide.ride.start_loc} </td>
-            <td> {pastRide.ride.end_loc} </td>
+            <td> {pastRide.ride.start_loc} -> <br/> {pastRide.ride.end_loc} </td>
             <td> 
                 <Link to={`/profile/${pastRide.ride.driver.id}`}>
                     {pastRide.ride.driver.f_name} {pastRide.ride.driver.l_name}
                 </Link>
             </td>
-            <td> ${pastRide.ride.cost} </td>
+            <td>{pastRide.ride.seats}</td>
+            <td> ${pastRide.ride.cost * pastRide.ride.seats} </td>
     </tr>
     )
 }
