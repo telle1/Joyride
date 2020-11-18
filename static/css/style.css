@@ -16,6 +16,11 @@ body {
   color: #388087;
 }
 
+.btn-theme-outline:hover{
+  background-color: #388087;
+  color: white;
+}
+
 .btn-yellow {
   color: white;
   background-color: #eba92a;

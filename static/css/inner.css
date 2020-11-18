@@ -30,7 +30,8 @@
 
 /*Post ride page---Post ride page---Post ride page---Post ride page---Post ride page---*/
 .f-grey {
-    background-color: #ECECEC;
+    /* background-color: #ECECEC; */
+    border: 1px solid #388087;
     border-radius: 10px;
     padding: 20px;
     }
@@ -45,8 +46,14 @@ form h3 {
 }
   
 /*Search ride---Search ride---Search ride---Search ride---Search ride---*/
-
-
+.text-header h1{
+    font-weight: bold;
+    font-family: 'Pacifico', cursive;
+    font-size: 80px;
+    color: white;
+    text-shadow: 0 0 3px #388087, 0 0 8px #388087;
+    text-shadow: 0 0 3px #eba92a, 0 0 8px #eba92a;
+}
 
 /*Dashboard page---Dashboard page---Dashboard page---Dashboard page---Dashboard page---Dashboard page---*/
 .inner {
@@ -80,20 +87,6 @@ form h3 {
 .inner h1 {
     font-size: 70px;
     text-shadow: 0 0 3px #F5D5C8, 0 0 8px #F5D5C8;
-}
-
-.text-header h1{
-    font-weight: bold;
-    font-family: 'Pacifico', cursive;
-    font-size: 80px;
-    color: white;
-    text-shadow: 0 0 3px #388087, 0 0 8px #388087;
-
-}
-
-.text-header span {
-    text-shadow: 0 0 3px #eba92a, 0 0 8px #eba92a;
-
 }
 
 /*Profile page---Profile page---Profile page---Profile page---Profile page---Profile page---*/
