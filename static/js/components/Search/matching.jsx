@@ -32,8 +32,17 @@ function MatchingRide({matchingRide, setAlertColor, setAlertStatus, setShowAlert
                     </Row>
 
                     <Row>
-                        <Col>
-                            <p className="pl-5 pt-2">5 stars</p>
+                        <Col xs={4} className="text-center">
+                            {matchingRide.average_rating == 'N/A' ? <div className="pt-2"></div> : 
+                                <div className="pt-2 font-weight-bold yellow"> 
+                                    {[...Array(Math.floor(matchingRide.average_rating))].map(star =>
+                                        <Star colorInput="#eba92a" cursor="no-pointer"/>)} 
+                                    {(matchingRide.average_rating - Math.floor(matchingRide.average_rating)) >= 0.5 ? 
+                                        <i class="fas fa-star-half" style={{color: "#eba92a"}}></i> : null}
+                                </div>
+                            }
+                            <p className="text-center font-weight-bold yellow my-0"> {matchingRide.average_rating} stars</p>
+
                         </Col>
                         <Col>
                             <button className="btn btn-theme-outline float-right" onClick={handleShow}>Request Ride</button>

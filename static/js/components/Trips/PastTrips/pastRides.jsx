@@ -101,7 +101,7 @@ function FeedbackModal({show, handleClose, user, pastRide, fetchPastRides}){
                 <Form onSubmit={sendFeedback} method="post">  
                         <p> {pastRide.ride.driver.f_name} {pastRide.ride.driver.l_name} </p>
                         <div>
-                            <StarRating rating={rating} setRating={setRating}/>
+                            <StarRating rating={rating} setRating={setRating} cursor="cursor-pointer"/>
                         </div>
                         <div className="form-group mb-4 mt-2">
                             <textarea className="form-control" placeholder="Feedback for driver" rows="3" 

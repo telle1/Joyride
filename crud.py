@@ -34,9 +34,15 @@ def get_matching_rides(start_loc, end_loc):
     rides_list = []
     for ride in matching_rides:
         ride_serialized = ride.serialize()
+        driver_feedback = get_user_feedback(ride.user.user_id)
+        if driver_feedback['average_rating'] == 'N/A':
+            ride_serialized['average_rating'] = 'N/A'
+        else:
+            ride_serialized['average_rating'] = "{:.1f}".format(float(driver_feedback['average_rating']))
         if ride.user.profile:
             ride_serialized['driver_picture'] = ride.user.profile.image
         rides_list.append(ride_serialized)
+
     return rides_list
 
 

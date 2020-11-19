@@ -22,9 +22,10 @@ function FeedbackRow({feedbacks}){
             {feedbacks.map(feedback => 
             <tr key={feedback.id}>
                 <td>
-                    {[...Array(feedback.rating)].map(
+                    {/* {[...Array(feedback.rating)].map(
                         rating => <Star colorInput="#eba92a"/>
-                    )}       
+                    )}        */}
+                    <StarRating rating={feedback.rating} cursor="no-pointer"/>
                     <br/>
                     {feedback.feedback}
                 </td>

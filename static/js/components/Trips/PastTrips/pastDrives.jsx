@@ -129,7 +129,7 @@ function DriverFeedbackModal({show, handleClose, pastDrive, user, passenger, set
             <Form onSubmit={sendFeedback} method="post">  
                     <Link to={`/profile/${passenger.id}`}>{passenger.first_name} {passenger.last_name}</Link>
                     <div>
-                        <StarRating rating={rating} setRating={setRating}/>
+                        <StarRating rating={rating} setRating={setRating} cursor="cursor-pointer"/>
                     </div>
                     <div className="form-group mb-4 mt-2">
                         <textarea className="form-control" placeholder="Feedback" rows="3" value={feedback} onChange={(e) => setFeedback(e.target.value)}></textarea>  

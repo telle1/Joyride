@@ -85,10 +85,10 @@ function NavBarUser({handleLogout, user}){
                   <Dropdown.Toggle className="btn-theme" id="rides-dropdown">
                     My Rides
                   </Dropdown.Toggle>
-                  <Dropdown.Menu>
+                  <Dropdown.Menu> 
                     <Dropdown.Item><Link to="/current-rides">Current Rides</Link></Dropdown.Item>
                     <Dropdown.Item><Link to="/past-rides">Past Rides</Link></Dropdown.Item>
-                    </Dropdown.Menu>
+                  </Dropdown.Menu>
                 </Dropdown>
                 <Nav.Link><Link to={`/profile/${user}`} className="btn navbar-btn shadow-none"><HomeIcon color="white"/></Link></Nav.Link>
                 {/* <Nav.Link><Link to="/dashboard" className="btn navbar-btn shadow-none"><HomeIcon color="white"/></Link></Nav.Link> */}

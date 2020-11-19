@@ -1,4 +1,4 @@
-function StarRating({setRating, rating}){
+function StarRating({setRating, rating, cursor}){
     // const [rating, setRating]= useState(0)
     // cannot have it here since I need to use this in the form, put it in the parent and pass it down as props
     return (
@@ -15,10 +15,8 @@ function StarRating({setRating, rating}){
                     onClick={() => setRating(Math.abs(starValue))}/>
                     
                     {(starValue <= rating) ? 
-                        <Star key={starValue} colorInput="#eba92a" onMouseEnter={() => setHover(starValue)}
-                        onMouseLeave={() => setHover(null)}/> 
-                        : <Star key={starValue} colorInput="#ececec"onMouseEnter={() => setHover(starValue)}
-                        onMouseLeave={() => setHover(null)}/>}
+                        <Star key={starValue} colorInput="#eba92a" cursor={cursor}/> 
+                        : <Star key={starValue} colorInput="#ececec" cursor={cursor}/>}
                 </label>
                 );
         })} 
@@ -26,10 +24,10 @@ function StarRating({setRating, rating}){
     )
 }
 
-function Star ({colorInput}){
+function Star ({colorInput, cursor}){
     return (
         <React.Fragment>
-            <i className="fas fa-star rating-star" style={{color: colorInput}}></i>
+            <i className={`fas fa-star ${cursor}`} style={{color: colorInput}}></i>
         </React.Fragment>
     )
 }

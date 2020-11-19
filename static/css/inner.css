@@ -14,8 +14,12 @@
     display: none;
 }
 
-.rating-star:hover{
+.cursor-pointer:hover{
     cursor: pointer;
+}
+
+.no-pointer:hover{
+    cursor: default;
 }
 
 
@@ -100,6 +104,9 @@ form h3 {
     border-radius: 50%;
 }
 
+.remove-cursor-pointer:hover{
+    cursor: none;
+}
 
 /*Bounce animation - courtesy of https://codepen.io/levineuland*/
 
