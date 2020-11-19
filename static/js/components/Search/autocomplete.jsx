@@ -126,6 +126,7 @@ function SearchBar({input, setInput, placeholder}){
     );
     autoComplete.setFields(["address_components", "formatted_address"]); 
     autoComplete.addListener("place_changed", () => handlePlaceSelect())
+    
   })
 
   async function handlePlaceSelect(){

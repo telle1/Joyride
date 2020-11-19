@@ -35,8 +35,8 @@
 
 /*Post ride page---Post ride page---Post ride page---Post ride page---Post ride page---*/
 .f-grey {
-    /* background-color: #ECECEC; */
-    border: 1px solid #388087;
+    background-color: rgb(245,245,245);
+    /* border: 1px solid #388087; */
     border-radius: 10px;
     padding: 20px;
     }
@@ -46,10 +46,6 @@ form h3 {
     font-weight: bold;
 }
 
-#map {
-    height: 525px;
-}
-  
 /*Search ride---Search ride---Search ride---Search ride---Search ride---*/
 .text-header h1{
     font-weight: bold;
@@ -126,3 +122,4 @@ form h3 {
   .bounce {
     animation-name: bounce;
   }
+
