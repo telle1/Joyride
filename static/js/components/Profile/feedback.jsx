@@ -4,7 +4,7 @@ function FeedbackContainer({feedbacks}){
     return (
         <React.Fragment>
                 <h3 className="yellow">Recent Feedback</h3>
-                <div className="table-wrap">
+                <div className="feedback-wrap">
                     <Table bordered>
                         <tbody>
                             <FeedbackRow feedbacks={feedbacks}/>

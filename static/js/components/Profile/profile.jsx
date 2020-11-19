@@ -41,7 +41,9 @@ function Profile({match, user}){
                 <UserCardStats drivesCount={drivesCount} ridesCount={ridesCount} rating={rating}/>
             </Col>
             <Col>
+                <Notifications/>
                 <FeedbackContainer feedbacks={feedbacks}/>
+
             </Col>
             </Row>
         </Container>

@@ -31,7 +31,6 @@
     font-weight: bold;
     padding-top: 30px;
 }
-/* 
 
 /*Post ride page---Post ride page---Post ride page---Post ride page---Post ride page---*/
 .f-grey {
@@ -91,10 +90,57 @@ form h3 {
 }
 
 /*Profile page---Profile page---Profile page---Profile page---Profile page---Profile page---*/
-.table-wrap{
+.feedback-wrap{
     height: 400px;
     overflow: auto;
 }
+
+.notification-wrap{
+    height: 180px;
+    overflow: auto;
+    margin-bottom: 20px;
+}
+
+.notif-color{
+    background-color: salmon;
+    color: white;
+}
+
+.green{
+    background-color: #90EE90;
+    color: white;
+
+}
+
+.blue{
+    background-color: #f2f8fb;
+    color: white;
+
+}
+
+.dark-blue{
+    background-color: #3592FF;
+}
+
+
+
+.gray-text {
+    color: gray;
+}
+
+.white-icon{
+    color: white;
+}
+
+.salmon-icon{
+    color: salmon;
+}
+
+.blue{
+    color: lightblue;
+}
+
+
 
 .profile-image{
     border-radius: 50%;
@@ -103,8 +149,6 @@ form h3 {
 .remove-cursor-pointer:hover{
     cursor: none;
 }
-
-/*Bounce animation - courtesy of https://codepen.io/levineuland*/
 
 .animated {
     animation-duration: 5s;
