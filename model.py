@@ -137,7 +137,7 @@ if __name__ == '__main__':
 # db.session.add(test)
 # db.session.commit()
 
-# request = Request(ride_id = 52, rider_id = 1, seats_requested = 1, status='Approved', date= datetime.now())
+# request = Request(ride_id = 51, rider_id = 1, seats_requested = 1, status='Approved', date= datetime.now())
 # db.session.add(request)
 # db.session.commit()
 

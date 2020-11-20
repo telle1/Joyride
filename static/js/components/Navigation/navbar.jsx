@@ -90,6 +90,15 @@ function NavBarUser({handleLogout, user}){
                     
                     <Dropdown.Item><Link to="/past-rides">Past Rides</Link></Dropdown.Item>
                   </Dropdown.Menu>
+
+                </Dropdown>
+                <Dropdown>
+                  <Dropdown.Toggle className="btn-theme">
+                    Notifications
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu> 
+                    <Dropdown.Item style={{width: '400px'}}><Notifications colSize="2"/></Dropdown.Item>
+                  </Dropdown.Menu>
                 </Dropdown>
                 <Nav.Link><Link to={`/profile/${user}`} className="btn navbar-btn shadow-none"><HomeIcon color="white"/></Link></Nav.Link>
                 {/* <Nav.Link><Link to="/dashboard" className="btn navbar-btn shadow-none"><HomeIcon color="white"/></Link></Nav.Link> */}

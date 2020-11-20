@@ -1,4 +1,4 @@
-function Notifications(){
+function Notifications({colSize}){
    
     const [rides, setRides] = useState([])
     console.log('NOTIFS', rides)
@@ -25,7 +25,7 @@ function Notifications(){
                 <div className="notification-wrap">
                     <Table bordered>
                         <tbody>
-                            {ridesNotPending.map(ride => <NotificationRow ride={ride}/>)}
+                            {ridesNotPending.map(ride => <NotificationRow colSize={colSize} ride={ride}/>)}
                         </tbody>
                     </Table>
                 </div>
@@ -33,7 +33,7 @@ function Notifications(){
     )
 }
 
-function NotificationRow({ride}){
+function NotificationRow({ride, colSize}){
 
     let iconBgColor;
     let icon;
@@ -67,7 +67,7 @@ function NotificationRow({ride}){
         <tr>
             <td className="py-0"> 
                 <Row>
-                    <Col xs={1} className="d-flex justify-content-center align-items-center" style={{backgroundColor: iconBgColor}} >
+                    <Col xs={colSize} className="d-flex justify-content-center align-items-center" style={{backgroundColor: iconBgColor}} >
                         <i className={`${icon}`}></i>
                     </Col>
                     <Col style={{backgroundColor: textBgColor}}>

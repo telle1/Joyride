@@ -41,7 +41,7 @@ function Profile({match, user}){
                 <UserCardStats drivesCount={drivesCount} ridesCount={ridesCount} rating={rating}/>
             </Col>
             <Col>
-                {user == match.params.userId ? <Notifications/> : null }
+                {user == match.params.userId ? <Notifications colSize="1"/> : null }
                 <FeedbackContainer feedbacks={feedbacks}/>
 
             </Col>
@@ -51,23 +51,6 @@ function Profile({match, user}){
 }
 
 
-function UserCardStats({drivesCount, ridesCount, rating}){
-    return (
-        <React.Fragment>
-            <Card className="btn-theme">
-            <Row className="py-2">
-                <Col className="text-center"> 
-                    <h2>{drivesCount}</h2> DRIVES
-                </Col>
-                <Col className="text-center"><h2>{ridesCount}</h2> RIDES
-                </Col>
-                <Col className="text-center"><h2>{rating}</h2>STARS
-                </Col>
-            </Row>
-            </Card>
-        </React.Fragment>
-    )
-}
 
 function UserCardInfo({user, match, profile, userInfo, fetchUserProfile}){
 
@@ -117,22 +100,45 @@ function UserBio({imageSource, title, userInfo}){
     )
 }
 
-function EditProfileModal({showEdit, handleEditClose, user, fetchUserProfile, profile}){
+function UserCardStats({drivesCount, ridesCount, rating}){
+    return (
+        <React.Fragment>
+            <Card className="btn-theme">
+            <Row className="py-2">
+                <Col className="text-center"> 
+                    <h2>{drivesCount}</h2> DRIVES
+                </Col>
+                <Col className="text-center"><h2>{ridesCount}</h2> RIDES
+                </Col>
+                <Col className="text-center"><h2>{rating}</h2>STARS
+                </Col>
+            </Row>
+            </Card>
+        </React.Fragment>
+    )
+}
 
-    const [image, setImage] = useState("")
-    const [title, setTitle] = useState("") //
-    const [location, setLocation] = useState("")
+
+function EditProfileModal({showEdit, handleEditClose, user, fetchUserProfile, profile}){
 
     let previousTitle = profile && profile.title ? profile.title : ""
     let previousLocation = profile && profile.location ? profile.location : ""
     let previousImage = profile && profile.image ? profile.image : ""
 
+    console.log('PREVIOUS INFO: Title', previousTitle, 'Location', previousLocation, 'Image Name', previousImage)
+
+    const [image, setImage] = useState("")
+    const [title, setTitle] = useState("") 
+    const [location, setLocation] = useState("")
+
+    console.log('PREVIOUS TITLE', previousTitle)
+    console.log('TITLE STATE', title)
+
     useEffect(() => {
         // setTitle(previousTitle) //when I tried to set this in the initial state, it did not work
         // setLocation(previousLocation) //when I tried to set this in the initial state, it did not work
-        // setImage(previousImage)
-    })
-
+        // // setImage(previousImage)
+    }, [])
 
     const handleEdit = (e) => {
         e.preventDefault();
@@ -172,15 +178,17 @@ function EditProfileModal({showEdit, handleEditClose, user, fetchUserProfile, pr
                     <Form.Label column xs="3"> Title </Form.Label>
                         <Col xs={9}>
                             <input type="text" className="form-control" name="title" 
-                                placeholder={title} value={title} onChange={(e) => setTitle(e.target.value)}/>
-                        </Col>
+                                value={title} onChange={(e) => setTitle(e.target.value)}/>
+                        </Col> 
+                        {/* value={title} */}
                     </Form.Group>
                     <Form.Group as={Row}>
                     <Form.Label column xs="3"> Location</Form.Label>
                         <Col xs={9}>
                             <input type="text" className="form-control" name="location" 
-                                placeholder={location} value={location} onChange={(e) => setLocation(e.target.value)}/>
+                                value={location} onChange={(e) => setLocation(e.target.value)}/>
                         </Col> 
+                        {/* value={location}  */}
                     </Form.Group>
                     <button type="submit" className="btn btn-theme form-control" onClick={handleEditClose}>Save Changes</button>
                 </Form>
