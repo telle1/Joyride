@@ -16,15 +16,17 @@ function NavBar({setUser, user, alertColor, setAlertColor, alertStatus, setAlert
           user_id: user
         })
       })
-      .then(res => res.json())
-      .then(data => {
-          console.log(data.msg)
-      })
-
+      // .then(res => res.json())
+      // .then(data => {
+      //     console.log(data.msg)
+      // })
       setUser(null)
       setShowAlert(false)
       localStorage.removeItem('user_id')
     }
+
+    console.log(user, 'THIS IS THE USER AFTER LOG OUT')
+    console.log(localStorage.getItem('user_id'), 'THIS IS THE USER LOCAL STORAGE LOG OUT')
 
     if (user){
       return <NavBarUser handleLogout={handleLogout} user={user}/>
@@ -101,7 +103,6 @@ function NavBarUser({handleLogout, user}){
                   </Dropdown.Menu>
                 </Dropdown>
                 <Nav.Link><Link to={`/profile/${user}`} className="btn navbar-btn shadow-none"><HomeIcon color="white"/></Link></Nav.Link>
-                {/* <Nav.Link><Link to="/dashboard" className="btn navbar-btn shadow-none"><HomeIcon color="white"/></Link></Nav.Link> */}
                 <Nav.Link><Link to="/" className="btn navbar-btn shadow-none" onClick={handleLogout}>Log Out</Link></Nav.Link>
             </Nav>
          </Navbar.Collapse>

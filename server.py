@@ -221,22 +221,63 @@ def get_current_rides():
     current_ride_requests = crud.get_current_user_requests(rider_id = session['user_id'])
     current_rides_list = []
     for req in current_ride_requests:
-        req_serialized = {
-            'date': req.ride.date,
-            'req_date': req.date,
-            'start_loc': req.ride.start_loc,
-            'end_loc': req.ride.end_loc,
-            'cost': req.ride.price,
-            'status': req.status,
-            'request_id': req.request_id,
-            'seats_requested': req.seats_requested,
-            'seats_available': req.ride.seats,
-            'driver': {'user_id': req.ride.user.user_id,'first_name': req.ride.user.first_name, 'last_name': req.ride.user.last_name,
-                'email': req.ride.user.email, 'phone_num': req.ride.user.phone_num}
-        }
-        current_rides_list.append(req_serialized)
+        if req.status != 'Cancelled By Passenger':
+            req_serialized = {
+                'date': req.ride.date,
+                'req_date': req.date,
+                'start_loc': req.ride.start_loc,
+                'end_loc': req.ride.end_loc,
+                'cost': req.ride.price,
+                'status': req.status,
+                'request_id': req.request_id,
+                'seats_requested': req.seats_requested,
+                'seats_available': req.ride.seats,
+                'driver': {'user_id': req.ride.user.user_id,'first_name': req.ride.user.first_name, 'last_name': req.ride.user.last_name,
+                    'email': req.ride.user.email, 'phone_num': req.ride.user.phone_num}
+            }
+            current_rides_list.append(req_serialized)
 
     return jsonify({'rides': current_rides_list})
+
+@app.route('/notifications')
+def get_notifications():
+
+    current_ride_requests = crud.get_current_user_requests_by_date(rider_id = session['user_id'])
+    current_ride_requests.reverse()
+
+    notifications_list = []
+    for req in current_ride_requests:
+        if req.status != 'Cancelled By Passenger' and req.status != 'Pending':
+            req_serialized = {
+                'req_date': req.date,
+                'start_loc': req.ride.start_loc,
+                'end_loc': req.ride.end_loc,
+                'status': req.status,
+            }
+            notifications_list.append(req_serialized)
+    
+    # current_user_drives = crud.get_current_user_drives(driver_id = session['user_id'])
+    # for drive in current_user_drives:
+    #     for req in drive.request: 
+    #         if req.status == 'Cancelled By Passenger':
+    #             req_serialized = {
+    #             'req_date': req.date,
+    #             'start_loc': req.ride.start_loc,
+    #             'end_loc': req.ride.end_loc,
+    #             'status': req.status,
+    #         } 
+    #             notifications_list.append(req_serialized)
+            #add to notifications list...
+    #for req in current_ride_requessts:
+        #if req.ride.edited_at != 'None':
+            #add to notifications list
+    
+    print('THIS IS THE NOTIFCICATIONS LIST', notifications_list)
+
+
+    return jsonify({'notifications': notifications_list})
+    #driver edits the ride
+    #start, end
 
 @app.route('/past-rides')
 @login_required
@@ -320,16 +361,9 @@ def confirm_rides():
 def edit_ride():
 
     data = request.json
-    ride_id = data['ride_id']
-    seats = data['seats']
-    price = data['price']
-    comments = data['comments']
-    date = data['date']
-    start_loc = data['from']
-    end_loc = data['to']
 
-    crud.edit_driver_ride(ride_id = ride_id, seats = seats, price = price, comments = comments, date = date,
-        start_loc = start_loc, end_loc = end_loc)
+    crud.edit_driver_ride(ride_id = data['ride_id'], seats = data['seats'], price = data['price'], 
+        comments = data['comments'], date = data['date'], start_loc = data['from'], end_loc = data['to'])
 
     return jsonify({'msg': 'Ride successfully edited.', 'color': 'success'})
 
@@ -367,10 +401,8 @@ def delete_ride():
 def delete_request():
 
     data = request.json
-    request_id = data['request_id']
-    seats_to_add = data['seats']
 
-    crud.delete_user_request(request_id = request_id, seats_to_add = seats_to_add)
+    crud.delete_user_request(request_id = data['request_id'], seats_to_add = data['seats'])
 
     return jsonify({'msg': 'Deleted ride.'})
 
@@ -429,10 +461,6 @@ def give_passenger_feedback():
 
     return resp
 
-@app.route('/notifications')
-def get_user_notifications():
-    print('hello')
-
 @app.route('/dashboard/<user_id>')
 @login_required
 def get_user_dashboard(user_id):
@@ -469,13 +497,10 @@ def get_user_info(user_id):
     user_stats = crud.get_dashboard_info(user_id = user_id)
     user_drives_count = user_stats['drives']
     user_rides_count = user_stats['rides']
-    #Feedback count (community points)
-    community_points = crud.get_user_gives_feedback_count(user_id = user_id)
-    print(community_points)
 
     return jsonify({'feedback': feedback_list, 'profile_info': profile_ser, 
-                    'user_info': user_info, 'average_rating': average_rating, 'drives_count': user_drives_count,
-                    'rides_count': user_rides_count, 'community_points': community_points})
+                    'user_info': user_info, 'average_rating': average_rating, 
+                    'drives_count': user_drives_count, 'rides_count': user_rides_count,})
 
 @app.route('/edit-profile', methods=['POST'])
 def edit_user_profile():
@@ -519,13 +544,9 @@ def edit_user_profile():
 def logout_user():
     """Logout user."""
 
-    data= request.json
-    user_id = data['user_id']
-
     if 'user_id' in session:
-        #del session['user_id']
         session.pop('user_id', None)
-    
+    print(session)
     return jsonify({'msg': 'Logged out'})
 
 if __name__ == "__main__":

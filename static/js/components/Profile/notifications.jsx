@@ -1,23 +1,20 @@
 function Notifications({colSize}){
    
-    const [rides, setRides] = useState([])
-    console.log('NOTIFS', rides)
+    const [reqs, setReqs] = useState([])
+    console.log('NOTIFS', reqs)
 
     const fetchNotifications = () => {
-        fetch('/current-rides')
+        fetch('/notifications')
         .then(res => res.json())
         .then(data => {
             console.log(data, 'DATA')
-            setRides(data.rides)
+            setReqs(data.notifications)
         })
     }   
 
     useEffect(() =>{
         fetchNotifications();
     }, [])
-
-    let ridesNotPending = rides.filter(ride => ride.status !== 'Pending')
-    console.log(ridesNotPending, 'RIDES NOT PENDING')
  
     return (
         <React.Fragment>
@@ -25,7 +22,7 @@ function Notifications({colSize}){
                 <div className="notification-wrap">
                     <Table bordered>
                         <tbody>
-                            {ridesNotPending.map(ride => <NotificationRow colSize={colSize} ride={ride}/>)}
+                            {reqs.map(req => <NotificationRow colSize={colSize} req={req}/>)}
                         </tbody>
                     </Table>
                 </div>
@@ -33,35 +30,33 @@ function Notifications({colSize}){
     )
 }
 
-function NotificationRow({ride, colSize}){
+function NotificationRow({req, colSize}){
 
     let iconBgColor;
     let icon;
     let textBgColor;
-    let date = ride.req_date
+    let date = req.req_date
 
 
-    console.log('rIDE STATUSES', ride.status)
+    console.log('rIDE STATUSES', req.status)
 
-    if (ride.status === 'Approved'){
+    if (req.status === 'Approved'){
         iconBgColor = '#41AF41';
         icon = 'fas fa-check-circle fa-2x white-icon';
         textBgColor = '#EDF9ED';
-    } else if (ride.status === 'Denied'){
+    } else if (req.status === 'Denied'){
         iconBgColor = '#FFAC00';
         icon = 'fas fa-times-circle fa-2x white-icon';
         textBgColor = '#FFFCF7';
-    } else if (ride.status === 'Cancelled'){
+    } else if (req.status === 'Cancelled' || req.status === 'Cancelled By Passenger'){
         iconBgColor = '#3592FF';
         icon = 'fas fa-info-circle fa-2x white-icon';
         textBgColor = '#F3F9FF';
-    } else { //ride status is Removed
+    } else { //req status is Removed
         iconBgColor = '#D33634';
         icon = 'fas fa-frown fa-2x white-icon';
         textBgColor = '#FDF5F5';          
     }
-
-    
 
     return (
         <tr>
@@ -74,9 +69,9 @@ function NotificationRow({ride, colSize}){
                         <div className="d-inline float-right pt-2 text-muted"><sup>{date}</sup>
                         </div>
                         <h5 className="py-3 mb-0 gray-text">
-                            <span style={{color: iconBgColor}}>{ride.status}</span>
+                            <span style={{color: iconBgColor}}>{req.status}</span>
                             <br/>
-                            {ride.start_loc} to {ride.end_loc}
+                            {req.start_loc} to {req.end_loc}
                         </h5>
                         <span>
                             

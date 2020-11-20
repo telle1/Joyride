@@ -60,6 +60,12 @@ def get_current_user_drives(driver_id):
     drives = Ride.query.filter(Ride.driver_id == driver_id, Ride.date > current_time, Ride.deleted_at == None)
     return drives.order_by('date').all()
 
+# def get_current_rides_with_requests(driver_id):
+#     drives = Ride.query.all()
+#     print(drives)
+#     return drives
+#     Ride.query.join(Request).filter(Ride.driver_id == 6).all()
+
 def get_past_user_drives(driver_id):
     """Return past rides where the user drives."""
     return Ride.query.filter(Ride.driver_id == driver_id, Ride.date < current_time).all()
@@ -68,6 +74,18 @@ def get_current_user_requests(rider_id):
     """Return current rides where the user rides"""
     all_user_requests = Request.query.filter(Request.rider_id == rider_id)
     sorted_requests = all_user_requests.order_by('request_id').all()
+
+    current_user_requests = []
+    for req in sorted_requests:
+        if req.ride.date > current_time:
+            current_user_requests.append(req)
+
+    return current_user_requests
+
+def get_current_user_requests_by_date(rider_id):
+    """Return current rides where the user rides"""
+    all_user_requests = Request.query.filter(Request.rider_id == rider_id)
+    sorted_requests = all_user_requests.order_by('date').all()
 
     current_user_requests = []
     for req in sorted_requests:
@@ -107,13 +125,12 @@ def delete_user_request(request_id, seats_to_add):
     if req_to_delete.status == 'Approved':
         ride_of_req = req_to_delete.ride
         ride_of_req.seats += seats_to_add
-        # db.session.add(ride_of_req)
         db.session.commit()
         print('INCREMENTED SEATS', ride_of_req.seats)
 
-    db.session.delete(req_to_delete)
+    req_to_delete.status = 'Cancelled By Passenger' #this will say this regardless if the person was removed, the ride was cancelled, etc
+    # db.session.delete(req_to_delete)
     db.session.commit()
-    # notify driver?
 
 def edit_driver_ride(ride_id, seats, price, comments, date, start_loc, end_loc):
 
@@ -127,7 +144,6 @@ def edit_driver_ride(ride_id, seats, price, comments, date, start_loc, end_loc):
     ride.end_loc = end_loc
 
     db.session.commit()
-
 
 def get_dashboard_info(user_id):
 
