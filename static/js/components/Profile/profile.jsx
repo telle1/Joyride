@@ -41,7 +41,7 @@ function Profile({match, user}){
                 <UserCardStats drivesCount={drivesCount} ridesCount={ridesCount} rating={rating}/>
             </Col>
             <Col>
-                <Notifications/>
+                {user == match.params.userId ? <Notifications/> : null }
                 <FeedbackContainer feedbacks={feedbacks}/>
 
             </Col>

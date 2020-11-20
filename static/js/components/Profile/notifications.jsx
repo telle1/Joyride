@@ -1,40 +1,3 @@
-function NotificationRow({ride}){
-
-    const [iconBgColor, setIconBgColor] = useState("")
-    const [icon, setIcon] = useState("")
-    const [textBgColor, setTextBgColor] = useState("")
-    const [date, setDate] = useState("")
-    const [message, setMessage] = useState("")
-
-    useEffect(() => {
-        console.log('rIDE STATUSES', ride.status)
-        // if ride.status == ''
-
-    })
-
-
-    return (
-        <tr>
-            <td className="py-0"> 
-                <Row>
-                    {/* <Col xs={1} className={`${iconBgColor} d-flex justify-content-center align-items-center`}>
-                        <i className={`${icon}`}></i>
-                    </Col>
-                    <Col className={`${textBgColor}`}>
-                        <div className="d-inline float-right pt-2 text-muted"><sup>{date}</sup>
-                        </div>
-                        <h5 className="py-3 mb-0 gray-text">{message}</h5>
-                    </Col> */}
-                    <p>test</p>
-                </Row>
-            </td>
-        </tr>
-    )
-}
-
-
-
-
 function Notifications(){
    
     const [rides, setRides] = useState([])
@@ -53,6 +16,8 @@ function Notifications(){
         fetchNotifications();
     }, [])
 
+    let ridesNotPending = rides.filter(ride => ride.status !== 'Pending')
+    console.log(ridesNotPending, 'RIDES NOT PENDING')
  
     return (
         <React.Fragment>
@@ -60,39 +25,7 @@ function Notifications(){
                 <div className="notification-wrap">
                     <Table bordered>
                         <tbody>
-                            {rides.map(ride => { 
-                                {console.log(ride.status, 'THIS IS THE STATUS')}
-                                ride.status !== 'Pending' ? <NotificationRow ride={ride}/> : null
-                            })}
-                             {/* <tr>
-                                <td className="py-0"> 
-                                <Row>
-                                <Col xs={1} className="dark-blue d-flex justify-content-center align-items-center">
-                                <i className="fas fa-info-circle fa-2x white-icon"></i>
-                                </Col>
-                                <Col className="blue">
-                                    <div className="d-inline float-right pt-2 text-muted"><sup>November 18, 2020</sup>
-                                    </div>
-                                    <h5 className="py-3 mb-0 black">Request for SF to LA has been approved. Test. Test. 
-                                    Request for SF to LA has been approved. </h5>
-                                </Col>
-                                </Row>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="py-0"> 
-                                <Row>
-                                <Col xs={1} className="notif-color d-flex justify-content-center align-items-center">
-                                <i className="fas fa-frown fa-2x"></i>
-                                </Col>
-                                <Col>
-                                    <div className="d-inline float-right pt-2 text-muted"><sup>November 18, 2020</sup>
-                                    </div>
-                                    <h5 className="py-3 mb-0 salmon-icon">Request for SF to LA has been approved.</h5>
-                                </Col>
-                                </Row>
-                                </td>
-                            </tr>  */}
+                            {ridesNotPending.map(ride => <NotificationRow ride={ride}/>)}
                         </tbody>
                     </Table>
                 </div>
@@ -100,12 +33,67 @@ function Notifications(){
     )
 }
 
+function NotificationRow({ride}){
+
+    let iconBgColor;
+    let icon;
+    let textBgColor;
+    let date = ride.req_date
+
+
+    console.log('rIDE STATUSES', ride.status)
+
+    if (ride.status === 'Approved'){
+        iconBgColor = '#41AF41';
+        icon = 'fas fa-check-circle fa-2x white-icon';
+        textBgColor = '#EDF9ED';
+    } else if (ride.status === 'Denied'){
+        iconBgColor = '#FFAC00';
+        icon = 'fas fa-times-circle fa-2x white-icon';
+        textBgColor = '#FFFCF7';
+    } else if (ride.status === 'Cancelled'){
+        iconBgColor = '#3592FF';
+        icon = 'fas fa-info-circle fa-2x white-icon';
+        textBgColor = '#F3F9FF';
+    } else { //ride status is Removed
+        iconBgColor = '#D33634';
+        icon = 'fas fa-frown fa-2x white-icon';
+        textBgColor = '#FDF5F5';          
+    }
+
+    
+
+    return (
+        <tr>
+            <td className="py-0"> 
+                <Row>
+                    <Col xs={1} className="d-flex justify-content-center align-items-center" style={{backgroundColor: iconBgColor}} >
+                        <i className={`${icon}`}></i>
+                    </Col>
+                    <Col style={{backgroundColor: textBgColor}}>
+                        <div className="d-inline float-right pt-2 text-muted"><sup>{date}</sup>
+                        </div>
+                        <h5 className="py-3 mb-0 gray-text">
+                            <span style={{color: iconBgColor}}>{ride.status}</span>
+                            <br/>
+                            {ride.start_loc} to {ride.end_loc}
+                        </h5>
+                        <span>
+                            
+                        </span>
+                        
+                    </Col>
+                </Row>
+            </td>
+        </tr>
+    )
+}
+
+
+
+
 // <i className="fas fa-check-circle fa-2x white-icon mr-2"></i>
 // <i className="fas fa-times-circle fa-2x white-icon mr-2"></i>
 // <i className="fas fa-info-circle fa-2x white-icon"></i>
 // <i className="fas fa-frown fa-2x"></i>
 {/* <i className="fas fa-info-circle fa-2x white-icon"></i> */}
-
-
-
-

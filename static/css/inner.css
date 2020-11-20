@@ -96,21 +96,18 @@ form h3 {
 }
 
 .notification-wrap{
-    height: 180px;
+    height: 200px;
     overflow: auto;
     margin-bottom: 20px;
 }
+
 
 .notif-color{
     background-color: salmon;
     color: white;
 }
 
-.green{
-    background-color: #90EE90;
-    color: white;
 
-}
 
 .blue{
     background-color: #f2f8fb;

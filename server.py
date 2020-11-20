@@ -223,6 +223,7 @@ def get_current_rides():
     for req in current_ride_requests:
         req_serialized = {
             'date': req.ride.date,
+            'req_date': req.date,
             'start_loc': req.ride.start_loc,
             'end_loc': req.ride.end_loc,
             'cost': req.ride.price,
