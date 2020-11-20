@@ -2,6 +2,7 @@ from model import db, User, Ride, Request, Feedback, UserProfile, connect_to_db
 from datetime import datetime
 
 current_time = datetime.now()
+
 def create_user(first_name, last_name, email, phone_num, password):
     """Create new user."""
     new_user = User(first_name = first_name, last_name = last_name, email = email, password = password, phone_num = phone_num)
@@ -56,8 +57,7 @@ def get_request_by_request_id(request_id):
 
 def get_current_user_drives(driver_id):
     """Return current rides where the user drives."""
-    # return Ride.query.filter(Ride.driver_id == driver_id, Ride.date > current_time).all()
-    drives = Ride.query.filter(Ride.driver_id == driver_id, Ride.date > current_time)
+    drives = Ride.query.filter(Ride.driver_id == driver_id, Ride.date > current_time, Ride.deleted_at == None)
     return drives.order_by('date').all()
 
 def get_past_user_drives(driver_id):
@@ -88,12 +88,13 @@ def get_past_user_requests(rider_id):
 def delete_user_ride(ride_id):
 
     ride = get_ride_by_id(ride_id)
+    ride.deleted_at = datetime.now()
+
     reqs_for_ride = ride.request
     for req in reqs_for_ride:
         req.status = 'Cancelled'
+        req.date = datetime.now()
         db.session.commit() 
-
-    db.session.delete(ride)
     db.session.commit()
 
 def delete_user_request(request_id, seats_to_add):

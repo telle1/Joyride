@@ -29,7 +29,7 @@ for i in range(1,11):
     for _ in range(10):
         start_loc = f'teststart{_}'
         end_loc = f'testend{_}'
-        fake_rides = Ride(driver_id = fake_user.user_id, seats = randint(1,4), date = fake.date_time_between_dates(datetime_start= datetime(2020, 9, 1), datetime_end = datetime(2021, 5, 1)), start_loc = start_loc, end_loc = end_loc, price = randint(1,10), comments='n/a')
+        fake_rides = Ride(driver_id = fake_user.user_id, seats = randint(1,4), date = fake.date_between_dates(date_start= datetime(2020, 9, 1), date_end = datetime(2021, 5, 1)), start_loc = start_loc, end_loc = end_loc, price = randint(1,10), comments='n/a')
         db.session.add(fake_rides)
         db.session.commit()
     #For each ride, create 2 requests   

@@ -38,6 +38,8 @@ twilio_phone_num = os.environ['twilio_phone_num']
 # more useful (you should remove this line in production though)
 
 current_time = datetime.now()
+#for some reason, using this variable to update timestamp in my databse does not work;
+#instead, i just have to call datetime.now() directly
 
 def login_required(f):
     @wraps(f)
@@ -154,7 +156,8 @@ def request_ride():
 
     if req is None:
         if driver_id != session['user_id'] and 1 <= seats <= ride.seats:
-            add_req = Request(ride_id = ride_id, rider_id = session['user_id'], status = 'Pending', seats_requested= seats)
+            add_req = Request(ride_id = ride_id, rider_id = session['user_id'], 
+                seats_requested= seats, status = 'Pending', date= datetime.now())
             db.session.add(add_req)
             db.session.commit()
             resp = jsonify({'msg': "Ride successfully requested.", 'alert': 'success'})
@@ -297,6 +300,7 @@ def confirm_rides():
         if get_request_to_update.ride.seats - seats_requested >= 0:
             get_request_to_update.ride.seats -= seats_requested
             get_request_to_update.status = 'Approved'
+            get_request_to_update.date = datetime.now()
             db.session.commit()
             resp = jsonify({'msg': 'Ride successfully approved.', 'alert_color': "success"})
         else:
@@ -305,6 +309,7 @@ def confirm_rides():
             db.session.commit()
     else:
         get_request_to_update.status = 'Denied'
+        get_request_to_update.date = datetime.now()
         db.session.commit()
         resp = jsonify({'msg': 'Ride removed.', 'alert_color': "success"})
     
@@ -339,6 +344,7 @@ def remove_passenger():
     print('SEATS', req_to_update.ride.seats)
 
     req_to_update.status = 'Removed'
+    req_to_update.date = datetime.now()
 
     ride_of_req = req_to_update.ride
     ride_of_req.seats += seats_to_add
@@ -351,7 +357,7 @@ def remove_passenger():
 def delete_ride():
     data = request.json
     ride_id = data['ride_id']
-
+    print('RIDE ID', ride_id)
     crud.delete_user_ride(ride_id = ride_id)
 
     return jsonify({'msg': 'Ride successfully cancelled.', 'color': 'success'})
@@ -422,6 +428,10 @@ def give_passenger_feedback():
 
     return resp
 
+@app.route('/notifications')
+def get_user_notifications():
+    print('hello')
+
 @app.route('/dashboard/<user_id>')
 @login_required
 def get_user_dashboard(user_id):
@@ -439,7 +449,11 @@ def get_user_info(user_id):
     feedback_info = crud.get_user_feedback(user_id = user_id)
     print('tHIS IS THE FEEDBACK INFO', feedback_info)
     feedback_list = feedback_info['feedback']
-    average_rating = "{:.1f}".format(feedback_info['average_rating']) #round the number to one decimal
+
+    if feedback_info['average_rating'] != 'N/A':
+        average_rating = "{:.1f}".format(feedback_info['average_rating']) #round the number to one decimal
+    else:
+        average_rating = 'N/A'
     #Profile picture, location, and title info
     profile = crud.get_user_profile(profile_id = user_id)
     if profile:

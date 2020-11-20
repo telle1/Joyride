@@ -87,6 +87,7 @@ function NavBarUser({handleLogout, user}){
                   </Dropdown.Toggle>
                   <Dropdown.Menu> 
                     <Dropdown.Item><Link to="/current-rides">Current Rides</Link></Dropdown.Item>
+                    
                     <Dropdown.Item><Link to="/past-rides">Past Rides</Link></Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>

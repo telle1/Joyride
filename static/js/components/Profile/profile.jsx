@@ -117,11 +117,22 @@ function UserBio({imageSource, title, userInfo}){
     )
 }
 
-function EditProfileModal({showEdit, handleEditClose, user, fetchUserProfile}){
+function EditProfileModal({showEdit, handleEditClose, user, fetchUserProfile, profile}){
 
     const [image, setImage] = useState("")
-    const [title, setTitle] = useState("")
+    const [title, setTitle] = useState("") //
     const [location, setLocation] = useState("")
+
+    let previousTitle = profile && profile.title ? profile.title : ""
+    let previousLocation = profile && profile.location ? profile.location : ""
+    let previousImage = profile && profile.image ? profile.image : ""
+
+    useEffect(() => {
+        // setTitle(previousTitle) //when I tried to set this in the initial state, it did not work
+        // setLocation(previousLocation) //when I tried to set this in the initial state, it did not work
+        // setImage(previousImage)
+    })
+
 
     const handleEdit = (e) => {
         e.preventDefault();
@@ -153,19 +164,22 @@ function EditProfileModal({showEdit, handleEditClose, user, fetchUserProfile}){
                     <Form.Group as={Row} controlId="image">
                     <Form.Label column xs="3"> Image </Form.Label>
                         <Col xs={9}>
-                            <input type="file" name="profile_image" accept="image/*" onChange={(e) => setImage(e.target.files[0])}/>
+                            <input type="file" name="profile_image" accept="image/*" 
+                                onChange={(e) => setImage(e.target.files[0])}/>
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
                     <Form.Label column xs="3"> Title </Form.Label>
                         <Col xs={9}>
-                            <input type="text" className="form-control" name="title" value={title} onChange={(e) => setTitle(e.target.value)}/>
+                            <input type="text" className="form-control" name="title" 
+                                placeholder={title} value={title} onChange={(e) => setTitle(e.target.value)}/>
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
                     <Form.Label column xs="3"> Location</Form.Label>
                         <Col xs={9}>
-                            <input type="text" className="form-control" name="location" value={location} onChange={(e) => setLocation(e.target.value)}/>
+                            <input type="text" className="form-control" name="location" 
+                                placeholder={location} value={location} onChange={(e) => setLocation(e.target.value)}/>
                         </Col> 
                     </Form.Group>
                     <button type="submit" className="btn btn-theme form-control" onClick={handleEditClose}>Save Changes</button>

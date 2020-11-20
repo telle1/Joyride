@@ -39,6 +39,7 @@ class Ride(db.Model):
     seats = db.Column(db.Integer, nullable = False)
     price = db.Column(db.Integer, nullable = False)
     comments = db.Column(db.Text, nullable = True)
+    deleted_at = db.Column(db.DateTime, nullable = True)
 
     request = db.relationship('Request')
     user = db.relationship('User') #in order to get the user's first name and last name for search results
@@ -57,10 +58,11 @@ class Request(db.Model):
     __tablename__ = "requests"
 
     request_id = db.Column(db.Integer, primary_key = True, autoincrement = True, unique = True)
-    ride_id = db.Column(db.Integer, db.ForeignKey('rides.ride_id'), nullable = False)
+    ride_id = db.Column(db.Integer, db.ForeignKey('rides.ride_id'), nullable= False) 
     rider_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
     seats_requested = db.Column(db.Integer, nullable=False)
     status = db.Column(db.String)
+    date = db.Column(db.DateTime, nullable = False)
 
     user = db.relationship('User') #backreffed
     ride = db.relationship('Ride') #backreffed
@@ -135,7 +137,7 @@ if __name__ == '__main__':
 # db.session.add(test)
 # db.session.commit()
 
-# request = Request(ride_id = 58, rider_id = 1, seats_requested = 1, status='Pending')
+# request = Request(ride_id = 52, rider_id = 1, seats_requested = 1, status='Approved', date= datetime.now())
 # db.session.add(request)
 # db.session.commit()
 
