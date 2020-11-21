@@ -52,7 +52,8 @@ return(
                             <label htmlFor="#">From</label>
                             </div>
                             <div className="col-sm-9">
-                            <input type="text" className="form-control" name="from_input" placeholder={currentDrive.start_loc} value={from} onChange={(e) => setFrom(e.target.value)} required/>
+                            <input type="text" className="form-control" name="from_input" placeholder={currentDrive.start_loc}
+                                value={from} onChange={(e) => setFrom(e.target.value)} required/>
                             </div>
                         </div>
                         <div className="form-group row">
@@ -60,7 +61,8 @@ return(
                             <label htmlFor="#">To</label>
                             </div>
                             <div className="col-sm-9">
-                            <input type="text" className="form-control" name="to_input" placeholder={currentDrive.end_loc} value={to} onChange={(e) => setTo(e.target.value)} required/>
+                            <input type="text" className="form-control" name="to_input" placeholder={currentDrive.end_loc} 
+                                value={to} onChange={(e) => setTo(e.target.value)} required/>
                             </div> 
                         </div>
                         <div className="form-group row">
@@ -68,7 +70,8 @@ return(
                             <label htmlFor="#">Date</label>
                             </div>
                             <div className="col-sm-9">
-                            <input type="date" className="form-control" name="date" value={date} onChange={(e) => setDate(e.target.value)}/>
+                            <input type="date" className="form-control" name="date" 
+                                value={date} onChange={(e) => setDate(e.target.value)}/>
                             </div> 
                         </div>
                     </div> 
@@ -78,7 +81,8 @@ return(
                     <label htmlFor="#">Seats</label>
                     </div>
                     <div className="col-sm-9">
-                     <input type="number" className="form-control" name="seats" placeholder= {currentDrive.seats} min="0" value={seats} onChange={(e) => setSeats(e.target.value)}/>
+                     <input type="number" className="form-control" name="seats" min="0" placeholder= {currentDrive.seats}
+                        value={seats} onChange={(e) => setSeats(e.target.value)}/>
                     </div>
                 </div>
                 <div className="form-group row">
@@ -86,7 +90,8 @@ return(
                     <label htmlFor="#">Price</label>
                     </div>
                     <div className="col-sm-9">
-                    <input type="number" className="form-control" name="price" placeholder={currentDrive.price} min="0" value={price} onChange={(e) => setPrice(e.target.value)}/>
+                    <input type="number" className="form-control" name="price" min="0" placeholder={currentDrive.price} 
+                        value={price} onChange={(e) => setPrice(e.target.value)}/>
                     </div>
                 </div>
                 <div className="form-group row">
@@ -94,11 +99,14 @@ return(
                     <label htmlFor="#">Comments</label>
                     </div>
                     <div className="col-sm-9">
-                    <textarea className="form-control" name="comments" rows="5" placeholder={currentDrive.comments} value={comments} onChange={(e) => setComments(e.target.value)}></textarea>
+                    <textarea className="form-control" name="comments" rows="5" 
+                    placeholder={currentDrive.comments} value={comments} onChange={(e) => setComments(e.target.value)}>
+                    </textarea>
                     </div>
                 </div>
                 <div className="form-group mt-4">
-                        <button type="submit" className="btn btn-theme form-control" onClick={handleEditClose}>Edit ride</button> 
+                        <button type="submit" className="btn btn-theme form-control" 
+                        onClick={handleEditClose}> Edit ride</button> 
                 </div>
         </form>
         </Modal.Body>

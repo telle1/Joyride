@@ -16,10 +16,6 @@ function NavBar({setUser, user, alertColor, setAlertColor, alertStatus, setAlert
           user_id: user
         })
       })
-      // .then(res => res.json())
-      // .then(data => {
-      //     console.log(data.msg)
-      // })
       setUser(null)
       setShowAlert(false)
       localStorage.removeItem('user_id')
@@ -33,8 +29,10 @@ function NavBar({setUser, user, alertColor, setAlertColor, alertStatus, setAlert
     } else {
       return (
         <div>
-            <NavBarNoUser setUser={setUser} setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
-            {showAlert ? <UserAlert text={alertStatus} color={alertColor} setShowAlert={setShowAlert}/> : null}
+            <NavBarNoUser setUser={setUser} setAlertColor={setAlertColor} 
+              setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
+            {showAlert ? <UserAlert text={alertStatus} color={alertColor} setShowAlert={setShowAlert}/> 
+              : null}
         </div> )
     }
 }
@@ -63,8 +61,10 @@ function NavBarNoUser({setUser, setShowAlert, setAlertStatus, setAlertColor}){
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <LogInModal setUser={setUser} handleLoginClose={handleLoginClose} showLogin={showLogin} setShowAlert={setShowAlert} setAlertStatus={setAlertStatus} setAlertColor={setAlertColor}/>
-      <RegisterModal handleRegisterClose={handleRegisterClose} showRegister={showRegister} setShowAlert={setShowAlert} setAlertStatus={setAlertStatus} setAlertColor={setAlertColor} />
+      <LogInModal setUser={setUser} handleLoginClose={handleLoginClose} showLogin={showLogin} 
+        setShowAlert={setShowAlert} setAlertStatus={setAlertStatus} setAlertColor={setAlertColor}/>
+      <RegisterModal handleRegisterClose={handleRegisterClose} showRegister={showRegister} 
+        setShowAlert={setShowAlert} setAlertStatus={setAlertStatus} setAlertColor={setAlertColor} />
     </div>
   )
 }
@@ -89,10 +89,8 @@ function NavBarUser({handleLogout, user}){
                   </Dropdown.Toggle>
                   <Dropdown.Menu> 
                     <Dropdown.Item><Link to="/current-rides">Current Rides</Link></Dropdown.Item>
-                    
                     <Dropdown.Item><Link to="/past-rides">Past Rides</Link></Dropdown.Item>
                   </Dropdown.Menu>
-
                 </Dropdown>
                 <Dropdown>
                   <Dropdown.Toggle className="btn-theme">

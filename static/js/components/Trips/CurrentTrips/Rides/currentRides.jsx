@@ -26,8 +26,9 @@ function CurrentRides({setShowAlert, setAlertColor, setAlertStatus}){
                 <TableHeader col2="Location" col3="Driver" col4="Seats Requested" col5="Cost(Total)"></TableHeader>
                 <tbody>
                     {currentRides.map(currentRide => (
-                        <RideListItem key={currentRide.request_id} currentRide = {currentRide} fetchRides={fetchRides}
-                        setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
+                        <RideListItem key={currentRide.request_id} currentRide={currentRide} 
+                        fetchRides={fetchRides} setAlertColor={setAlertColor} 
+                        setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
                     ))}
                 </tbody>
             </Table>
@@ -71,7 +72,9 @@ function RideListItem({currentRide, setAlertColor, setAlertStatus, setShowAlert,
         </td>
         <td> {currentRide.start_loc} -> {currentRide.end_loc}</td>
         <td>
-            <button className="btn-transparent mr-2" onClick={handleInfoShow}>{currentRide.driver.first_name} {currentRide.driver.last_name}</button>
+            <button className="btn-transparent mr-2" onClick={handleInfoShow}>
+                {currentRide.driver.first_name} {currentRide.driver.last_name}
+            </button>
             <ContactInfoModal showInfo={showInfo} handleInfoClose={handleInfoClose} request={currentRide.driver}/>
         </td>
         <td> {currentRide.seats_requested} </td>

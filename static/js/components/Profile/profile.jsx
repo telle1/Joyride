@@ -4,7 +4,7 @@ const {Container, Row, Col, Card} = ReactBootstrap
 function Profile({match, user}){
 
     const [feedbacks, setFeedbacks] = useState([])
-    const [profile, setProfile] = useState(null)
+    const [profile, setProfile] = useState({location: "", title: "", image: ""})
     const [rating, setRating] = useState(0)
     const [userInfo, setUserInfo] = useState({})
     const [drivesCount, setDrivesCount] = useState(0)
@@ -20,6 +20,8 @@ function Profile({match, user}){
             setDrivesCount(data.drives_count)
             setRidesCount(data.rides_count)
             setRating(data.average_rating)
+
+            console.log(data.profile_info, 'THIS IS THE PROFILE INFO THIS IS THE PROFILE INFO')
         })
     }
 
@@ -121,24 +123,18 @@ function UserCardStats({drivesCount, ridesCount, rating}){
 
 function EditProfileModal({showEdit, handleEditClose, user, fetchUserProfile, profile}){
 
-    let previousTitle = profile && profile.title ? profile.title : ""
-    let previousLocation = profile && profile.location ? profile.location : ""
-    let previousImage = profile && profile.image ? profile.image : ""
-
     console.log('PREVIOUS INFO: Title', previousTitle, 'Location', previousLocation, 'Image Name', previousImage)
 
     const [image, setImage] = useState("")
-    const [title, setTitle] = useState("") 
+    const [title, setTitle] = useState("")
     const [location, setLocation] = useState("")
 
     console.log('PREVIOUS TITLE', previousTitle)
     console.log('TITLE STATE', title)
 
     useEffect(() => {
-        // setTitle(previousTitle) //when I tried to set this in the initial state, it did not work
-        // setLocation(previousLocation) //when I tried to set this in the initial state, it did not work
-        // // setImage(previousImage)
-    }, [])
+        setTitle(profile.title)
+    }, [profile.title]) //lazy initializer
 
     const handleEdit = (e) => {
         e.preventDefault();
@@ -160,6 +156,7 @@ function EditProfileModal({showEdit, handleEditClose, user, fetchUserProfile, pr
         })
     }
 
+
     return (
         <Modal show={showEdit} onHide={handleEditClose}>
         <Modal.Header closeButton>
@@ -180,7 +177,7 @@ function EditProfileModal({showEdit, handleEditClose, user, fetchUserProfile, pr
                             <input type="text" className="form-control" name="title" 
                                 value={title} onChange={(e) => setTitle(e.target.value)}/>
                         </Col> 
-                        {/* value={title} */}
+                        {/* placeholder={title} */}
                     </Form.Group>
                     <Form.Group as={Row}>
                     <Form.Label column xs="3"> Location</Form.Label>
@@ -188,7 +185,7 @@ function EditProfileModal({showEdit, handleEditClose, user, fetchUserProfile, pr
                             <input type="text" className="form-control" name="location" 
                                 value={location} onChange={(e) => setLocation(e.target.value)}/>
                         </Col> 
-                        {/* value={location}  */}
+                        {/* placeholder={location}  */}
                     </Form.Group>
                     <button type="submit" className="btn btn-theme form-control" onClick={handleEditClose}>Save Changes</button>
                 </Form>
@@ -197,3 +194,20 @@ function EditProfileModal({showEdit, handleEditClose, user, fetchUserProfile, pr
     )
 }
 
+
+    // let previousTitle = profile && profile.title ? profile.title : ""
+    // let previousLocation = profile && profile.location ? profile.location : ""
+    // let previousImage = profile && profile.image ? profile.image : ""
+
+    // () => {
+    //     let title = profile && profile.title ? profile.title : ""
+    //     console.log('THIS IS TITLE INSIDE', title)
+    //     console.log('THIS IS PRFOILE INSIDE', profile)
+    //     return title
+    // useEffect(() => {
+    //     // setTitle(previousTitle) //when I tried to set this in the initial state, it did not work
+    //     // setLocation(previousLocation) //when I tried to set this in the initial state, it did not work
+    //     // // setImage(previousImage)
+    // }, [])
+
+    //useContext

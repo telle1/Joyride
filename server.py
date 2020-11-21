@@ -512,10 +512,12 @@ def edit_user_profile():
 
     profile = crud.get_user_profile(profile_id = profile_id)
     if profile:
-        if title != "":
-            profile.title = title 
-        if location != "":
-            profile.location = location
+        # if title != "":
+        #     profile.title = title 
+        # if location != "":
+        #     profile.location = location
+        profile.title = title
+        profile.location = location
         if 'image' in request.files:
             image = request.files['image']
             image_status = check_image(request.files['image'])
