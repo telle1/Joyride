@@ -34,7 +34,6 @@ function EditRideModal({showEdit, handleEditClose, currentDrive, setAlertColor, 
             setAlertColor(data.color)
             setShowAlert(true)
             fetchDrives();
-
         })      
     }
 
@@ -52,7 +51,7 @@ return(
                             <label htmlFor="#">From</label>
                             </div>
                             <div className="col-sm-9">
-                            <input type="text" className="form-control" name="from_input" placeholder={currentDrive.start_loc}
+                            <input type="text" className="form-control" name="from_input" 
                                 value={from} onChange={(e) => setFrom(e.target.value)} required/>
                             </div>
                         </div>
@@ -61,7 +60,7 @@ return(
                             <label htmlFor="#">To</label>
                             </div>
                             <div className="col-sm-9">
-                            <input type="text" className="form-control" name="to_input" placeholder={currentDrive.end_loc} 
+                            <input type="text" className="form-control" name="to_input" 
                                 value={to} onChange={(e) => setTo(e.target.value)} required/>
                             </div> 
                         </div>
@@ -81,7 +80,7 @@ return(
                     <label htmlFor="#">Seats</label>
                     </div>
                     <div className="col-sm-9">
-                     <input type="number" className="form-control" name="seats" min="0" placeholder= {currentDrive.seats}
+                     <input type="number" className="form-control" name="seats" min="0" 
                         value={seats} onChange={(e) => setSeats(e.target.value)}/>
                     </div>
                 </div>
@@ -90,7 +89,7 @@ return(
                     <label htmlFor="#">Price</label>
                     </div>
                     <div className="col-sm-9">
-                    <input type="number" className="form-control" name="price" min="0" placeholder={currentDrive.price} 
+                    <input type="number" className="form-control" name="price" min="0"
                         value={price} onChange={(e) => setPrice(e.target.value)}/>
                     </div>
                 </div>
@@ -100,7 +99,7 @@ return(
                     </div>
                     <div className="col-sm-9">
                     <textarea className="form-control" name="comments" rows="5" 
-                    placeholder={currentDrive.comments} value={comments} onChange={(e) => setComments(e.target.value)}>
+                        value={comments} onChange={(e) => setComments(e.target.value)}>
                     </textarea>
                     </div>
                 </div>

@@ -28,9 +28,6 @@ function Heading({header}){
 function Hero(){
     return (
         <section id="homesection">
-           {/* <h1>Enjoy the</h1>  */}
-           {/* <Typeanimation/> */}
-           {/* <Instruction text="hi"/> */}
            <h1>Enjoy the <span className="animate">ride</span></h1>
         </section>
     )}
@@ -41,9 +38,13 @@ function InfoSquares(){
       <section id="info-squares">
         <Container fluid>
           <Row>
+          <div data-aos="fade-right">
             <InfoSquare imageClass="col-left" header="THE BEST LONG DISTANCE RIDESHARE." text="Join our welcoming community of carpoolers."/>
+          </div>
+          <div data-aos="fade-left">
             <InfoSquare imageClass="col-right" header="FIND OR GIVE A RIDE." text="Search our user-friendly site for listings."/>
-          </Row>
+          </div>
+          </Row>   
         </Container>
       </section>   
   )}
@@ -98,10 +99,10 @@ function HowItWorks(){
         <Row className="py-5 align-items-center">
           <Col className= "d-none d-md-block">
             <div className = "how-steps">
-              <HowStep key="search" icon="fas fa-search fa-4x mr-4" description={["Simply ", <span className="yellow">check</span>, " for rides travelling to your destination."]}/>
-              <HowStep key="match" icon="fas fa-car fa-4x mr-4" description={[<span className="yellow">Match</span>, " with a driver."]}/>
-              <HowStep key="negotiate" icon="far fa-handshake fa-4x mr-2" description={[<span className="yellow">Negotiate</span>, " on a great price."]}/>
-              <HowStep ket="reach" icon="fas fa-flag-checkered fa-4x mr-4" description={["Happily ", <span className="yellow">reach</span>, " your destination."]}/>
+              <HowStep key="search" icon="fas fa-search fa-4x mr-4" description={["Simply ", <span className="yellow font-weight-bold">check</span>, " for rides travelling to your destination."]}/>
+              <HowStep key="match" icon="fas fa-car fa-4x mr-4" description={[<span className="yellow font-weight-bold">Match</span>, " with a driver."]}/>
+              <HowStep key="negotiate" icon="far fa-handshake fa-4x mr-2" description={[<span className="yellow font-weight-bold">Negotiate</span>, " on a great price."]}/>
+              <HowStep ket="reach" icon="fas fa-flag-checkered fa-4x mr-4" description={["Happily ", <span className="yellow font-weight-bold">reach</span>, " your destination."]}/>
             </div>
           </Col>
           <Col className= "vid">

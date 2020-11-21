@@ -34,19 +34,17 @@ function Profile({match, user}){
             <StatSquares match={match}/>
             <Col xs={4}>
                 <UserCardInfo user={user} match={match} profile={profile} userInfo={userInfo}  
-                fetchUserProfile={fetchUserProfile}/> 
+                    fetchUserProfile={fetchUserProfile}/> 
                 <UserCardStats drivesCount={drivesCount} ridesCount={ridesCount} rating={rating}/>
             </Col>
             <Col>
                 {user == match.params.userId ? <Notifications colSize="1"/> : null }
-                <FeedbackContainer feedbacks={feedbacks}/>
+                    <FeedbackContainer feedbacks={feedbacks}/>
             </Col>
             </Row>
         </Container>
     )
 }
-
-
 
 function UserCardInfo({user, match, profile, userInfo, fetchUserProfile}){
 
@@ -110,7 +108,6 @@ function UserCardStats({drivesCount, ridesCount, rating}){
     )
 }
 
-
 function EditProfileModal({showEdit, handleEditClose, user, fetchUserProfile, profile}){
 
     const [image, setImage] = useState("")
@@ -124,7 +121,7 @@ function EditProfileModal({showEdit, handleEditClose, user, fetchUserProfile, pr
 
     useEffect(() => {
         setPreviousBio();
-    }, [profile.title]) //lazy initializer
+    }, [profile.title]) 
 
     const handleEdit = (e) => {
         e.preventDefault();
@@ -148,38 +145,36 @@ function EditProfileModal({showEdit, handleEditClose, user, fetchUserProfile, pr
 
     return (
         <Modal show={showEdit} onHide={handleEditClose}>
-        <Modal.Header closeButton>
-        <Modal.Title> EDIT PROFILE </Modal.Title>
-        </Modal.Header>
-        <Modal.Body> 
-                <Form onSubmit={handleEdit} method="post">
-                    <Form.Group as={Row} controlId="image">
-                    <Form.Label column xs="3"> Image </Form.Label>
-                        <Col xs={9}>
-                            <input type="file" name="profile_image" accept="image/*" 
-                            onChange={(e) => setImage(e.target.files[0])}/>
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                    <Form.Label column xs="3"> Title </Form.Label>
-                        <Col xs={9}>
-                            <input type="text" className="form-control" name="title" 
-                            value={title} onChange={(e) => setTitle(e.target.value)}/>
-                        </Col> 
-                        {/* placeholder={title} */}
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                    <Form.Label column xs="3"> Location</Form.Label>
-                        <Col xs={9}>
-                            <input type="text" className="form-control" name="location" 
-                            value={location} onChange={(e) => setLocation(e.target.value)}/>
-                        </Col> 
-                        {/* placeholder={location}  */}
-                    </Form.Group>
-                    <button type="submit" className="btn btn-theme form-control" onClick={handleEditClose}>Save Changes</button>
-                </Form>
-        </Modal.Body>
-    </Modal>
+            <Modal.Header closeButton>
+            <Modal.Title> EDIT PROFILE </Modal.Title>
+            </Modal.Header>
+            <Modal.Body> 
+                    <Form onSubmit={handleEdit} method="post">
+                        <Form.Group as={Row} controlId="image">
+                        <Form.Label column xs="3"> Image </Form.Label>
+                            <Col xs={9}>
+                                <input type="file" name="profile_image" accept="image/*" 
+                                onChange={(e) => setImage(e.target.files[0])}/>
+                            </Col>
+                        </Form.Group>
+                        <Form.Group as={Row}>
+                        <Form.Label column xs="3"> Title </Form.Label>
+                            <Col xs={9}>
+                                <input type="text" className="form-control" name="title" 
+                                value={title} onChange={(e) => setTitle(e.target.value)}/>
+                            </Col> 
+                        </Form.Group>
+                        <Form.Group as={Row}>
+                        <Form.Label column xs="3"> Location</Form.Label>
+                            <Col xs={9}>
+                                <input type="text" className="form-control" name="location" 
+                                value={location} onChange={(e) => setLocation(e.target.value)}/>
+                            </Col> 
+                        </Form.Group>
+                        <button type="submit" className="btn btn-theme form-control" onClick={handleEditClose}>Save Changes</button>
+                    </Form>
+            </Modal.Body>
+        </Modal>
     )
 }
 

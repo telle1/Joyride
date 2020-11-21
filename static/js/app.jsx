@@ -24,6 +24,8 @@ function App(){
           const saveUser = JSON.parse(user_id);
           setUser(saveUser);
         }
+        AOS.init();
+        AOS.refresh();
       }, []);
 
     return (

@@ -40,6 +40,7 @@ h3.heading {
 #homesection {
   background: url('../images/van-2.jpg') no-repeat center
   center/ cover;
+  background-attachment: fixed; /*parallax*/
   height: 100vh;
 }
 
@@ -66,7 +67,7 @@ h3.heading {
   font-weight: bolder;
 }
 
-/* What 1 row page---What 1 row page---What 1 row page---What 1 row page---What 1 row page---What 1 row page---*/
+/* Info Squares---Info Squares---Info Squares---Info Squares---Info Squares---*/
 #info-squares .heading-underline {
   background-color: #eba92a;
   width: 3rem;
@@ -141,6 +142,7 @@ h3.heading {
   height: 700px;
   background: url('../images/car_pic_filter.jpg') no-repeat
     center center/cover;
+  background-attachment: fixed;
 }
 
 #how h3.heading {
