@@ -488,7 +488,7 @@ def get_user_info(user_id):
     if profile:
         profile_ser = {'image': profile.image, 'location': profile.location, 'title': profile.title}
     else: #instead of none, pass in empty strings to make it easier on the front end and the edit modal
-        profile_ser = None
+        profile_ser = {'image': "user.jpg", 'location': "", 'title': ""}
     print('SERIALIZED', profile_ser)
     #Email and phone number info
     user = crud.get_user_by_id(user_id = user_id)
@@ -512,10 +512,6 @@ def edit_user_profile():
 
     profile = crud.get_user_profile(profile_id = profile_id)
     if profile:
-        # if title != "":
-        #     profile.title = title 
-        # if location != "":
-        #     profile.location = location
         profile.title = title
         profile.location = location
         if 'image' in request.files:

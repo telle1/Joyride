@@ -20,18 +20,13 @@ function Profile({match, user}){
             setDrivesCount(data.drives_count)
             setRidesCount(data.rides_count)
             setRating(data.average_rating)
-
-            console.log(data.profile_info, 'THIS IS THE PROFILE INFO THIS IS THE PROFILE INFO')
         })
     }
 
     useEffect(() =>{
-        console.log(match)
         fetchUserProfile();
     }, [])
 
-    console.log('USER PROFILE INFO', profile)
-    
     return (
         <Container className="top-padding">
             <Row>
@@ -45,7 +40,6 @@ function Profile({match, user}){
             <Col>
                 {user == match.params.userId ? <Notifications colSize="1"/> : null }
                 <FeedbackContainer feedbacks={feedbacks}/>
-
             </Col>
             </Row>
         </Container>
@@ -60,9 +54,6 @@ function UserCardInfo({user, match, profile, userInfo, fetchUserProfile}){
     const handleEditShow = () => setShowEdit(true)
     const handleEditClose = () => setShowEdit(false) 
 
-    console.log('THIS IS THE USER', user)
-    console.log('THIS IS THE PROFILE ID', match.params.userId)
-
     return (
     <Card>
         <Card.Body>
@@ -74,8 +65,7 @@ function UserCardInfo({user, match, profile, userInfo, fetchUserProfile}){
                     profile={profile} fetchUserProfile={fetchUserProfile}/>
             </React.Fragment>
             <div className="d-flex flex-column align-items-center text-center">
-                {profile ? <UserBio imageSource={`../static/uploads/${profile.image}`} title={profile.title} userInfo={userInfo}/>
-                    : <UserBio imageSource={'../static/images/user.jpg'} title={""} location={""} userInfo={userInfo}/>}
+                <UserBio imageSource={`../static/uploads/${profile.image}`} title={profile.title} userInfo={userInfo}/>
             </div>  
             <div>  
                 <i className="fas fa-envelope fa-2x mr-3 ml-3 mb-2" data-fa-transform="left-2 down-5" style={{color: "#BEBEBE"}}/>
@@ -83,7 +73,7 @@ function UserCardInfo({user, match, profile, userInfo, fetchUserProfile}){
                 <i className="fas fa-phone fa-2x mr-3 ml-3 mb-2" data-fa-transform="left-2 down-5" style={{color: "#BEBEBE"}}/>
                 <span>{userInfo.phone_num}</span> <br/>
                 <i className="fas fa-map-pin fa-2x mr-4  ml-3 mb-2" data-fa-transform="down-5" style={{color: "#BEBEBE"}}/>
-                <span>{profile ? profile.location : ""}</span><br/>     
+                <span>{profile.location}</span><br/>     
             </div>
         </Card.Body>  
     </Card>  
@@ -123,17 +113,17 @@ function UserCardStats({drivesCount, ridesCount, rating}){
 
 function EditProfileModal({showEdit, handleEditClose, user, fetchUserProfile, profile}){
 
-    console.log('PREVIOUS INFO: Title', previousTitle, 'Location', previousLocation, 'Image Name', previousImage)
-
     const [image, setImage] = useState("")
     const [title, setTitle] = useState("")
     const [location, setLocation] = useState("")
 
-    console.log('PREVIOUS TITLE', previousTitle)
-    console.log('TITLE STATE', title)
+    const setPreviousBio = () => {
+        setTitle(profile.title)
+        setLocation(profile.location)
+    }
 
     useEffect(() => {
-        setTitle(profile.title)
+        setPreviousBio();
     }, [profile.title]) //lazy initializer
 
     const handleEdit = (e) => {
@@ -156,7 +146,6 @@ function EditProfileModal({showEdit, handleEditClose, user, fetchUserProfile, pr
         })
     }
 
-
     return (
         <Modal show={showEdit} onHide={handleEditClose}>
         <Modal.Header closeButton>
@@ -168,14 +157,14 @@ function EditProfileModal({showEdit, handleEditClose, user, fetchUserProfile, pr
                     <Form.Label column xs="3"> Image </Form.Label>
                         <Col xs={9}>
                             <input type="file" name="profile_image" accept="image/*" 
-                                onChange={(e) => setImage(e.target.files[0])}/>
+                            onChange={(e) => setImage(e.target.files[0])}/>
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
                     <Form.Label column xs="3"> Title </Form.Label>
                         <Col xs={9}>
                             <input type="text" className="form-control" name="title" 
-                                value={title} onChange={(e) => setTitle(e.target.value)}/>
+                            value={title} onChange={(e) => setTitle(e.target.value)}/>
                         </Col> 
                         {/* placeholder={title} */}
                     </Form.Group>
@@ -183,7 +172,7 @@ function EditProfileModal({showEdit, handleEditClose, user, fetchUserProfile, pr
                     <Form.Label column xs="3"> Location</Form.Label>
                         <Col xs={9}>
                             <input type="text" className="form-control" name="location" 
-                                value={location} onChange={(e) => setLocation(e.target.value)}/>
+                            value={location} onChange={(e) => setLocation(e.target.value)}/>
                         </Col> 
                         {/* placeholder={location}  */}
                     </Form.Group>
