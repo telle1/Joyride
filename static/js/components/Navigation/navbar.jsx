@@ -84,7 +84,7 @@ function NavBarUser({handleLogout, user}){
             </Nav>
             <Nav className="ml-auto">       
                 <Dropdown>
-                  <Dropdown.Toggle className="btn-theme" id="rides-dropdown">
+                  <Dropdown.Toggle variant="info" className="mt-2 mr-1" id="rides-dropdown">
                     My Rides
                   </Dropdown.Toggle>
                   <Dropdown.Menu> 
@@ -93,8 +93,8 @@ function NavBarUser({handleLogout, user}){
                   </Dropdown.Menu>
                 </Dropdown>
                 <Dropdown>
-                  <Dropdown.Toggle className="btn-theme">
-                    Notifications
+                  <Dropdown.Toggle variant="info" className="mt-2">
+                  <i class="fas fa-bell white-icon"></i>
                   </Dropdown.Toggle>
                   <Dropdown.Menu> 
                     <Dropdown.Item style={{width: '400px'}}><Notifications colSize="2"/></Dropdown.Item>

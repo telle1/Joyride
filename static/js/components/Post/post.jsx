@@ -64,13 +64,13 @@ function PostContainer({setAlertStatus, setAlertColor, setShowAlert}){
             <Form.Group as={Row} controlId="startingLocation">
                 <Form.Label column xs="3"> From </Form.Label>
                 <Col xs="9">
-                    <SearchBar input={startInput} setInput={setStartInput} placeholder="Start Location"/>
+                    <SearchBar input={startInput} setInput={setStartInput} placeholder="Start Location" required/>
                 </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="endLocation">
                 <Form.Label column xs="3"> To </Form.Label>
                 <Col xs="9">
-                    <SearchBar input={endInput} setInput={setEndInput} placeholder="End Location"/>
+                    <SearchBar input={endInput} setInput={setEndInput} placeholder="End Location" required/>
                 </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="Date">

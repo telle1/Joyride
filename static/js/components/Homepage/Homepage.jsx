@@ -6,6 +6,12 @@ const {Carousel, Container, Row, Col} = ReactBootstrap
 // const {Rating} = SemanticUI;
 
 function HomePage(){
+
+  useEffect(() => {
+    AOS.init();
+    AOS.refresh();
+  }, [])
+
     return(
         <div>
             <Hero/>
@@ -38,20 +44,17 @@ function InfoSquares(){
       <section id="info-squares">
         <Container fluid>
           <Row>
-          <div data-aos="fade-right">
-            <InfoSquare imageClass="col-left" header="THE BEST LONG DISTANCE RIDESHARE." text="Join our welcoming community of carpoolers."/>
-          </div>
-          <div data-aos="fade-left">
-            <InfoSquare imageClass="col-right" header="FIND OR GIVE A RIDE." text="Search our user-friendly site for listings."/>
-          </div>
+            <InfoSquare dataAos="fade-up-right" imageClass="col-left" header="THE BEST LONG DISTANCE RIDESHARE." text="Join our welcoming community of carpoolers."/>
+            <InfoSquare dataAos="fade-up-left" imageClass="col-right" header="FIND OR GIVE A RIDE." text="Search our user-friendly site for listings."/>
           </Row>   
         </Container>
       </section>   
   )}
   
-function InfoSquare({imageClass, header, text}){
+function InfoSquare({imageClass, header, text, dataAos}){
   return (
-      <Col className="info-square">
+    
+      <Col xs={6} data-aos={dataAos} data-aos-duration="500" className="info-square">
         <div className={imageClass}>
             <div className="heading-underline"></div>
             <h3>{header}</h3>
@@ -66,23 +69,24 @@ function Features(){
       <Container>
         <Heading header="Why Joyride?"/>
         <Row className= "text-center py-4">
-          <Feature icon= "fas fa-piggy-bank fa-4x" header= 'Save Money' paragraph = "Less than an Uber or flight. It's not about finding savings at the pump,
+          <Feature icon= "fas fa-piggy-bank fa-4x" dataAos="flip-left" header= 'Save Money' paragraph = "Less than an Uber or flight. It's not about finding savings at the pump,
               but finding savings before. Instead of paying for gas all by yourself, 
               split the cost with Joyride and make your wallet smile."/>
-          <Feature icon= "fas fa-users fa-4x" header= 'Connect with Community' paragraph = "Meet new friends along the way. Our riders are always up for new
+          <Feature icon= "fas fa-users fa-4x" dataAos="flip-up" header= 'Connect with Community' paragraph = "Meet new friends along the way. Our riders are always up for new
             adventures and road trips. Or take along family, friends, coworkers,
             teammates, and much more. What better way to enjoy the ride?"/>
-          <Feature icon= "fas fa-globe-americas fa-4x" header= 'Help the Earth' paragraph = "Reduce your carbon footprint. Did you know that a whopping 28% of greenhouse
+          <Feature icon= "fas fa-globe-americas fa-4x" dataAos="flip-right" header= 'Help the Earth' paragraph = "Reduce your carbon footprint. Did you know that a whopping 28% of greenhouse
             gas emissions come from transportation? Help save the Earth and fight for
             climate change by riding with us."/>
         </Row>
       </Container>
     </section>
+    
   )}
 
-function Feature({icon, header, paragraph}){
+function Feature({icon, header, paragraph, dataAos}){
   return (
-    <Col>
+    <Col data-aos={dataAos} data-aos-duration="1000">
       <div className="feature py-4">
         <i className={icon} style={{color: "#388087"}} data-fa-transform="shrink-3 up-4"></i>
         <h3>{header}</h3>
@@ -93,7 +97,7 @@ function Feature({icon, header, paragraph}){
 
 function HowItWorks(){
   return (
-    <section id = "how">
+    <section id = "how" data-aos="fade-up" data-aos-duration="1000">
       <Container>
         <Heading header="How It Works"/>
         <Row className="py-5 align-items-center">
@@ -130,7 +134,7 @@ function ControlledCarousel() {
   };
 
   return (
-    <section id = "carousel-slider">
+    <section id = "carousel-slider" data-aos="fade-up" data-aos-duration="1000">
       <Heading header="Testimonials"/>
       <div className = "container">
         <Carousel activeIndex={index} onSelect={handleSelect}>
@@ -196,10 +200,3 @@ function TestimonialPerson({imageSource, text, name}){
 //         <section id='instruction'></section>
 //     );
 // };
-
-// const RatingExampleStar = () => (
-//   <div>
-//   <p>THIS IS A TEST</p>
-//   <Rating icon='star' defaultRating={3} maxRating={4} />
-//   </div>
-// )

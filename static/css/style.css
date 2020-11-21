@@ -64,15 +64,22 @@ body {
   font-size: 20px;
 }
 
+/*Overwriting the btn-info to my theme color*/
+.btn-info {
+  border-color: #388087;
+  background-color: #388087;
+  box-shadow: none;
+}
+
 /*FOOTER---FOOTER---FOOTER---FOOTER---FOOTER---FOOTER---FOOTER---FOOTER---FOOTER---*/
 footer {
     background-color: #388087;
     color: white;
     padding: 20px;
     opacity: 0.8;
-    position: fixed;
+    /* position: fixed;
     bottom: 0;
-    left: 0;
+    left: 0; */
     width: 100%;
   }
   

@@ -24,8 +24,8 @@ function App(){
           const saveUser = JSON.parse(user_id);
           setUser(saveUser);
         }
-        AOS.init();
-        AOS.refresh();
+        // AOS.init();
+        // AOS.refresh();
       }, []);
 
     return (
@@ -55,7 +55,7 @@ function App(){
                     {/* <Route path="/profile/:userId" component={Profile}/> */}
                     <Route path="/profile/:userId" render={(props) => <Profile {...props} user={user}/>}/>
                 </Switch>
-                {/* <Footer/> */}
+                <Footer/>
             </Router>
         </div>
     )
