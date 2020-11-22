@@ -21,9 +21,6 @@ function NavBar({setUser, user, alertColor, setAlertColor, alertStatus, setAlert
       localStorage.removeItem('user_id')
     }
 
-    console.log(user, 'THIS IS THE USER AFTER LOG OUT')
-    console.log(localStorage.getItem('user_id'), 'THIS IS THE USER LOCAL STORAGE LOG OUT')
-
     if (user){
       return <NavBarUser handleLogout={handleLogout} user={user}/>
     } else {
@@ -94,27 +91,21 @@ function NavBarUser({handleLogout, user}){
                 </Dropdown>
                 <Dropdown>
                   <Dropdown.Toggle variant="info" className="mt-2">
-                  <i class="fas fa-bell white-icon"></i>
+                  <i className="fas fa-bell white-icon"></i>
                   </Dropdown.Toggle>
                   <Dropdown.Menu> 
                     <Dropdown.Item style={{width: '400px'}}><Notifications colSize="2"/></Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
-                <Nav.Link><Link to={`/profile/${user}`} className="btn navbar-btn shadow-none"><HomeIcon color="white"/></Link></Nav.Link>
+                <Nav.Link><Link to={`/profile/${user}`} className="btn navbar-btn shadow-none">
+                  <i className="fas fa-home white-icon"></i>
+                </Link></Nav.Link>
                 <Nav.Link><Link to="/" className="btn navbar-btn shadow-none" onClick={handleLogout}>Log Out</Link></Nav.Link>
             </Nav>
          </Navbar.Collapse>
       </Container>
     </Navbar> 
   )
-}
-
-function HomeIcon(props) {
-  return (
-    <SvgIcon {...props}>
-      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-    </SvgIcon>
-  );
 }
 
 

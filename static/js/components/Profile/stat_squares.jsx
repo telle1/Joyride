@@ -1,8 +1,7 @@
-const {Container, Row, Col} = ReactBootstrap
+const { Container, Row, Col } = ReactBootstrap
 const { useEffect, useState } = React
 
-function StatSquares({match}){
-
+function StatSquares({match, user}){
 
     const [destinations, setDestinations] = useState(0)
     const [peopleMet, setPeopleMet] = useState(0)
@@ -23,24 +22,54 @@ function StatSquares({match}){
     return(
         <Container className="mb-4">
             <Row>
-                <StatSquare stat={destinations} description="destinations discovered." color="inner inner-0"/>
-                <StatSquare stat={peopleMet} description="new adventurers met." color="inner inner-1"></StatSquare>
-                <StatSquare stat={dollars} description="dollars earned." color="inner inner-2"></StatSquare>
-                <StatSquare stat="100" description="percent pure JOY." color="inner inner-3"></StatSquare>
+                <StatSquare key="destinations" user={user} stat={destinations} match={match} description="destinations discovered." color="inner inner-0"/>
+                <StatSquare key="peopleMet" user={user} stat={peopleMet} match={match} description="new adventurers met." color="inner inner-1"/>
+                <StatSquare key="dollarsEarned" user={user} stat={dollars} match={match} description="dollars earned." color="inner inner-2"/>
+                <StatSquare key="joy" stat="100" user={user} match={match} description="percent pure JOY." color="inner inner-3"/>
             </Row>
         </Container>
     )
 }
 
-function StatSquare({stat, description, color}){
+function StatSquare({stat, description, color, match, user}){
     return (
         <Col className="stats">
             <div className={color}>
-                <h1 className = "text-center count">{stat}</h1>
+                <h1 className = "text-center count">
+                {user == match.params.userId ? <NumberCounter key={stat} stat={stat}/> : stat}
+                </h1>
                 <p className= "text-center">{description}</p>
             </div>
         </Col>
     )
 }
 
-        
+
+function NumberCounter({stat}){
+
+    let animationLength = 2000 //in milliseconds
+    let acceleration = t => t<.5 ? 2*t*t : -1+(4-2*t)*t;
+    let frameLength= 24; //in milliseconds
+    let end = stat;
+
+	const [ count, setCount ] = useState(0);
+
+	useEffect(() => {
+		let start = 0;
+		const totalFrames = Math.round(animationLength/frameLength); 
+            const counter = setInterval(() => {
+                start++;
+                const countUp = acceleration(start/totalFrames);
+                setCount(end * countUp);
+
+                if (start === totalFrames){
+                    clearInterval(counter);
+                }
+            }, frameLength);
+	}, [stat]);
+
+	return Math.floor( count );
+};
+
+
+

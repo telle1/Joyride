@@ -95,17 +95,12 @@ def login_user():
 def register_user():
     """Allow new users to register."""
     data = request.json
-    first_name = data['firstName']
-    last_name = data['lastName']
-    email = data['email']
-    phone_num = data['phoneNumber']
-    password = data['password']
 
-    user = crud.get_user_by_email(email)
+    user = crud.get_user_by_email(data['email'])
     #hash password
     if user is None:
-        crud.create_user(first_name = first_name, last_name = last_name, email = email, 
-                        password = password, phone_num = phone_num)
+        crud.create_user(first_name = data['firstName'], last_name = data['lastName'], email = data['email'], 
+                        password = data['password'], phone_num = data['phoneNumber'])
         resp = jsonify({'msg': 'You have successfully registered! Log in to continue.', 'color': 'success'})
     else:
         resp = jsonify({'msg': 'A user with that email has already been registered.', 'color': 'danger'})
@@ -117,15 +112,10 @@ def register_user():
 def post_ride_to_database():
 
     data = request.json
-    start_loc = data['from']
-    end_loc = data['to']
-    date = data['date']
-    seats = data['seats']
-    price = data['price']
-    comments = data['comments']
     
-    crud.create_ride(driver_id = session['user_id'], seats = seats, date = date, 
-                    start_loc = start_loc, end_loc = end_loc, price= price, comments = comments)
+    crud.create_ride(driver_id = session['user_id'], seats = data['seats'], 
+        date = data['date'], start_loc = data['from'], end_loc = data['to'], 
+        price= data['price'], comments = data['comments'])
     
     return jsonify({'msg': 'Ride successfully added.'})
 
@@ -133,9 +123,8 @@ def post_ride_to_database():
 def post_search_to_page():
 
     data = request.json
-    start_loc = data['startInput']
-    end_loc = data['endInput']
-    matching_rides = crud.get_matching_rides(start_loc = start_loc, end_loc = end_loc)
+
+    matching_rides = crud.get_matching_rides(start_loc = data['startInput'], end_loc = data['endInput'])
     print(matching_rides)
     
     return jsonify({'res': matching_rides})
@@ -189,26 +178,15 @@ def get_user_current_drives():
 
         for req in drive.request:
             if req.status == 'Approved':
-                if 'passengers' in serialize_drive:
-                    serialize_drive['passengers'].append({'name': [req.user.first_name, req.user.last_name], 'user_id': req.user.user_id,                                      
-                                                        'email': req.user.email, 'phone_num': req.user.phone_num, 'req_id': req.request_id,
-                                                        'seats_requested': req.seats_requested})
-                else:
-                    serialize_drive['passengers'] = [{'name': [req.user.first_name, req.user.last_name], 'user_id': req.user.user_id,
-                                                    'email': req.user.email, 'phone_num': req.user.phone_num,
-                                                    'req_id': req.request_id, 'seats_requested': req.seats_requested}]
+                serialize_drive['passengers'].append({'name': [req.user.first_name, req.user.last_name], 
+                    'user_id': req.user.user_id, 'email': req.user.email, 'phone_num': req.user.phone_num, 
+                    'req_id': req.request_id, 'seats_requested': req.seats_requested})
             elif req.status == 'Pending':
-                if 'requests' in serialize_drive:
-                    serialize_drive['requests'].append({'id': req.request_id, 'user_id': req.user.user_id,
-                                                    'name': [req.user.first_name, req.user.last_name],
-                                                    'email': req.user.email, 
-                                                    'phone_num': req.user.phone_num,
-                                                    'seats_requested': req.seats_requested})
-                else:
-                    serialize_drive['requests'] = [{'id': req.request_id, 'user_id': req.user.user_id, 'name': [req.user.first_name, req.user.last_name],
-                                                    'email': req.user.email, 'phone_num': req.user.phone_num, 'seats_requested': req.seats_requested}]
+                serialize_drive['requests'].append({'id': req.request_id, 'user_id': req.user.user_id,
+                    'name': [req.user.first_name, req.user.last_name], 'email': req.user.email, 
+                    'phone_num': req.user.phone_num, 'seats_requested': req.seats_requested})
             else:
-                print('Request deniedddddddddd')
+                print('Request denied')
 
         current_drives_list.append(serialize_drive)
 
@@ -250,6 +228,7 @@ def get_notifications():
         if req.status != 'Cancelled By Passenger' and req.status != 'Pending':
             req_serialized = {
                 'req_date': req.date,
+                'req_id': req.request_id,
                 'start_loc': req.ride.start_loc,
                 'end_loc': req.ride.end_loc,
                 'status': req.status,
@@ -276,8 +255,6 @@ def get_notifications():
 
 
     return jsonify({'notifications': notifications_list})
-    #driver edits the ride
-    #start, end
 
 @app.route('/past-rides')
 @login_required
@@ -292,10 +269,7 @@ def get_user_past_rides():
         drive_ser['feedback_count'] = 0
         for req in drive.request:
             if req.status == 'Approved':
-                if 'passengers' in drive_ser:
-                    drive_ser['passengers'].append({'id': req.user.user_id, 'first_name': req.user.first_name, 'last_name': req.user.last_name})
-                else:
-                    drive_ser['passengers'] = [{'id': req.user.user_id, 'first_name': req.user.first_name, 'last_name': req.user.last_name}]
+                drive_ser['passengers'].append({'id': req.user.user_id, 'first_name': req.user.first_name, 'last_name': req.user.last_name})
             feedback_count = crud.check_if_driver_gave_feedback(ride_id = req.ride_id, passenger = req.user.user_id)
             if feedback_count:
                 drive_ser['feedback_count'] += 1
@@ -362,8 +336,9 @@ def edit_ride():
 
     data = request.json
 
-    crud.edit_driver_ride(ride_id = data['ride_id'], seats = data['seats'], price = data['price'], 
-        comments = data['comments'], date = data['date'], start_loc = data['from'], end_loc = data['to'])
+    crud.edit_driver_ride(ride_id = data['ride_id'], seats = data['seats'], 
+        price = data['price'], comments = data['comments'], date = data['date'], 
+        start_loc = data['from'], end_loc = data['to'])
 
     return jsonify({'msg': 'Ride successfully edited.', 'color': 'success'})
 
@@ -430,14 +405,9 @@ def edit_seats_request():
 @app.route('/give-driver-feedback', methods=['POST'])
 def give_driver_feedback():
     data = request.json
-    feedback = data['feedback']
-    rating = data['rating']
-    feedback_giver = data['giver']
-    receiver = data['receiver']
-    ride_id = data['ride_id']
 
-    crud.create_new_feedback(feedback = feedback, rating= rating, ride_id = ride_id, 
-    feedback_receiver = receiver, feedback_giver = feedback_giver)
+    crud.create_new_feedback(feedback = data['feedback'], rating= data['rating'], ride_id = data['ride_id'], 
+    feedback_receiver = data['receiver'], feedback_giver = data['giver'])
 
     return jsonify({'msg': 'Added feedback'})
 
@@ -552,5 +522,4 @@ if __name__ == "__main__":
     
     app.run(debug=True, host="0.0.0.0", port=5000)
 
-    #RESEARCH @login_required
-
+    

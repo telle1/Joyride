@@ -61,11 +61,11 @@ function RideListItem({currentRide, setAlertColor, setAlertStatus, setShowAlert,
                     <SeatsModal showEdit={showEdit} handleEditClose={handleEditClose} fetchRides={fetchRides}
                     request_id={currentRide.request_id} oldSeats={currentRide.seats_requested} seatsAvailable={currentRide.seats_available}
                     setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/></React.Fragment>
-            : null}
+            : <button className="btn btn-yellow mr-2" disabled={true}>Edit Seats</button> }
             {/* Cancel Ride Modal */}
             {(currentRide.status === 'Pending' || currentRide.status === 'Approved') ?
-                <button className="btn btn-danger" onClick={handleShow}> Cancel Request </button> 
-                : <button className="btn btn-theme" onClick={handleShow}> Delete Entry </button> 
+                <button className="btn btn-danger" onClick={handleShow}> Cancel </button> 
+                : <button className="btn btn-theme" onClick={handleShow}> Delete  </button> 
             }
             <CnclModal key={currentRide.request_id} show={show} handleClose={handleClose} fetchRides={fetchRides}
             request_id={currentRide.request_id} seats={currentRide.seats_requested} status={currentRide.status}/>

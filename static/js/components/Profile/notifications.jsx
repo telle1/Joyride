@@ -1,13 +1,11 @@
 function Notifications({colSize}){
    
     const [reqs, setReqs] = useState([])
-    console.log('NOTIFS', reqs)
 
     const fetchNotifications = () => {
         fetch('/notifications')
         .then(res => res.json())
         .then(data => {
-            console.log(data, 'DATA')
             setReqs(data.notifications)
         })
     }   
@@ -22,7 +20,7 @@ function Notifications({colSize}){
                 <div className="notification-wrap">
                     <Table bordered>
                         <tbody>
-                            {reqs.map(req => <NotificationRow colSize={colSize} req={req}/>)}
+                            {reqs.map(req => <NotificationRow key={req.req_id} colSize={colSize} req={req}/>)}
                         </tbody>
                     </Table>
                 </div>
@@ -38,7 +36,7 @@ function NotificationRow({req, colSize}){
     let date = req.req_date
 
 
-    console.log('rIDE STATUSES', req.status)
+    // console.log('rIDE STATUSES', req.status)
 
     if (req.status === 'Approved'){
         iconBgColor = '#41AF41';
@@ -66,7 +64,8 @@ function NotificationRow({req, colSize}){
                         <i className={`${icon}`}></i>
                     </Col>
                     <Col style={{backgroundColor: textBgColor}}>
-                        <div className="d-inline float-right pt-2 text-muted"><sup>{date}</sup>
+                        <div className="d-inline float-right pt-2 text-muted">
+                            <sup>{date}</sup>
                         </div>
                         <h5 className="py-3 mb-0 gray-text">
                             <span style={{color: iconBgColor}}>{req.status}</span>

@@ -30,8 +30,7 @@ function Profile({match, user}){
     return (
         <Container className="top-padding">
             <Row>
-            {/* <CountUp end={100} /> */}
-            <StatSquares match={match}/>
+            <StatSquares match={match} user={user}/>
             <Col xs={4}>
                 <UserCardInfo user={user} match={match} profile={profile} userInfo={userInfo}  
                     fetchUserProfile={fetchUserProfile}/> 
@@ -195,3 +194,5 @@ function EditProfileModal({showEdit, handleEditClose, user, fetchUserProfile, pr
     // }, [])
 
     //useContext
+
+// Use the component to count to 500

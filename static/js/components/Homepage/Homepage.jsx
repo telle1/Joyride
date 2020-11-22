@@ -19,7 +19,6 @@ function HomePage(){
             <Features/>
             <HowItWorks/>
             <ControlledCarousel/>
-            {/* <RatingExampleStar/> */}
         </div>
     )}
 
@@ -54,7 +53,7 @@ function InfoSquares(){
 function InfoSquare({imageClass, header, text, dataAos}){
   return (
     
-      <Col xs={6} data-aos={dataAos} data-aos-duration="500" className="info-square">
+      <Col xs={6} data-aos={dataAos} data-aos-duration="600" className="info-square">
         <div className={imageClass}>
             <div className="heading-underline"></div>
             <h3>{header}</h3>
@@ -69,13 +68,13 @@ function Features(){
       <Container>
         <Heading header="Why Joyride?"/>
         <Row className= "text-center py-4">
-          <Feature icon= "fas fa-piggy-bank fa-4x" dataAos="flip-left" header= 'Save Money' paragraph = "Less than an Uber or flight. It's not about finding savings at the pump,
+          <Feature key="1" icon= "fas fa-piggy-bank fa-4x" dataAos="flip-left" header= 'Save Money' paragraph = "Less than an Uber or flight. It's not about finding savings at the pump,
               but finding savings before. Instead of paying for gas all by yourself, 
               split the cost with Joyride and make your wallet smile."/>
-          <Feature icon= "fas fa-users fa-4x" dataAos="flip-up" header= 'Connect with Community' paragraph = "Meet new friends along the way. Our riders are always up for new
+          <Feature key="2" icon= "fas fa-users fa-4x" dataAos="flip-up" header= 'Connect with Community' paragraph = "Meet new friends along the way. Our riders are always up for new
             adventures and road trips. Or take along family, friends, coworkers,
             teammates, and much more. What better way to enjoy the ride?"/>
-          <Feature icon= "fas fa-globe-americas fa-4x" dataAos="flip-right" header= 'Help the Earth' paragraph = "Reduce your carbon footprint. Did you know that a whopping 28% of greenhouse
+          <Feature key="3" icon= "fas fa-globe-americas fa-4x" dataAos="flip-right" header= 'Help the Earth' paragraph = "Reduce your carbon footprint. Did you know that a whopping 28% of greenhouse
             gas emissions come from transportation? Help save the Earth and fight for
             climate change by riding with us."/>
         </Row>
@@ -97,7 +96,7 @@ function Feature({icon, header, paragraph, dataAos}){
 
 function HowItWorks(){
   return (
-    <section id = "how" data-aos="fade-up" data-aos-duration="1000">
+    <section id = "how" data-aos="zoom-in-up" data-aos-anchor-placement="center-bottom" data-aos-duration="1000">
       <Container>
         <Heading header="How It Works"/>
         <Row className="py-5 align-items-center">
@@ -106,7 +105,7 @@ function HowItWorks(){
               <HowStep key="search" icon="fas fa-search fa-4x mr-4" description={["Simply ", <span className="yellow font-weight-bold">check</span>, " for rides travelling to your destination."]}/>
               <HowStep key="match" icon="fas fa-car fa-4x mr-4" description={[<span className="yellow font-weight-bold">Match</span>, " with a driver."]}/>
               <HowStep key="negotiate" icon="far fa-handshake fa-4x mr-2" description={[<span className="yellow font-weight-bold">Negotiate</span>, " on a great price."]}/>
-              <HowStep ket="reach" icon="fas fa-flag-checkered fa-4x mr-4" description={["Happily ", <span className="yellow font-weight-bold">reach</span>, " your destination."]}/>
+              <HowStep key="reach" icon="fas fa-flag-checkered fa-4x mr-4" description={["Happily ", <span className="yellow font-weight-bold">reach</span>, " your destination."]}/>
             </div>
           </Col>
           <Col className= "vid">
@@ -134,7 +133,7 @@ function ControlledCarousel() {
   };
 
   return (
-    <section id = "carousel-slider" data-aos="fade-up" data-aos-duration="1000">
+    <section id = "carousel-slider" data-aos="fade-up" data-aos-anchor-placement="center-bottom" data-aos-duration="1000">
       <Heading header="Testimonials"/>
       <div className = "container">
         <Carousel activeIndex={index} onSelect={handleSelect}>

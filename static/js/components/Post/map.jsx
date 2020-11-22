@@ -1,6 +1,4 @@
-const { useEffect } = require("react");
-
-const {useRef} = React;
+const {useRef, useEffect} = React;
 
 function MyGoogleMap(){
 
