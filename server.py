@@ -99,8 +99,8 @@ def register_user():
     user = crud.get_user_by_email(data['email'])
     #hash password
     if user is None:
-        crud.create_user(first_name = data['firstName'], last_name = data['lastName'], email = data['email'], 
-                        password = data['password'], phone_num = data['phoneNumber'])
+        crud.create_user(first_name = data['firstName'], last_name = data['lastName'], 
+            email = data['email'], password = data['password'], phone_num = data['phoneNumber'])
         resp = jsonify({'msg': 'You have successfully registered! Log in to continue.', 'color': 'success'})
     else:
         resp = jsonify({'msg': 'A user with that email has already been registered.', 'color': 'danger'})
@@ -162,7 +162,6 @@ def request_ride():
             resp = jsonify({'msg': "You cannot request your own ride.", 'alert': 'danger'})
     else:
         resp = jsonify({'msg': "You already requested this ride.", 'alert': 'warning'})
-        print('THIS IS THE DRIVER ID', req.ride.driver_id)
 
     return resp
 
@@ -175,16 +174,12 @@ def get_user_current_drives():
     current_drives_list = []
     for drive in current_user_drives:
         serialize_drive = drive.serialize()
-
         for req in drive.request:
-            if req.status == 'Approved':
-                serialize_drive['passengers'].append({'name': [req.user.first_name, req.user.last_name], 
-                    'user_id': req.user.user_id, 'email': req.user.email, 'phone_num': req.user.phone_num, 
-                    'req_id': req.request_id, 'seats_requested': req.seats_requested})
+            req_serialized = req.serialize_passenger_info()
+            if req.status == 'Approved':         
+                serialize_drive['passengers'].append(req_serialized)
             elif req.status == 'Pending':
-                serialize_drive['requests'].append({'id': req.request_id, 'user_id': req.user.user_id,
-                    'name': [req.user.first_name, req.user.last_name], 'email': req.user.email, 
-                    'phone_num': req.user.phone_num, 'seats_requested': req.seats_requested})
+                serialize_drive['requests'].append(req_serialized)
             else:
                 print('Request denied')
 
@@ -200,19 +195,7 @@ def get_current_rides():
     current_rides_list = []
     for req in current_ride_requests:
         if req.status != 'Cancelled By Passenger':
-            req_serialized = {
-                'date': req.ride.date,
-                'req_date': req.date,
-                'start_loc': req.ride.start_loc,
-                'end_loc': req.ride.end_loc,
-                'cost': req.ride.price,
-                'status': req.status,
-                'request_id': req.request_id,
-                'seats_requested': req.seats_requested,
-                'seats_available': req.ride.seats,
-                'driver': {'user_id': req.ride.user.user_id,'first_name': req.ride.user.first_name, 'last_name': req.ride.user.last_name,
-                    'email': req.ride.user.email, 'phone_num': req.ride.user.phone_num}
-            }
+            req_serialized = req.serialize_ride_info()
             current_rides_list.append(req_serialized)
 
     return jsonify({'rides': current_rides_list})
@@ -226,34 +209,9 @@ def get_notifications():
     notifications_list = []
     for req in current_ride_requests:
         if req.status != 'Cancelled By Passenger' and req.status != 'Pending':
-            req_serialized = {
-                'req_date': req.date,
-                'req_id': req.request_id,
-                'start_loc': req.ride.start_loc,
-                'end_loc': req.ride.end_loc,
-                'status': req.status,
-            }
+            req_serialized = req.serialize_ride_info()
             notifications_list.append(req_serialized)
     
-    # current_user_drives = crud.get_current_user_drives(driver_id = session['user_id'])
-    # for drive in current_user_drives:
-    #     for req in drive.request: 
-    #         if req.status == 'Cancelled By Passenger':
-    #             req_serialized = {
-    #             'req_date': req.date,
-    #             'start_loc': req.ride.start_loc,
-    #             'end_loc': req.ride.end_loc,
-    #             'status': req.status,
-    #         } 
-    #             notifications_list.append(req_serialized)
-            #add to notifications list...
-    #for req in current_ride_requessts:
-        #if req.ride.edited_at != 'None':
-            #add to notifications list
-    
-    print('THIS IS THE NOTIFCICATIONS LIST', notifications_list)
-
-
     return jsonify({'notifications': notifications_list})
 
 @app.route('/past-rides')
@@ -269,7 +227,8 @@ def get_user_past_rides():
         drive_ser['feedback_count'] = 0
         for req in drive.request:
             if req.status == 'Approved':
-                drive_ser['passengers'].append({'id': req.user.user_id, 'first_name': req.user.first_name, 'last_name': req.user.last_name})
+                drive_ser['passengers'].append({'id': req.user.user_id, 
+                    'first_name': req.user.first_name, 'last_name': req.user.last_name})
             feedback_count = crud.check_if_driver_gave_feedback(ride_id = req.ride_id, passenger = req.user.user_id)
             if feedback_count:
                 drive_ser['feedback_count'] += 1
@@ -279,23 +238,13 @@ def get_user_past_rides():
     past_rides_ser = []
     for req in past_ride_requests:
         if req.status == 'Approved':
-            req_serialized = {
-                'id': req.request_id,
-                'ride': {'ride_id': req.ride.ride_id, 
-                            'date': req.ride.date,
-                            'start_loc': req.ride.start_loc,
-                            'end_loc': req.ride.end_loc,
-                            'driver': {'id': req.ride.user.user_id, 'f_name': req.ride.user.first_name, 'l_name': req.ride.user.last_name},
-                            'cost': req.ride.price,
-                            'seats': req.seats_requested}
-            }
+            req_serialized = req.serialize_ride_info()
             did_passenger_give_feedback= crud.check_if_passenger_gave_feedback(ride_id = req.ride.ride_id, passenger = req.user.user_id)
             if did_passenger_give_feedback:
                 req_serialized['feedback'] = 'Done'
 
             past_rides_ser.append(req_serialized)
 
-    
     print('PAST DRIVES.........', past_drives_ser)
     print('PAST REQUESTSPAST REQUESTSPAST REQUESTS', past_rides_ser)
 
@@ -436,11 +385,10 @@ def give_passenger_feedback():
 def get_user_dashboard(user_id):
     """Return dashboard page."""
     user_info = crud.get_dashboard_info(user_id = user_id)
-    destinations = user_info['destinations']
-    people_met = user_info['people_met']
-    dollars_earned = user_info['dollars_earned']
 
-    return jsonify({'destinations': destinations, 'people_met': people_met, 'dollars_earned': dollars_earned})
+    return jsonify({'destinations': user_info['destinations'], 
+        'people_met': user_info['people_met'], 
+        'dollars_earned': user_info['dollars_earned']})
 
 @app.route('/get-user-profile-info/<user_id>')
 def get_user_info(user_id):

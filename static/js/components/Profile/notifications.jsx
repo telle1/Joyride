@@ -20,7 +20,7 @@ function Notifications({colSize}){
                 <div className="notification-wrap">
                     <Table bordered>
                         <tbody>
-                            {reqs.map(req => <NotificationRow key={req.req_id} colSize={colSize} req={req}/>)}
+                            {reqs.map(req => <NotificationRow key={req.request_id} colSize={colSize} req={req}/>)}
                         </tbody>
                     </Table>
                 </div>

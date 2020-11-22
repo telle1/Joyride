@@ -29,7 +29,7 @@ function PastRides({user}){
                 </tr>
             </thead>
             <tbody>
-                 {pastRides.map(pastRide => <PastRide key= {pastRide.id} pastRide={pastRide} 
+                 {pastRides.map(pastRide => <PastRide key= {pastRide.request_id} pastRide={pastRide} 
                     user={user} fetchPastRides={fetchPastRides}/>)}
                 </tbody>
             </Table>
@@ -47,7 +47,7 @@ function PastRide({pastRide, user, fetchPastRides}){
     return (
         <tr>
             <td>
-                {pastRide.ride.date}
+                {pastRide.date}
                 <React.Fragment>
                     <div> {pastRide.feedback ? <p className="yellow">Feedback received.</p> 
                         : <button className="btn btn-yellow" onClick={handleShow}>Feedback</button>}
@@ -56,14 +56,14 @@ function PastRide({pastRide, user, fetchPastRides}){
                     </div>
                 </React.Fragment>
             </td>
-            <td> {pastRide.ride.start_loc} -> <br/> {pastRide.ride.end_loc} </td>
+            <td> {pastRide.start_loc} -> <br/> {pastRide.end_loc} </td>
             <td> 
-                <Link to={`/profile/${pastRide.ride.driver.id}`}>
-                    {pastRide.ride.driver.f_name} {pastRide.ride.driver.l_name}
+                <Link to={`/profile/${pastRide.driver.user_id}`}>
+                    {pastRide.driver.first_name} {pastRide.driver.last_name}
                 </Link>
             </td>
-            <td>{pastRide.ride.seats}</td>
-            <td> ${pastRide.ride.cost * pastRide.ride.seats} </td>
+            <td>{pastRide.seats_requested}</td>
+            <td> ${pastRide.cost * pastRide.seats_requested} </td>
     </tr>
     )
 }
@@ -82,8 +82,8 @@ function FeedbackModal({show, handleClose, user, pastRide, fetchPastRides}){
                 'feedback': feedback,
                 'rating': rating,
                 'giver': user,
-                'receiver': pastRide.ride.driver.id,
-                'ride_id': pastRide.ride.ride_id
+                'receiver': pastRide.driver.user_id,
+                'ride_id': pastRide.ride_id
             }),
         })
         .then(res => res.json())
@@ -99,7 +99,7 @@ function FeedbackModal({show, handleClose, user, pastRide, fetchPastRides}){
             </Modal.Header>
             <Modal.Body> 
                 <Form onSubmit={sendFeedback} method="post">  
-                        <p> {pastRide.ride.driver.f_name} {pastRide.ride.driver.l_name} </p>
+                        <p> {pastRide.driver.first_name} {pastRide.driver.last_name} </p>
                         <div>
                             <StarRating rating={rating} setRating={setRating} cursor="cursor-pointer"/>
                         </div>

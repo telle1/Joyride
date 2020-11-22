@@ -94,7 +94,7 @@ function Request({request, setAlertColor, setAlertStatus, setShowAlert, fetchDri
         <React.Fragment>
             <button className="btn-transparent mr-2" onClick={handleInfoShow}>{request.name[0]} {request.name[1]} ({request.seats_requested}) ID:{request.id}</button>
             <ContactInfoModal showInfo={showInfo} handleInfoClose={handleInfoClose} request={request}/>
-            <RadioButton request_id={request.id} seats={request.seats_requested} fetchDrives={fetchDrives}
+            <RadioButton request_id={request.req_id} seats={request.seats_requested} fetchDrives={fetchDrives}
                 setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
         </React.Fragment>
     )}

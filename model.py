@@ -70,6 +70,22 @@ class Request(db.Model):
     def __repr__(self):
         return f'<Requests request_id = {self.request_id} ride_id = {self.ride_id} rider_id = {self.rider_id} status = {self.status} seats_requested={self.seats_requested}>'
 
+    def serialize_passenger_info(self): #for current drives page (to see info about the passenger)
+        return {'req_id': self.request_id, 'user_id': self.user.user_id,
+                'name': [self.user.first_name, self.user.last_name], 
+                'email': self.user.email, 'phone_num': self.user.phone_num, 
+                'seats_requested': self.seats_requested}
+
+    def serialize_ride_info(self): #for current rides page (to see info about the driver)
+        return {'request_id': self.request_id, 'ride_id': self.ride.ride_id,
+            'date': self.ride.date.strftime("%A, %B %d %Y"), 'req_date': self.date,
+            'start_loc': self.ride.start_loc, 'end_loc': self.ride.end_loc,
+            'cost': self.ride.price, 'status': self.status,
+            'seats_available': self.ride.seats,'seats_requested': self.seats_requested,
+            'driver': {'user_id': self.ride.user.user_id,
+                'first_name': self.ride.user.first_name, 'last_name': self.ride.user.last_name,
+                'email': self.ride.user.email, 'phone_num': self.ride.user.phone_num}}
+
 class Feedback(db.Model):
     """A list of user feedback for rides."""
     __tablename__ = "feedback"
@@ -119,25 +135,11 @@ if __name__ == '__main__':
 
 
 
-# class TravelList(db.Model):
-
-#     __tablename__ = "travel_list"
-
-#     list_id = db.Column(db.Integer, primary_key=True, autoincrement = True)
-#     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
-#     list_item = db.Column(db.String)
-
-#     def __repr__(self):
-#         return f'<List_item = {self.list_item} list_id = {self.list_id} user_id = {self.user_id}>'
-
-#     def serialize(self):
-#         return {'list_id': self.list_id, 'user_id': self.user_id, 'list_item': self.list_item}
-
 # test = Feedback(feedback = 'test123', rating = 3, feedback_giver=2, feedback_receiver=5, ride_id=54)
 # db.session.add(test)
 # db.session.commit()
 
-# request = Request(ride_id = 51, rider_id = 1, seats_requested = 1, status='Approved', date= datetime.now())
+# request = Request(ride_id = 11, rider_id = 6, seats_requested = 1, status='Approved', date= datetime.now())
 # db.session.add(request)
 # db.session.commit()
 

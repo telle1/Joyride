@@ -45,7 +45,8 @@ function PastDrive({pastDrive, user, setAlertColor, setAlertStatus, setShowAlert
                 <td> 
                     {pastDrive.date} {pastDrive.ride_id}
                     <br/>
-                    {pastDrive.passengers ? <span className="yellow">{pastDrive.feedback_count} of {pastDrive.passengers.length} feedback received.</span> 
+                    {pastDrive.passengers.length > 0 ? 
+                    <span className="yellow"> {pastDrive.feedback_count} of {pastDrive.passengers.length} feedback received.</span> 
                         : null}
                 </td>
                 <td> {pastDrive.start_loc} -> {pastDrive.end_loc}</td>
@@ -62,12 +63,10 @@ function PastPassengersList({pastDrive, user, setAlertColor, setAlertStatus, set
 
     return (
         <React.Fragment>
-            {pastDrive.passengers ? 
-                pastDrive.passengers.map(passenger => <PastPassenger pastDrive={pastDrive} 
-                    fetchPastDrives={fetchPastDrives} passenger={passenger} user={user}
-                    setShowAlert={setShowAlert} setAlertColor={setAlertColor} 
-                    setAlertStatus={setAlertStatus}/>)
-                : null}
+            {pastDrive.passengers.map(passenger => <PastPassenger pastDrive={pastDrive} 
+                fetchPastDrives={fetchPastDrives} passenger={passenger} user={user}
+                setShowAlert={setShowAlert} setAlertColor={setAlertColor} 
+                setAlertStatus={setAlertStatus}/>)}
         </React.Fragment>
     )
 }
