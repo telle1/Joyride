@@ -47,7 +47,7 @@ function NavBarNoUser({setUser, setShowAlert, setAlertStatus, setAlertColor}){
     <div>
       <Navbar expand="lg" className="fixed-top navbar-custom">
         <Container>
-          <Navbar.Brand><Link to="/home" className="navbar-brand">Joyride</Link></Navbar.Brand>
+          <Navbar.Brand as={Link} to="/home" className="navbar-brand">Joyride</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">  
               <Nav className="ml-auto">
@@ -70,18 +70,16 @@ function NavBarUser({handleLogout, user}){
   return (
     <Navbar expand="lg" className="fixed-top navbar-custom">
       <Container>
-        <Navbar.Brand><Link to="/home" className="navbar-brand">Joyride</Link></Navbar.Brand>
+        <Navbar.Brand as={Link} to="/home" className="navbar-brand">Joyride</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link><Link to="/search" className="btn navbar-btn shadow-none">Search</Link>
-              </Nav.Link>
-              <Nav.Link><Link to="/post" className="btn navbar-btn shadow-none">Post</Link>
-              </Nav.Link>
+              <Nav.Link as={Link} to="/search" className="btn navbar-btn shadow-none">Search</Nav.Link>
+              <Nav.Link as={Link} to="/post" className="btn navbar-btn shadow-none">Post</Nav.Link>
             </Nav>
             <Nav className="ml-auto">       
                 <Dropdown>
-                  <Dropdown.Toggle variant="info" className="mt-2 mr-1" id="rides-dropdown">
+                  <Dropdown.Toggle variant="info" className="mr-1" id="rides-dropdown">
                     My Rides
                   </Dropdown.Toggle>
                   <Dropdown.Menu> 
@@ -90,17 +88,17 @@ function NavBarUser({handleLogout, user}){
                   </Dropdown.Menu>
                 </Dropdown>
                 <Dropdown>
-                  <Dropdown.Toggle variant="info" className="mt-2">
+                  <Dropdown.Toggle variant="info">
                   <i className="fas fa-bell white-icon"></i>
                   </Dropdown.Toggle>
                   <Dropdown.Menu> 
                     <Dropdown.Item style={{width: '400px'}}><Notifications colSize="2"/></Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
-                <Nav.Link><Link to={`/profile/${user}`} className="btn navbar-btn shadow-none">
+                <Nav.Link as={Link} to={`/profile/${user}`} className="btn navbar-btn shadow-none">
                   <i className="fas fa-home white-icon"></i>
-                </Link></Nav.Link>
-                <Nav.Link><Link to="/" className="btn navbar-btn shadow-none" onClick={handleLogout}>Log Out</Link></Nav.Link>
+                </Nav.Link>
+                <Nav.Link as={Link} to="/" className="btn navbar-btn shadow-none" onClick={handleLogout}>Log Out</Nav.Link>
             </Nav>
          </Navbar.Collapse>
       </Container>

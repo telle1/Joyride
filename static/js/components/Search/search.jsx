@@ -7,12 +7,12 @@ function Search({setAlertStatus, setAlertColor, alertStatus, alertColor}){
     const [startInput, setStartInput] = useState("")
     const [endInput, setEndInput] = useState("")
     const [showAlert, setShowAlert] = useState("")
+    const [sort, setSort] = useState("date")
 
     console.log('START INPUT', startInput)
     console.log('END INPUT', endInput)
 
-    const getMatchingRides = (evt) => {
-        evt.preventDefault()
+    const fetchRides = () => {
         fetch("/search-results", {
             method: "POST",
             headers: {
@@ -20,7 +20,8 @@ function Search({setAlertStatus, setAlertColor, alertStatus, alertColor}){
             },
             body: JSON.stringify({
                 startInput: startInput,
-                endInput: endInput
+                endInput: endInput,
+                sort: sort,
             }) 
         })
         .then(res => res.json())
@@ -28,11 +29,19 @@ function Search({setAlertStatus, setAlertColor, alertStatus, alertColor}){
             setMatchingRides(data.res)
             setSearch(true)
             console.log(matchingRides)
-        })        
+        })   
+    }
+
+    const getMatchingRides = (evt) => {
+        evt.preventDefault();
+        fetchRides();
     }
 
     const sortRides = (evt) => {
-        evt.preventDefault()
+        evt.preventDefault();
+        setSort(evt.target.value)
+        console.log('tHIS IS WHATS IN SORT', sort)
+        fetchRides();
     }
 
     return (
@@ -44,38 +53,34 @@ function Search({setAlertStatus, setAlertColor, alertStatus, alertColor}){
             <Container> 
                 <Row>
                     <form onSubmit={getMatchingRides} className="form-inline mx-auto" id="search-rides" method="post">
-                        <SearchBar input={startInput} setInput={setStartInput} placeholder="Start Location"/>
-                        <SearchBar input={endInput} setInput={setEndInput} placeholder="End Location"/>
+                        <SearchBar key="start" input={startInput} setInput={setStartInput} placeholder="Start Location"/>
+                        <SearchBar key="end" input={endInput} setInput={setEndInput} placeholder="End Location"/>
                         <button type="submit" className="btn btn-theme my-1">Search</button>
                     </form>
                 </Row>
                 <Row>
                     {(matchingRides.length !== 0 && search == true) ? 
-                        <form className="ml-3" onSubmit={sortRides}>
+                        <form className="ml-3">
                             <label htmlFor="options" className="mr-1">Sort By</label>
-                            <select name="options">
+                            <select name="options" onChange={evt => sortRides(evt)}>
                                 <option value="date">Date</option>
                                 <option value="price">Price</option>
-                                <option value="stars">Driver Rating</option>
+                                <option value="seats">Seats Available</option>
                             </select>
                         </form>
                     : null} 
                 </Row>
 
-           
                 {(matchingRides.length == 0 && search == true) ? 
                     <h3 className="mt-3 yellow">No matching rides found. Try again. </h3> :
-                    <div>
                     <Row className="mt-3">
-
                             {matchingRides.map(matchingRide => (
-                                <Col xs={6}>
-                                    <MatchingRide key = {matchingRide.ride_id} matchingRide = {matchingRide}
+                                <Col xs={6} key ={matchingRide.ride_id}>
+                                    <MatchingRide key ={matchingRide.ride_id} matchingRide = {matchingRide}
                                         setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
                                 </Col>
                             ))}
                     </Row>
-                    </div>
                 }
             </Container>
         </React.Fragment>

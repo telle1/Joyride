@@ -124,7 +124,8 @@ def post_search_to_page():
 
     data = request.json
 
-    matching_rides = crud.get_matching_rides(start_loc = data['startInput'], end_loc = data['endInput'])
+    matching_rides = crud.get_matching_rides(start_loc = data['startInput'], end_loc = data['endInput'],
+        sort = data['sort'])
     print(matching_rides)
     
     return jsonify({'res': matching_rides})

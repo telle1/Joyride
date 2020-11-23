@@ -29,9 +29,11 @@ def get_ride_by_id(ride_id):
     """Return a ride by ride_id."""
     return Ride.query.filter(Ride.ride_id == ride_id).first()
 
-def get_matching_rides(start_loc, end_loc):
+def get_matching_rides(start_loc, end_loc, sort):
     """Return matching rides via start and end loc."""
-    matching_rides = Ride.query.filter(Ride.start_loc == start_loc, Ride.end_loc == end_loc, Ride.date > current_time).all()
+    all_matching_rides = Ride.query.filter(Ride.start_loc == start_loc, Ride.end_loc == end_loc, Ride.date > current_time)
+    matching_rides = all_matching_rides.order_by(sort).all()
+
     rides_list = []
     for ride in matching_rides:
         ride_serialized = ride.serialize()

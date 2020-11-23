@@ -25,8 +25,8 @@ function MatchingRide({matchingRide, setAlertColor, setAlertStatus, setShowAlert
 
                         <Col>
                             <Card.Text className="text-right"> 
-                                <h3 className = "mb-0 font-weight-bold yellow">{matchingRide.seats} seats </h3>
-                                <h3 className = "font-weight-bold yellow">${matchingRide.price} each</h3>
+                                <span className = "h5 mb-0 font-weight-bold yellow">{matchingRide.seats} seats </span>
+                                <span className = "h5 font-weight-bold yellow">${matchingRide.price} each</span>
                             </Card.Text>
                         </Col>
                     </Row>

@@ -22,7 +22,7 @@ function CurrentDrives({setAlertColor, setAlertStatus, setShowAlert}){
                 <TableHeader col2="Location" col3="Seats" col4="Price" col5="Passengers"></TableHeader>
                 <tbody>
                     {currentDrives.map(currentDrive => (
-                        <CurrentDrive currentDrive={currentDrive} setAlertColor={setAlertColor} 
+                        <CurrentDrive key={currentDrive.ride_id} currentDrive={currentDrive} setAlertColor={setAlertColor} 
                         setAlertStatus={setAlertStatus} setShowAlert={setShowAlert} fetchDrives={fetchDrives}/>
                     ))}
                 </tbody>

@@ -43,8 +43,8 @@ function InfoSquares(){
       <section id="info-squares">
         <Container fluid>
           <Row>
-            <InfoSquare dataAos="fade-up-right" imageClass="col-left" header="THE BEST LONG DISTANCE RIDESHARE." text="Join our welcoming community of carpoolers."/>
-            <InfoSquare dataAos="fade-up-left" imageClass="col-right" header="FIND OR GIVE A RIDE." text="Search our user-friendly site for listings."/>
+            <InfoSquare key="left" dataAos="fade-up-right" imageClass="col-left" header="THE BEST LONG DISTANCE RIDESHARE." text="Join our welcoming community of carpoolers."/>
+            <InfoSquare key="right" dataAos="fade-up-left" imageClass="col-right" header="FIND OR GIVE A RIDE." text="Search our user-friendly site for listings."/>
           </Row>   
         </Container>
       </section>   
@@ -102,10 +102,10 @@ function HowItWorks(){
         <Row className="py-5 align-items-center">
           <Col className= "d-none d-md-block">
             <div className = "how-steps">
-              <HowStep key="search" icon="fas fa-search fa-4x mr-4" description={["Simply ", <span className="yellow font-weight-bold">check</span>, " for rides travelling to your destination."]}/>
-              <HowStep key="match" icon="fas fa-car fa-4x mr-4" description={[<span className="yellow font-weight-bold">Match</span>, " with a driver."]}/>
-              <HowStep key="negotiate" icon="far fa-handshake fa-4x mr-2" description={[<span className="yellow font-weight-bold">Negotiate</span>, " on a great price."]}/>
-              <HowStep key="reach" icon="fas fa-flag-checkered fa-4x mr-4" description={["Happily ", <span className="yellow font-weight-bold">reach</span>, " your destination."]}/>
+              <HowStep key="1" icon="fas fa-search fa-4x mr-4" description={["Simply ", <span className="yellow font-weight-bold">check</span>, " for rides travelling to your destination."]}/>
+              <HowStep key="2" icon="fas fa-car fa-4x mr-4" description={[<span className="yellow font-weight-bold">Match</span>, " with a driver."]}/>
+              <HowStep key="3" icon="far fa-handshake fa-4x mr-2" description={[<span className="yellow font-weight-bold">Negotiate</span>, " on a great price."]}/>
+              <HowStep key="4" icon="fas fa-flag-checkered fa-4x mr-4" description={["Happily ", <span className="yellow font-weight-bold">reach</span>, " your destination."]}/>
             </div>
           </Col>
           <Col className= "vid">
@@ -119,7 +119,7 @@ function HowItWorks(){
 
 function HowStep({icon, description}){
   return (
-    <div className = "how-step">
+    <div className="how-step">
       <i className={icon} style={{color: "#eba92a"}} data-fa-transform="shrink-3 up-2"></i>
       <h4>{description}</h4>
     </div>
