@@ -1,6 +1,6 @@
 const { useState, useEffect } = React 
 
-function CurrentDrives({setAlertColor, setAlertStatus, setShowAlert}){
+function CurrentDrives({setShowAlert}){
 
     const [currentDrives, setCurrentDrives] = useState([])
     console.log(currentDrives);
@@ -22,8 +22,8 @@ function CurrentDrives({setAlertColor, setAlertStatus, setShowAlert}){
                 <TableHeader col2="Location" col3="Seats" col4="Price" col5="Passengers"></TableHeader>
                 <tbody>
                     {currentDrives.map(currentDrive => (
-                        <CurrentDrive key={currentDrive.ride_id} currentDrive={currentDrive} setAlertColor={setAlertColor} 
-                        setAlertStatus={setAlertStatus} setShowAlert={setShowAlert} fetchDrives={fetchDrives}/>
+                        <CurrentDrive key={currentDrive.ride_id} currentDrive={currentDrive} 
+                            setShowAlert={setShowAlert} fetchDrives={fetchDrives}/>
                     ))}
                 </tbody>
             </Table>
@@ -32,7 +32,7 @@ function CurrentDrives({setAlertColor, setAlertStatus, setShowAlert}){
 }
 
 
-function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert, fetchDrives}){
+function CurrentDrive({currentDrive, setShowAlert, fetchDrives}){
 
     //Delete Ride Modal
     const [show, setShow] = useState(false)
@@ -56,35 +56,33 @@ function CurrentDrive({currentDrive, setAlertColor, setAlertStatus, setShowAlert
                     <button className="btn btn-yellow mr-2" onClick={handleManageShow}>Manage</button>
                     <button className="btn btn-danger" onClick={handleShow}>Delete</button>
                     <DelRideModal show={show} handleClose={handleClose} ride_id={currentDrive.ride_id}
-                    setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert} fetchDrives={fetchDrives}
-                    />
-                    <EditRideModal showEdit={showEdit} handleEditClose={handleEditClose} currentDrive={currentDrive}
-                    setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert} fetchDrives={fetchDrives}/>
-                    <ManageRideModal showManage={showManage} handleManageClose={handleManageClose} currentDrive={currentDrive}
-                    fetchDrives={fetchDrives}/>
+                        setShowAlert={setShowAlert} fetchDrives={fetchDrives}/>
+                    <EditRideModal showEdit={showEdit} handleEditClose={handleEditClose} 
+                        currentDrive={currentDrive} setShowAlert={setShowAlert} fetchDrives={fetchDrives}/>
+                    <ManageRideModal showManage={showManage} handleManageClose={handleManageClose} 
+                        currentDrive={currentDrive} fetchDrives={fetchDrives}/>
                 </React.Fragment>
             </td>
             <td>{currentDrive.start_loc} -> <br/>{currentDrive.end_loc}</td>
             <td>{currentDrive.seats}</td>
             <td>${currentDrive.price}</td>
             <td><PassengersList currentDrive={currentDrive}/></td>
-            <td><RequestsList currentDrive={currentDrive} setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} 
-                fetchDrives={fetchDrives} setShowAlert={setShowAlert}/></td>
+            <td><RequestsList currentDrive={currentDrive} fetchDrives={fetchDrives} setShowAlert={setShowAlert}/></td>
         </tr>
     )
 }
 
 
-function RequestsList({currentDrive, setAlertColor, setAlertStatus, setShowAlert, fetchDrives}){
+function RequestsList({currentDrive, setShowAlert, fetchDrives}){
  
     return (
         <React.Fragment>
-        {currentDrive.requests ? currentDrive.requests.map(request => <Request request={request} fetchDrives={fetchDrives}
-            setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>) : null}
+        {currentDrive.requests ? currentDrive.requests.map(request => 
+            <Request request={request} fetchDrives={fetchDrives} setShowAlert={setShowAlert}/>) : null}
         </React.Fragment>
     )}
 
-function Request({request, setAlertColor, setAlertStatus, setShowAlert, fetchDrives}){
+function Request({request, setShowAlert, fetchDrives}){
 
     const [showInfo, setShowInfo] = useState(false)
     const handleInfoShow = () => setShowInfo(true)
@@ -94,8 +92,8 @@ function Request({request, setAlertColor, setAlertStatus, setShowAlert, fetchDri
         <React.Fragment>
             <button className="btn-transparent mr-2" onClick={handleInfoShow}>{request.name[0]} {request.name[1]} ({request.seats_requested}) ID:{request.id}</button>
             <ContactInfoModal showInfo={showInfo} handleInfoClose={handleInfoClose} request={request}/>
-            <RadioButton request_id={request.req_id} seats={request.seats_requested} fetchDrives={fetchDrives}
-                setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
+            <RadioButton request_id={request.req_id} seats={request.seats_requested} 
+                fetchDrives={fetchDrives} setShowAlert={setShowAlert}/>
         </React.Fragment>
     )}
 

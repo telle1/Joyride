@@ -1,4 +1,4 @@
-function PastRides({user}){
+function PastRides(){
 
     const [pastRides, setPastRides] = useState([])
 
@@ -30,14 +30,14 @@ function PastRides({user}){
             </thead>
             <tbody>
                  {pastRides.map(pastRide => <PastRide key= {pastRide.request_id} pastRide={pastRide} 
-                    user={user} fetchPastRides={fetchPastRides}/>)}
+                    fetchPastRides={fetchPastRides}/>)}
                 </tbody>
             </Table>
         </div>
     )
 }
 
-function PastRide({pastRide, user, fetchPastRides}){
+function PastRide({pastRide, fetchPastRides}){
 
     //Feedback Modal
     const [show, setShow] = useState(false)
@@ -52,7 +52,7 @@ function PastRide({pastRide, user, fetchPastRides}){
                     <div> {pastRide.feedback ? <p className="yellow">Feedback received.</p> 
                         : <button className="btn btn-yellow" onClick={handleShow}>Feedback</button>}
                         <FeedbackModal show={show} handleClose={handleClose} pastRide={pastRide} 
-                            user={user} fetchPastRides={fetchPastRides}/>
+                            fetchPastRides={fetchPastRides}/>
                     </div>
                 </React.Fragment>
             </td>
@@ -68,7 +68,9 @@ function PastRide({pastRide, user, fetchPastRides}){
     )
 }
 
-function FeedbackModal({show, handleClose, user, pastRide, fetchPastRides}){
+function FeedbackModal({show, handleClose, pastRide, fetchPastRides}){
+
+    const {user} = useContext(UserContext)
 
     const [rating, setRating] = useState(0)
     const [feedback, setFeedback] = useState("")

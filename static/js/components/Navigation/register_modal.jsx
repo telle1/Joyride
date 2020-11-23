@@ -1,7 +1,9 @@
 const {useForm} = ReactHookForm
 const {InputGroup} = ReactBootstrap
 
-function RegisterModal({showRegister, handleRegisterClose, setAlertStatus, setShowAlert, setAlertColor}){
+function RegisterModal({showRegister, handleRegisterClose, setShowAlert}){
+
+    const {setAlertStatus, setAlertColor} = useContext(UserContext)
 
     const { register, errors, handleSubmit, watch } = useForm({});
     const password = useRef({});

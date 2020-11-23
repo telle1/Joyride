@@ -1,4 +1,6 @@
-function DelRideModal({show, handleClose, ride_id, setAlertColor, setAlertStatus, setShowAlert, fetchDrives}){
+function DelRideModal({show, handleClose, ride_id, setShowAlert, fetchDrives}){
+
+    const {setAlertStatus, setAlertColor} = useContext(UserContext);
 
     const handleRemove = (evt) => {
         evt.preventDefault()     

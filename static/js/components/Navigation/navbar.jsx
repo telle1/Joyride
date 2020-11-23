@@ -1,43 +1,27 @@
-const { useState } = React 
+const { useState, useContext } = React 
 const {Modal, Button, Alert, Dropdown, Container, Navbar, Nav} = ReactBootstrap
-const {SettingsIcon, SvgIcon, ExitToAppIcon} = MaterialUI
 
-function NavBar({setUser, user, alertColor, setAlertColor, alertStatus, setAlertStatus}){
+function NavBar(){
+
     const [showAlert, setShowAlert] = useState(false)
-
-    // const {user, alertColor, setAlertColor, alertStatus, setAlertStatus} = useContext(UserContext);
-
-    const handleLogout = () => {
-
-      fetch("/logout", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          user_id: user
-        })
-      })
-      setUser(null)
-      setShowAlert(false)
-      localStorage.removeItem('user_id')
-    }
+    const {user, alertColor, alertStatus} = useContext(UserContext)
 
     if (user){
-      return <NavBarUser handleLogout={handleLogout} user={user}/>
+      return <NavBarUser setShowAlert={setShowAlert}/>
     } else {
       return (
         <div>
-            <NavBarNoUser setUser={setUser} setAlertColor={setAlertColor} 
-              setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
+            <NavBarNoUser setShowAlert={setShowAlert}/> 
             {showAlert ? <UserAlert text={alertStatus} color={alertColor} setShowAlert={setShowAlert}/> 
               : null}
         </div> )
     }
 }
 
+// const {user, alertStatus, alertColor, setUser, setAlertStatus, setAlertColor} = useContext(UserContext)
 
-function NavBarNoUser({setUser, setShowAlert, setAlertStatus, setAlertColor}){
+function NavBarNoUser({setShowAlert}){
+
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   const handleLoginClose = () => setShowLogin(false);
@@ -60,15 +44,34 @@ function NavBarNoUser({setUser, setShowAlert, setAlertStatus, setAlertColor}){
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <LogInModal setUser={setUser} handleLoginClose={handleLoginClose} showLogin={showLogin} 
-        setShowAlert={setShowAlert} setAlertStatus={setAlertStatus} setAlertColor={setAlertColor}/>
+      <LogInModal handleLoginClose={handleLoginClose} showLogin={showLogin} 
+          setShowAlert={setShowAlert}/>
       <RegisterModal handleRegisterClose={handleRegisterClose} showRegister={showRegister} 
-        setShowAlert={setShowAlert} setAlertStatus={setAlertStatus} setAlertColor={setAlertColor} />
+          setShowAlert={setShowAlert}/>
     </div>
   )
 }
 
-function NavBarUser({handleLogout, user}){
+function NavBarUser({setShowAlert}){
+
+  const {user, setUser} = useContext(UserContext)
+
+  const handleLogout = () => {
+
+    fetch("/logout", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        user_id: user
+      })
+    })
+    setUser(null)
+    setShowAlert(false)
+    localStorage.removeItem('user_id')
+  }
+
   return (
     <Navbar expand="lg" className="fixed-top navbar-custom">
       <Container>
@@ -85,8 +88,8 @@ function NavBarUser({handleLogout, user}){
                     My Rides
                   </Dropdown.Toggle>
                   <Dropdown.Menu> 
-                    <Dropdown.Item><Link to="/current-rides">Current Rides</Link></Dropdown.Item>
-                    <Dropdown.Item><Link to="/past-rides">Past Rides</Link></Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/current-rides">Current Rides</Dropdown.Item>
+                    <Dropdown.Item as={Link} to="/past-rides">Past Rides</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
                 <Dropdown>

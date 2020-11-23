@@ -31,8 +31,8 @@ function App(){
 
     return (
         <Router>
-                <UserContext.Provider value={{user, setAlertStatus, setAlertColor, alertStatus, alertColor}}>
-                    <NavBar setUser={setUser} user={user} alertColor={alertColor} setAlertColor={setAlertColor} alertStatus={alertStatus} setAlertStatus={setAlertStatus}/>
+                <UserContext.Provider value={{user, alertStatus, alertColor, setUser, setAlertStatus, setAlertColor}}>
+                    <NavBar/>
                     <Switch>
                         <Route exact path="/">
                             {user ? <Redirect to={`/profile/${user}`}/> : <HomePage/>}
@@ -47,10 +47,11 @@ function App(){
                             <Post/>
                         </Route>
                         <Route path="/current-rides">
-                            <AllCurrentTrips alertColor={alertColor} setAlertColor={setAlertColor} alertStatus={alertStatus} setAlertStatus={setAlertStatus}/>
+                            <AllCurrentTrips/>
                         </Route> 
                         <Route path="/past-rides">
-                            <PastTrips user={user} alertColor={alertColor} setAlertColor={setAlertColor} alertStatus={alertStatus} setAlertStatus={setAlertStatus}/>
+                            <PastTrips/>
+                            {/* //user={user} alertColor={alertColor} setAlertColor={setAlertColor} alertStatus={alertStatus} setAlertStatus={setAlertStatus} */}
                         </Route>
                         {/* <Route path="/profile/:userId" component={Profile}/> */}
                         <Route path="/profile/:userId" render={(props) => <Profile {...props} user={user}/>}/>

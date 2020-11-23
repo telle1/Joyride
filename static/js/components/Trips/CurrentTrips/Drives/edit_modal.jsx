@@ -1,4 +1,6 @@
-function EditRideModal({showEdit, handleEditClose, currentDrive, setAlertColor, setAlertStatus, setShowAlert, fetchDrives}){
+function EditRideModal({showEdit, handleEditClose, currentDrive, setShowAlert, fetchDrives}){
+
+    const {setAlertStatus, setAlertColor} = useContext(UserContext);
 
     const [seats, setSeats] = useState(currentDrive.seats)
     const [price, setPrice] = useState(currentDrive.price)

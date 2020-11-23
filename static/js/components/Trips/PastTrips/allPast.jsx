@@ -1,17 +1,21 @@
 const { useEffect } = React
 const {Container, Tab, Tabs} = ReactBootstrap
 
-function PastTrips({user, alertColor, alertStatus, setAlertColor, setAlertStatus}){
+function PastTrips(){
     const [showAlert, setShowAlert] = useState(false)
+    const {alertColor, alertStatus} = useContext(UserContext)
 
     return(
         <React.Fragment>
             {showAlert ? <UserAlert text={alertStatus} color={alertColor} setShowAlert={setShowAlert}/> 
             : null}
-            <AllTrips firstTab= {<PastDrives user={user} setShowAlert={setShowAlert} 
-                setAlertColor={setAlertColor} setAlertStatus={setAlertStatus}/>} 
-                secondTab= {<PastRides user={user}/>} firstTitle="Past Drives" 
+            <AllTrips firstTab= {<PastDrives setShowAlert={setShowAlert}/>} 
+                secondTab= {<PastRides/>} firstTitle="Past Drives" 
                 secondTitle="Past Rides"/>
         </React.Fragment>
     )
 }
+
+// past drives user={user} setShowAlert={setShowAlert} 
+// setAlertColor={setAlertColor} setAlertStatus={setAlertStatus}
+// past rides  user={user}/>

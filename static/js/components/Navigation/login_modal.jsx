@@ -1,4 +1,7 @@
-function LogInModal({setUser, showLogin, handleLoginClose, setShowAlert, setAlertStatus, setAlertColor}){
+function LogInModal({showLogin, handleLoginClose, setShowAlert}){
+
+    const {setUser, setAlertStatus, setAlertColor} = useContext(UserContext)
+
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
@@ -24,8 +27,8 @@ function LogInModal({setUser, showLogin, handleLoginClose, setShowAlert, setAler
             setAlertColor("danger")
             if (data.user_id){
               setUser(data.user_id) 
-              setAlertColor('success')
               localStorage.setItem('user_id', data.user_id) 
+              setAlertColor('success')
             } 
         })
     }

@@ -1,5 +1,6 @@
-function RadioButton({request_id, seats, setAlertColor, setAlertStatus, setShowAlert, fetchDrives}){
+function RadioButton({request_id, seats, setShowAlert, fetchDrives}){
 
+    const {setAlertStatus, setAlertColor} = useContext(UserContext);
     const [rideStatus, setRideStatus] = useState(null)
 
     const handleStatus = (evt) => {
@@ -22,7 +23,6 @@ function RadioButton({request_id, seats, setAlertColor, setAlertStatus, setShowA
         })
         .then(res => res.json())
         .then(data => {
-            // console.log(data)
             setAlertStatus(data.msg)
             setShowAlert(true)
             setAlertColor(data.alert_color)

@@ -1,4 +1,4 @@
-function PastDrives({user, setAlertColor, setAlertStatus, setShowAlert}){
+function PastDrives({setShowAlert}){
 
     const [pastDrives, setPastDrives] = useState([])
 
@@ -28,9 +28,8 @@ function PastDrives({user, setAlertColor, setAlertStatus, setShowAlert}){
                     </tr>
                 </thead>
                 <tbody>
-                    {pastDrives.map(pastDrive => <PastDrive pastDrive={pastDrive} user={user} 
-                        fetchPastDrives={fetchPastDrives} setShowAlert={setShowAlert} 
-                        setAlertColor={setAlertColor} setAlertStatus={setAlertStatus}/>
+                    {pastDrives.map(pastDrive => <PastDrive key={pastDrive.ride_id} pastDrive={pastDrive} 
+                        fetchPastDrives={fetchPastDrives} setShowAlert={setShowAlert}/>
                     )}
                 </tbody>
             </Table>
@@ -38,7 +37,7 @@ function PastDrives({user, setAlertColor, setAlertStatus, setShowAlert}){
     )          
 }
 
-function PastDrive({pastDrive, user, setAlertColor, setAlertStatus, setShowAlert, fetchPastDrives}){
+function PastDrive({pastDrive, setShowAlert, fetchPastDrives}){
 
     return (
             <tr>
@@ -52,26 +51,25 @@ function PastDrive({pastDrive, user, setAlertColor, setAlertStatus, setShowAlert
                 <td> {pastDrive.start_loc} -> {pastDrive.end_loc}</td>
                 <td> {pastDrive.seats}</td>
                 <td> ${pastDrive.price}</td>
-                <td> <PastPassengersList pastDrive={pastDrive} user={user} fetchPastDrives={fetchPastDrives}
-                        setShowAlert={setShowAlert} setAlertColor={setAlertColor} setAlertStatus={setAlertStatus}/>
+                <td> <PastPassengersList key={pastDrive.ride_id} pastDrive={pastDrive} 
+                        fetchPastDrives={fetchPastDrives} setShowAlert={setShowAlert}/>
                 </td>
             </tr>
     )
 }
 
-function PastPassengersList({pastDrive, user, setAlertColor, setAlertStatus, setShowAlert, fetchPastDrives}){
+function PastPassengersList({pastDrive, setShowAlert, fetchPastDrives}){
 
     return (
         <React.Fragment>
             {pastDrive.passengers.map(passenger => <PastPassenger pastDrive={pastDrive} 
-                fetchPastDrives={fetchPastDrives} passenger={passenger} user={user}
-                setShowAlert={setShowAlert} setAlertColor={setAlertColor} 
-                setAlertStatus={setAlertStatus}/>)}
+                fetchPastDrives={fetchPastDrives} passenger={passenger}
+                setShowAlert={setShowAlert}/>)}
         </React.Fragment>
     )
 }
 
-function PastPassenger({passenger, pastDrive, user, setAlertColor, setAlertStatus, setShowAlert, fetchPastDrives}){
+function PastPassenger({passenger, pastDrive, setShowAlert, fetchPastDrives}){
 
     const [show, setShow] = useState(false)
     const handleShow = () => setShow(true)
@@ -84,15 +82,16 @@ function PastPassenger({passenger, pastDrive, user, setAlertColor, setAlertStatu
             </button>
             <br/>
             <DriverFeedbackModal show={show} handleClose={handleClose} pastDrive={pastDrive} 
-                user={user} fetchPastDrives={fetchPastDrives} passenger={passenger} 
-                setShowAlert={setShowAlert} setAlertColor={setAlertColor} 
-                setAlertStatus={setAlertStatus}/>
+                fetchPastDrives={fetchPastDrives} passenger={passenger} 
+                setShowAlert={setShowAlert}/>
         </React.Fragment>
     )
 }
 
 
-function DriverFeedbackModal({show, handleClose, pastDrive, user, passenger, setAlertColor, setAlertStatus, setShowAlert, fetchPastDrives}){
+function DriverFeedbackModal({show, handleClose, pastDrive, passenger, setShowAlert, fetchPastDrives}){
+
+    const {user, setAlertColor, setAlertStatus} = useContext(UserContext)
 
     const [rating, setRating] = useState(0)
     const [feedback, setFeedback] = useState("")
