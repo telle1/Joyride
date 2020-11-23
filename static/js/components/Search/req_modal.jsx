@@ -1,4 +1,6 @@
-function RequestModal({showRequest, handleClose, rideID, setAlertColor, setAlertStatus, setShowAlert}){
+function RequestModal({showRequest, handleClose, rideID, setShowAlert}){
+    
+    const {setAlertStatus, setAlertColor} = useContext(UserContext)
 
     const [riderMsg, setRiderMsg] = useState("")
     const [seats, setSeats] = useState(1)

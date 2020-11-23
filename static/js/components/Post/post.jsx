@@ -1,9 +1,9 @@
-const { useState, useEffect } = React 
+const { useState, useEffect, useContext } = React 
 const {useForm} = ReactHookForm
 const {Form} = ReactBootstrap
 
-function Post({setAlertStatus, setAlertColor, alertStatus, alertColor}){
-
+function Post(){
+    const {alertStatus, alertColor} = useContext(UserContext);
     const [showAlert, setShowAlert] = useState('')
 
     return (
@@ -14,7 +14,7 @@ function Post({setAlertStatus, setAlertColor, alertStatus, alertColor}){
         <Container className="top-padding">
             <Row>
                 <Col>
-                    <PostContainer setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
+                    <PostContainer setShowAlert={setShowAlert}/>
                 </Col>
                 <Col>
                     <MyGoogleMap/>
@@ -25,7 +25,8 @@ function Post({setAlertStatus, setAlertColor, alertStatus, alertColor}){
     )
 }
 
-function PostContainer({setAlertStatus, setAlertColor, setShowAlert}){
+function PostContainer({setShowAlert}){
+    const {setAlertColor, setAlertStatus} = useContext(UserContext);
 
     const [startInput, setStartInput] = useState('')
     const [endInput, setEndInput] = useState('')

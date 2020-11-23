@@ -48,6 +48,11 @@ def get_matching_rides(start_loc, end_loc, sort):
 
     return rides_list
 
+# def create_request(ride_id, rider_id, seats_requested, status, date):
+#     add_req = Request(ride_id = ride_id, rider_id = rider_id, 
+#         seats_requested= seats_requested, status = status, date= date)
+#     db.session.add(add_req)
+#     db.session.commit()
 
 def get_request(ride_id, rider_id):
     """Return requests for a certain ride made by a certain user."""

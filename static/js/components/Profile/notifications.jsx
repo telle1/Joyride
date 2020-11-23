@@ -35,9 +35,6 @@ function NotificationRow({req, colSize}){
     let textBgColor;
     let date = req.req_date
 
-
-    // console.log('rIDE STATUSES', req.status)
-
     if (req.status === 'Approved'){
         iconBgColor = '#41AF41';
         icon = 'fas fa-check-circle fa-2x white-icon';
@@ -64,18 +61,14 @@ function NotificationRow({req, colSize}){
                         <i className={`${icon}`}></i>
                     </Col>
                     <Col style={{backgroundColor: textBgColor}}>
-                        <div className="d-inline float-right pt-2 text-muted">
+                        <span className="float-right pt-2 text-muted">
                             <sup>{date}</sup>
-                        </div>
+                        </span>
                         <h5 className="py-3 mb-0 gray-text">
                             <span style={{color: iconBgColor}}>{req.status}</span>
                             <br/>
                             {req.start_loc} to {req.end_loc}
                         </h5>
-                        <span>
-                            
-                        </span>
-                        
                     </Col>
                 </Row>
             </td>

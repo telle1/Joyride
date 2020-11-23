@@ -1,7 +1,10 @@
 const Router = ReactRouterDOM.BrowserRouter;
 const { useHistory, useParams, Redirect, Switch, Prompt, Link, Route} = ReactRouterDOM;
-const { useState } = React 
+const { useState, useContext, createContext} = React 
 //useref
+
+const UserContext = createContext(null)
+
 
 function UserAlert({text, setShowAlert, color}){
     return (
@@ -19,45 +22,42 @@ function App(){
 
     //save user on page refresh
     useEffect(() => {
-        const user_id = localStorage.getItem("user_id");
+        const user_id = localStorage.getItem("user_id");    
         if (user_id) {
           const saveUser = JSON.parse(user_id);
           setUser(saveUser);
         }
-        // AOS.init();
-        // AOS.refresh();
       }, []);
 
     return (
-        <div>
-            <Router>
-                <NavBar setUser={setUser} user={user} alertColor={alertColor} setAlertColor={setAlertColor} alertStatus={alertStatus} setAlertStatus={setAlertStatus}/>
-                <Switch>
-                    <Route exact path="/">
-                        {/* <HomePage/> */}
-                        {user ? <Redirect to={`/profile/${user}`}/> : <HomePage/>}
-                    </Route>
-                    <Route exact path="/home">
-                        <HomePage/>
-                    </Route>
-                    <Route path="/search">
-                        <Search alertColor={alertColor} setAlertColor={setAlertColor} alertStatus={alertStatus} setAlertStatus={setAlertStatus}/>
-                    </Route>
-                    <Route path="/post">
-                        <Post alertColor={alertColor} setAlertColor={setAlertColor} alertStatus={alertStatus} setAlertStatus={setAlertStatus}/>
-                    </Route>
-                    <Route path="/current-rides">
-                        <AllCurrentTrips alertColor={alertColor} setAlertColor={setAlertColor} alertStatus={alertStatus} setAlertStatus={setAlertStatus}/>
-                    </Route> 
-                    <Route path="/past-rides">
-                        <PastTrips user={user} alertColor={alertColor} setAlertColor={setAlertColor} alertStatus={alertStatus} setAlertStatus={setAlertStatus}/>
-                    </Route>
-                    {/* <Route path="/profile/:userId" component={Profile}/> */}
-                    <Route path="/profile/:userId" render={(props) => <Profile {...props} user={user}/>}/>
-                </Switch>
-                <Footer/>
-            </Router>
-        </div>
+        <Router>
+                <UserContext.Provider value={{user, setAlertStatus, setAlertColor, alertStatus, alertColor}}>
+                    <NavBar setUser={setUser} user={user} alertColor={alertColor} setAlertColor={setAlertColor} alertStatus={alertStatus} setAlertStatus={setAlertStatus}/>
+                    <Switch>
+                        <Route exact path="/">
+                            {user ? <Redirect to={`/profile/${user}`}/> : <HomePage/>}
+                        </Route>
+                        <Route exact path="/home">
+                            <HomePage/>
+                        </Route>
+                        <Route path="/search">
+                            <Search/>
+                        </Route>
+                        <Route path="/post">
+                            <Post/>
+                        </Route>
+                        <Route path="/current-rides">
+                            <AllCurrentTrips alertColor={alertColor} setAlertColor={setAlertColor} alertStatus={alertStatus} setAlertStatus={setAlertStatus}/>
+                        </Route> 
+                        <Route path="/past-rides">
+                            <PastTrips user={user} alertColor={alertColor} setAlertColor={setAlertColor} alertStatus={alertStatus} setAlertStatus={setAlertStatus}/>
+                        </Route>
+                        {/* <Route path="/profile/:userId" component={Profile}/> */}
+                        <Route path="/profile/:userId" render={(props) => <Profile {...props} user={user}/>}/>
+                    </Switch>
+                    <Footer/>
+                </UserContext.Provider> 
+        </Router>
     )
 }
 

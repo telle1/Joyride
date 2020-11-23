@@ -5,6 +5,8 @@ const {SettingsIcon, SvgIcon, ExitToAppIcon} = MaterialUI
 function NavBar({setUser, user, alertColor, setAlertColor, alertStatus, setAlertStatus}){
     const [showAlert, setShowAlert] = useState(false)
 
+    // const {user, alertColor, setAlertColor, alertStatus, setAlertStatus} = useContext(UserContext);
+
     const handleLogout = () => {
 
       fetch("/logout", {

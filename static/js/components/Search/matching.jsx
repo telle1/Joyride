@@ -1,4 +1,4 @@
-function MatchingRide({matchingRide, setAlertColor, setAlertStatus, setShowAlert}){
+function MatchingRide({matchingRide, setShowAlert}){
 
     const [showRequest, setShowRequest] = useState(false)
     const handleShow = () => setShowRequest(true)
@@ -25,7 +25,7 @@ function MatchingRide({matchingRide, setAlertColor, setAlertStatus, setShowAlert
 
                         <Col>
                             <Card.Text className="text-right"> 
-                                <span className = "h5 mb-0 font-weight-bold yellow">{matchingRide.seats} seats </span>
+                                <span className = "h5 mb-0 font-weight-bold yellow">{matchingRide.seats} seats </span> <br/>
                                 <span className = "h5 font-weight-bold yellow">${matchingRide.price} each</span>
                             </Card.Text>
                         </Col>
@@ -46,7 +46,8 @@ function MatchingRide({matchingRide, setAlertColor, setAlertStatus, setShowAlert
                         </Col>
                         <Col>
                             <button className="btn btn-theme-outline float-right" onClick={handleShow}>Request Ride</button>
-                            <RequestModal rideID = {matchingRide.ride_id} showRequest={showRequest} handleClose={handleClose} setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
+                            <RequestModal rideID = {matchingRide.ride_id} showRequest={showRequest} 
+                                handleClose={handleClose} setShowAlert={setShowAlert}/>
                             <button className="btn btn-yellow float-right"><Link to={`/profile/${matchingRide.driver}`} className="text-white">View Profile</Link></button>
                         </Col>
                     </Row>

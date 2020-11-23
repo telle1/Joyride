@@ -1,4 +1,6 @@
-from flask import Flask, render_template, redirect, flash, session, request, jsonify, url_for
+# from flask import Flask, render_template, redirect, flash, session, request, jsonify, url_for
+from flask import Flask, render_template, session, request, jsonify
+from flask_socketio import SocketIO, emit
 from functools import wraps #for log-inrequired
 from model import db, User, Ride, Request, Feedback, connect_to_db
 from werkzeug.utils import secure_filename #to upload files securely
@@ -6,7 +8,6 @@ import crud
 from twilio.rest import Client
 from sqlalchemy import func, distinct
 from datetime import datetime
-# import jinja2
 import json
 import os
 
@@ -27,6 +28,7 @@ auth_token  = os.environ['auth_token']
 client = Client(account_sid, auth_token)
 twilio_phone_num = os.environ['twilio_phone_num']
 
+socketio = SocketIO(app)
 
 # Normally, if you refer to an undefined variable in a Jinja template,
 # Jinja silently ignores this. This makes debugging difficult, so we'll
@@ -36,7 +38,6 @@ twilio_phone_num = os.environ['twilio_phone_num']
 
 # This configuration option makes the Flask interactive debugger
 # more useful (you should remove this line in production though)
-
 current_time = datetime.now()
 #for some reason, using this variable to update timestamp in my databse does not work;
 #instead, i just have to call datetime.now() directly
@@ -126,6 +127,7 @@ def post_search_to_page():
 
     matching_rides = crud.get_matching_rides(start_loc = data['startInput'], end_loc = data['endInput'],
         sort = data['sort'])
+
     print(matching_rides)
     
     return jsonify({'res': matching_rides})
@@ -146,6 +148,7 @@ def request_ride():
 
     if req is None:
         if driver_id != session['user_id'] and 1 <= seats <= ride.seats:
+
             add_req = Request(ride_id = ride_id, rider_id = session['user_id'], 
                 seats_requested= seats, status = 'Pending', date= datetime.now())
             db.session.add(add_req)
@@ -215,12 +218,11 @@ def get_notifications():
     
     return jsonify({'notifications': notifications_list})
 
-@app.route('/past-rides')
+@app.route('/past-drives')
 @login_required
-def get_user_past_rides():
+def get_user_past_drives():
 
     past_user_drives = crud.get_past_user_drives(driver_id = session['user_id'])
-    past_ride_requests = crud.get_past_user_requests(rider_id = session['user_id'])
 
     past_drives_ser = []
     for drive in past_user_drives:
@@ -235,6 +237,14 @@ def get_user_past_rides():
                 drive_ser['feedback_count'] += 1
         past_drives_ser.append(drive_ser)
 
+    print('PAST DRIVES.........', past_drives_ser)
+
+    return jsonify({'drives': past_drives_ser})
+
+@app.route('/past-rides')
+def get_user_past_rides():
+
+    past_ride_requests = crud.get_past_user_requests(rider_id = session['user_id'])
 
     past_rides_ser = []
     for req in past_ride_requests:
@@ -245,11 +255,11 @@ def get_user_past_rides():
                 req_serialized['feedback'] = 'Done'
 
             past_rides_ser.append(req_serialized)
-
-    print('PAST DRIVES.........', past_drives_ser)
+    
     print('PAST REQUESTSPAST REQUESTSPAST REQUESTS', past_rides_ser)
 
-    return jsonify({'drives': past_drives_ser, 'rides': past_rides_ser})
+    return jsonify({'rides': past_rides_ser})
+
 
 @app.route('/confirm-rides', methods=['POST'])
 def confirm_rides():
@@ -270,14 +280,13 @@ def confirm_rides():
             db.session.commit()
             resp = jsonify({'msg': 'Ride successfully approved.', 'alert_color': "success"})
         else:
-            resp = jsonify({'msg': 'Seat capacity will be over the limit.', 'alert_color': "warning"})
-            # get_request_to_update.status = 'Denied' #maybe don't deny it, driver can remove rides to add this one instead or choose to delete it themselves
+            resp = jsonify({'msg': 'Seat capacity will be over limit. Remove a passenger or deny.', 'alert_color': "warning"})
             db.session.commit()
     else:
         get_request_to_update.status = 'Denied'
         get_request_to_update.date = datetime.now()
         db.session.commit()
-        resp = jsonify({'msg': 'Ride removed.', 'alert_color': "success"})
+        resp = jsonify({'msg': 'Request removed.', 'alert_color': "success"})
     
     return resp
 
@@ -301,7 +310,7 @@ def remove_passenger():
 
     req_to_update = crud.get_request_by_request_id(request_id)
     print(req_to_update)
-    print('SEATS', req_to_update.ride.seats)
+    print('SEATS THE RIDE HAS', req_to_update.ride.seats)
 
     req_to_update.status = 'Removed'
     req_to_update.date = datetime.now()
@@ -329,7 +338,7 @@ def delete_request():
 
     crud.delete_user_request(request_id = data['request_id'], seats_to_add = data['seats'])
 
-    return jsonify({'msg': 'Deleted ride.'})
+    return jsonify({'msg': 'Request deleted.'})
 
 @app.route('/edit-seats-request', methods=['POST'])
 def edit_seats_request():
@@ -337,7 +346,6 @@ def edit_seats_request():
     request_id = data['request_id']
     seats_str= data['seats']
     seats_request = int(seats_str)
-    print(type(seats_request))
     ride_req = crud.get_request_by_request_id(request_id)
 
     if 0 < seats_request <= ride_req.ride.seats:
@@ -346,9 +354,6 @@ def edit_seats_request():
         resp = jsonify({'msg': 'Seats request pending approval.', 'alert': 'success'})
     else:
         resp = jsonify({'msg': 'You cannot request that number of seats.', 'alert': 'danger'})
-
-    print(ride_req)
-    print(ride_req.ride)
 
     return resp
 
@@ -364,7 +369,6 @@ def give_driver_feedback():
 @app.route('/give-passenger-feedback', methods=['POST'])
 def give_passenger_feedback():
     data = request.json
-    print(data)
     feedback = data['feedback']
     rating = data['rating']
     feedback_giver = data['giver']
@@ -416,10 +420,11 @@ def get_user_info(user_id):
     user_stats = crud.get_dashboard_info(user_id = user_id)
     user_drives_count = user_stats['drives']
     user_rides_count = user_stats['rides']
+    card_stats = {'drivesCount': user_drives_count, 
+        'ridesCount': user_rides_count, 'rating': average_rating}
 
     return jsonify({'feedback': feedback_list, 'profile_info': profile_ser, 
-                    'user_info': user_info, 'average_rating': average_rating, 
-                    'drives_count': user_drives_count, 'rides_count': user_rides_count,})
+                    'user_info': user_info, 'card_stats': card_stats})
 
 @app.route('/edit-profile', methods=['POST'])
 def edit_user_profile():
@@ -466,9 +471,14 @@ def logout_user():
     print(session)
     return jsonify({'msg': 'Logged out'})
 
+# @socketio.on('message')
+# def handleMessage(msg):
+#     print('Msg:' + msg)
+#     send(msg, broadcost=True)
+
 if __name__ == "__main__":
     connect_to_db(app, echo= False)
-    
+    # socketio.run(app)
     app.run(debug=True, host="0.0.0.0", port=5000)
 
     

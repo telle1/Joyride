@@ -3,7 +3,7 @@ function PastDrives({user, setAlertColor, setAlertStatus, setShowAlert}){
     const [pastDrives, setPastDrives] = useState([])
 
     const fetchPastDrives = () => {
-        fetch("/past-rides")
+        fetch("/past-drives")
         .then(res => res.json())
         .then(data => {
             setPastDrives(data.drives)

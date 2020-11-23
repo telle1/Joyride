@@ -1,14 +1,19 @@
 const { useEffect, useState } = React
 const {Container, Row, Col, Card} = ReactBootstrap
+// const {io} = Socket.IO
+
 
 function Profile({match, user}){
 
+    // let socket = io.connect("http://localhost:5000");
+    // socket.on(connect, function(){
+    //     socket.send('User has connected');
+    // })
+
     const [feedbacks, setFeedbacks] = useState([])
     const [profile, setProfile] = useState({location: "", title: "", image: ""})
-    const [rating, setRating] = useState(0)
     const [userInfo, setUserInfo] = useState({})
-    const [drivesCount, setDrivesCount] = useState(0)
-    const [ridesCount, setRidesCount] = useState(0)
+    const [cardStats, setCardStats] = useState({drivesCount: 0, ridesCount: 0, rating: 0})
 
     const fetchUserProfile = () => {
         fetch(`/get-user-profile-info/${match.params.userId}`)
@@ -17,15 +22,14 @@ function Profile({match, user}){
             setFeedbacks(data.feedback)
             setProfile(data.profile_info)
             setUserInfo(data.user_info)
-            setDrivesCount(data.drives_count)
-            setRidesCount(data.rides_count)
-            setRating(data.average_rating)
+            setCardStats(data.card_stats)
         })
     }
 
     useEffect(() =>{
         fetchUserProfile();
     }, [])
+
 
     return (
         <Container className="top-padding">
@@ -34,11 +38,12 @@ function Profile({match, user}){
             <Col xs={4}>
                 <UserCardInfo user={user} match={match} profile={profile} userInfo={userInfo}  
                     fetchUserProfile={fetchUserProfile}/> 
-                <UserCardStats drivesCount={drivesCount} ridesCount={ridesCount} rating={rating}/>
+                {/* <UserCardStats drivesCount={drivesCount} ridesCount={ridesCount} rating={rating}/> */}
+                <UserCardStats cardStats={cardStats}/>
             </Col>
             <Col>
                 {user == match.params.userId ? <Notifications colSize="1"/> : null }
-                    <FeedbackContainer feedbacks={feedbacks}/>
+                <FeedbackContainer feedbacks={feedbacks}/>
             </Col>
             </Row>
         </Container>
@@ -89,17 +94,17 @@ function UserBio({imageSource, title, userInfo}){
     )
 }
 
-function UserCardStats({drivesCount, ridesCount, rating}){
+function UserCardStats({cardStats}){
     return (
         <React.Fragment>
             <Card className="btn-theme">
             <Row className="py-2">
                 <Col className="text-center"> 
-                    <h2>{drivesCount}</h2> DRIVES
+                    <h2>{cardStats.drivesCount}</h2> DRIVES
                 </Col>
-                <Col className="text-center"><h2>{ridesCount}</h2> RIDES
+                <Col className="text-center"><h2>{cardStats.ridesCount}</h2> RIDES
                 </Col>
-                <Col className="text-center"><h2>{rating}</h2>STARS
+                <Col className="text-center"><h2>{cardStats.rating}</h2>STARS
                 </Col>
             </Row>
             </Card>
@@ -120,7 +125,7 @@ function EditProfileModal({showEdit, handleEditClose, user, fetchUserProfile, pr
 
     useEffect(() => {
         setPreviousBio();
-    }, [profile.title]) 
+    }, [profile]) 
 
     const handleEdit = (e) => {
         e.preventDefault();
@@ -136,10 +141,7 @@ function EditProfileModal({showEdit, handleEditClose, user, fetchUserProfile, pr
             body: formData
         })
         .then(res => res.json())
-        .then(data => {
-            console.log('THIS IS THE DATA', data);
-            fetchUserProfile();
-        })
+        .then(data => fetchUserProfile())
     }
 
     return (

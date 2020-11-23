@@ -1,7 +1,9 @@
-const { useState, useEffect } = React 
+const { useState, useEffect, useContext } = React 
 const { Col, Accordion } = ReactBootstrap
 
-function Search({setAlertStatus, setAlertColor, alertStatus, alertColor}){
+function Search(){
+    const { alertStatus, alertColor} = useContext(UserContext)
+
     const [matchingRides, setMatchingRides] = useState([])
     const [search, setSearch] = useState(false) //prevent "No matching rides" from showing on initial render
     const [startInput, setStartInput] = useState("")
@@ -76,8 +78,7 @@ function Search({setAlertStatus, setAlertColor, alertStatus, alertColor}){
                     <Row className="mt-3">
                             {matchingRides.map(matchingRide => (
                                 <Col xs={6} key ={matchingRide.ride_id}>
-                                    <MatchingRide key ={matchingRide.ride_id} matchingRide = {matchingRide}
-                                        setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
+                                    <MatchingRide key ={matchingRide.ride_id} matchingRide = {matchingRide} setShowAlert={setShowAlert}/>
                                 </Col>
                             ))}
                     </Row>

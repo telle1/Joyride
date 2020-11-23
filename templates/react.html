@@ -28,13 +28,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js" crossorigin></script>
     <script src='https://unpkg.com/react-router@5.2.0/umd/react-router.min.js'></script>
     <script src='https://unpkg.com/react-router-dom@5.2.0/umd/react-router-dom.min.js'></script>
-    <!--External Libraries -->
+    <!--External Libraries / SocketIO -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11"></script>  -->
     <!-- <script src="https://rawgit.com/mattboldt/typed.js/master/lib/typed.js"></script>
     <script src="https://unpkg.com/prop-types@15.6/prop-types.min.js"></script> -->
     <!-- <script src= "https://cdn.jsdelivr.net/npm/react-countup@4.3.3/build"></script> --> 
     <!-- <script src="https://cdn.jsdelivr.net/npm/react-reveal@1.2.2/index.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/react-hook-form@6.11.3/dist/index.umd.production.min.js" integrity="sha256-j4vwwJaWcowp4YJePxxA3tDZg+WEiyYa0eGU0yjTVCY=" crossorigin="anonymous"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+      socket.on('connect', function(){});
+      socket.on('event', function(data){});
+      socket.on('disconnect', function(){});
+    </script> 
     <!--JSX SCRIPT TAGS-->
     <!-- <script src="/static/js/components/typing.jsx" type="text/jsx"></script> -->
     <!--Navigation-->
