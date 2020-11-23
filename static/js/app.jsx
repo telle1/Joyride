@@ -1,7 +1,6 @@
 const Router = ReactRouterDOM.BrowserRouter;
 const { useHistory, useParams, Redirect, Switch, Prompt, Link, Route} = ReactRouterDOM;
 const { useState, useContext, createContext} = React 
-//useref
 
 const UserContext = createContext(null)
 
@@ -51,9 +50,7 @@ function App(){
                         </Route> 
                         <Route path="/past-rides">
                             <PastTrips/>
-                            {/* //user={user} alertColor={alertColor} setAlertColor={setAlertColor} alertStatus={alertStatus} setAlertStatus={setAlertStatus} */}
                         </Route>
-                        {/* <Route path="/profile/:userId" component={Profile}/> */}
                         <Route path="/profile/:userId" render={(props) => <Profile {...props} user={user}/>}/>
                     </Switch>
                     <Footer/>
