@@ -1,9 +1,7 @@
 const Router = ReactRouterDOM.BrowserRouter;
 const { useHistory, useParams, Redirect, Switch, Prompt, Link, Route} = ReactRouterDOM;
 const { useState, useContext, createContext} = React 
-
 const UserContext = createContext(null)
-
 
 function UserAlert({text, setShowAlert, color}){
     return (
@@ -36,7 +34,7 @@ function App(){
                         <Route exact path="/">
                             {user ? <Redirect to={`/profile/${user}`}/> : <HomePage/>}
                         </Route>
-                        <Route exact path="/home">
+                        <Route path="/home">
                             <HomePage/>
                         </Route>
                         <Route path="/search">
@@ -52,6 +50,9 @@ function App(){
                             <PastTrips/>
                         </Route>
                         <Route path="/profile/:userId" render={(props) => <Profile {...props} user={user}/>}/>
+                        <Route path="/messages">
+                            <Messages/>
+                        </Route>
                     </Switch>
                     <Footer/>
                 </UserContext.Provider> 

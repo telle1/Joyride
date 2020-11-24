@@ -1,5 +1,6 @@
 function EditRideModal({showEdit, handleEditClose, currentDrive, setShowAlert, fetchDrives}){
 
+    console.log('CURRENT DRIVE', currentDrive)
     const {setAlertStatus, setAlertColor} = useContext(UserContext);
 
     const [seats, setSeats] = useState(currentDrive.seats)

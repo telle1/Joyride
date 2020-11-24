@@ -113,6 +113,23 @@ class UserProfile(db.Model):
     def __repr__(self):
         return f"<Profile id={self.profile_id} location={self.location} title={self.title}>"
 
+# class Conversation(db.Model):
+#     __tablename__ = 'conversations'
+
+#     conversation_id = db.Column(db.Integer, primary_key= True, autoincrement= True, unique = True)
+#     user_1 = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
+#     user_2 = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
+
+class Message(db.Model):
+    __tablename__ = 'messages'
+
+    message_id = db.Column(db.Integer, primary_key= True, autoincrement = True, unique = True)
+    # conversation_id = db.Column(db.Integer, db.ForeignKey('conversations.conversation_id'), nullable= False)
+    sender = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
+    # recipient = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
+    content = db.Column(db.Text)
+    #timestamp?
+
 def connect_to_db(flask_app, db_uri='postgresql:///joyride', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
     flask_app.config['SQLALCHEMY_ECHO'] = echo

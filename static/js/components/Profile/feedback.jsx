@@ -1,6 +1,17 @@
 const {Table} = ReactBootstrap
 
 function FeedbackContainer({feedbacks}){
+
+    // const [feedbacks, setFeedbacks] = useState([])
+
+    // useEffect(() => {
+    //     fetch(`/get-user-feedback/${match.params.userId}`)
+    //     .then(res => res.json())
+    //     .then(data => {
+    //         setFeedbacks(data.feedback)
+    //     })
+    // })
+
     return (
         <React.Fragment>
                 <h3 className="yellow">Recent Feedback</h3>
@@ -22,9 +33,6 @@ function FeedbackRow({feedbacks}){
             {feedbacks.map(feedback => 
             <tr key={feedback.id}>
                 <td>
-                    {/* {[...Array(feedback.rating)].map(
-                        rating => <Star colorInput="#eba92a"/>
-                    )}        */}
                     <StarRating rating={feedback.rating} cursor="no-pointer"/>
                     <br/>
                     {feedback.feedback}

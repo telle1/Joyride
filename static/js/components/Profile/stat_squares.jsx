@@ -7,6 +7,13 @@ function StatSquares({match, user}){
     const [peopleMet, setPeopleMet] = useState(0)
     const [dollars, setDollars] = useState(0)
 
+    const statSquares = [
+        {id:1, stat: destinations, description: "destinations discovered", color:"inner inner-0"},
+        {id:2, stat: peopleMet, description: "new adventurers met.", color:"inner inner-1"},
+        {id:3, stat: dollars, description: "dollars earned.", color:"inner inner-2"},
+        {id:4, stat: "100", description: "percent pure JOY.", color:"inner inner-3"}
+    ]
+
     useEffect(() =>{
         fetch(`/dashboard/${match.params.userId}`)
         .then(res => res.json())
@@ -22,10 +29,11 @@ function StatSquares({match, user}){
     return(
         <Container className="mb-4">
             <Row>
-                <StatSquare key="destinations" user={user} stat={destinations} match={match} description="destinations discovered." color="inner inner-0"/>
-                <StatSquare key="peopleMet" user={user} stat={peopleMet} match={match} description="new adventurers met." color="inner inner-1"/>
-                <StatSquare key="dollarsEarned" user={user} stat={dollars} match={match} description="dollars earned." color="inner inner-2"/>
-                <StatSquare key="joy" stat="100" user={user} match={match} description="percent pure JOY." color="inner inner-3"/>
+                {statSquares.map(statSquare => 
+                    (<StatSquare key={statSquare.id} stat={statSquare.stat} 
+                        description={statSquare.description} color={statSquare.color}
+                        match={match} user={user} />)
+                )}
             </Row>
         </Container>
     )
@@ -36,7 +44,7 @@ function StatSquare({stat, description, color, match, user}){
         <Col className="stats">
             <div className={color}>
                 <h1 className = "text-center count">
-                {user == match.params.userId ? <NumberCounter key={stat} stat={stat}/> : stat}
+                    {user == match.params.userId ? <NumberCounter key={stat} stat={stat}/> : stat}
                 </h1>
                 <p className= "text-center">{description}</p>
             </div>
@@ -68,7 +76,7 @@ function NumberCounter({stat}){
             }, frameLength);
 	}, [stat]);
 
-	return Math.floor( count );
+	return Math.floor(count);
 };
 
 

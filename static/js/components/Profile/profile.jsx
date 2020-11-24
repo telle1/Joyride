@@ -1,14 +1,7 @@
 const { useEffect, useState } = React
 const {Container, Row, Col, Card} = ReactBootstrap
-// const {io} = Socket.IO
-
 
 function Profile({match, user}){
-
-    // let socket = io.connect("http://localhost:5000");
-    // socket.on(connect, function(){
-    //     socket.send('User has connected');
-    // })
 
     const [feedbacks, setFeedbacks] = useState([])
     const [profile, setProfile] = useState({location: "", title: "", image: ""})
@@ -36,9 +29,8 @@ function Profile({match, user}){
             <Row>
             <StatSquares match={match} user={user}/>
             <Col xs={4}>
-                <UserCardInfo user={user} match={match} profile={profile} userInfo={userInfo}  
-                    fetchUserProfile={fetchUserProfile}/> 
-                {/* <UserCardStats drivesCount={drivesCount} ridesCount={ridesCount} rating={rating}/> */}
+                <UserCardInfo profile={profile} userInfo={userInfo} user={user} match={match}
+                    fetchUserProfile={fetchUserProfile}/>
                 <UserCardStats cardStats={cardStats}/>
             </Col>
             <Col>
@@ -77,6 +69,7 @@ function UserCardInfo({user, match, profile, userInfo, fetchUserProfile}){
                 <i className="fas fa-map-pin fa-2x mr-4  ml-3 mb-2" data-fa-transform="down-5" style={{color: "#BEBEBE"}}/>
                 <span>{profile.location}</span><br/>     
             </div>
+            <Link to="/messages" className="btn btn-theme shadow-none">Message</Link>
         </Card.Body>  
     </Card>  
     )
@@ -118,6 +111,7 @@ function EditProfileModal({showEdit, handleEditClose, user, fetchUserProfile, pr
     const [title, setTitle] = useState("")
     const [location, setLocation] = useState("")
 
+    // console.log(profile)
     const setPreviousBio = () => {
         setTitle(profile.title)
         setLocation(profile.location)
@@ -198,3 +192,43 @@ function EditProfileModal({showEdit, handleEditClose, user, fetchUserProfile, pr
     //useContext
 
 // Use the component to count to 500
+
+// function Profile({match, user}){
+
+//             //send an event with emit or send
+//         //receive the event with socket.on(<event_name>) on server side
+//         const [id, setID] = useState(0)
+//         const [messages, setMessages] = useState([])
+//         const [message, setMessage] = useState("")
+//         const socketRef = useRef();
+
+//         useEffect(() => {
+//             socketRef.current = io.connect('http://localhost:5000/')
+//         }, [])
+        
+
+//         const socket = io.connect('http://localhost:5000/')
+//         socket.on('connect', () => {
+//             socket.send('Hello! User has connected');
+//         });
+          
+//           // handle the event sent with socket.send()
+//         socket.on('message', data => {
+//         console.log(data, 'SOCKET IO MESSAGE');
+//         });
+        
+//        const handleMessage = (e) => {
+//             e.preventDefault();
+//        }
+    
+    
+//         return (
+//             <Container className="top-padding">
+//                 <form onSubmit={handleMessage}>
+//                     <textarea></textarea>
+//                 </form>
+//                 <h5>test chat log</h5>
+//             </Container>
+//         )
+//     }
+    

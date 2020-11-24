@@ -1,9 +1,7 @@
 // const { checkPropTypes } = require("prop-types"); //where did this come from
 const { useHistory, useParams, Redirect, Switch, Prompt, Link, Route } = ReactRouterDOM;
 const {Carousel, Container, Row, Col} = ReactBootstrap
-// const {Typed} = TypedJS
-// const {Checkbox, Box, Typography} = MaterialUI;
-// const {Rating} = SemanticUI;
+
 
 function HomePage(){
 
@@ -95,6 +93,16 @@ function Feature({icon, header, paragraph, dataAos}){
   )}
 
 function HowItWorks(){
+
+
+  // const howSteps = [
+  //   {id: 1, icon: "fas fa-search fa-4x mr-4", description:["Simply" <span className="yellow font-weight-bold">check</span> "for rides travelling to your destination"]},
+  //   {id: 2, icon: "fas fa-car fa-4x mr-4",  description: [<span className="yellow font-weight-bold">Match</span> "with a driver."]},
+  //   {id: 3, icon: "far fa-handshake fa-4x mr-2", description:["<span className="yellow font-weight-bold">Negotiate</span> "on a great price."]},
+  //   {id: 4, icon: "fas fa-flag-checkered fa-4x mr-4", description:["Happily <span className="yellow font-weight-bold">reach</span> your destination."]}
+  // ]
+
+
   return (
     <section id = "how" data-aos="zoom-in-up" data-aos-anchor-placement="center-bottom" data-aos-duration="1000">
       <Container>
@@ -106,6 +114,9 @@ function HowItWorks(){
               <HowStep key="2" icon="fas fa-car fa-4x mr-4" description={[<span className="yellow font-weight-bold">Match</span>, " with a driver."]}/>
               <HowStep key="3" icon="far fa-handshake fa-4x mr-2" description={[<span className="yellow font-weight-bold">Negotiate</span>, " on a great price."]}/>
               <HowStep key="4" icon="fas fa-flag-checkered fa-4x mr-4" description={["Happily ", <span className="yellow font-weight-bold">reach</span>, " your destination."]}/>
+              {/* {howSteps.map(howStep => 
+                (<HowStep key={howSteps.id} icon={howSteps.icon} description={howSteps.description}/>)
+              )} */}
             </div>
           </Col>
           <Col className= "vid">

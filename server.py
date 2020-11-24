@@ -1,8 +1,8 @@
 # from flask import Flask, render_template, redirect, flash, session, request, jsonify, url_for
 from flask import Flask, render_template, session, request, jsonify
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, send, join_room, leave_room
 from functools import wraps #for log-inrequired
-from model import db, User, Ride, Request, Feedback, connect_to_db
+from model import db, User, Ride, Request, Feedback, Message, connect_to_db
 from werkzeug.utils import secure_filename #to upload files securely
 import crud
 from twilio.rest import Client
@@ -395,6 +395,13 @@ def get_user_dashboard(user_id):
         'people_met': user_info['people_met'], 
         'dollars_earned': user_info['dollars_earned']})
 
+@app.route('/get-user-feedback/<user_id>')
+def get_user_feedback(user_id):
+
+    feedback_info = crud.get_user_feedback(user_id = user_id)
+    print('tHIS IS THE FEEDBACK INFO', feedback_info)
+    feedback_list = feedback_info['feedback']
+
 @app.route('/get-user-profile-info/<user_id>')
 def get_user_info(user_id):
     #Feedback and rating info
@@ -471,14 +478,59 @@ def logout_user():
     print(session)
     return jsonify({'msg': 'Logged out'})
 
-# @socketio.on('message')
-# def handleMessage(msg):
-#     print('Msg:' + msg)
-#     send(msg, broadcost=True)
+#SOCKET.IO ROUTES---SOCKET.IO ROUTES---SOCKET.IO ROUTES---SOCKET.IO ROUTES
+@app.route('/messages')
+def get_user_messages():
+    message_list = []
+    user_messages = Message.query.filter(Message.sender == session['user_id']).all()
+    for msg in user_messages:
+        message_list.append(msg)
+    return jsonify({'msgs': message_list})
+# @socketio.on('connect')
+# def handle_connect():
+#     users.append({session['user_id']: request.sid})
+#     print('WHO IS IN USERS', users)
+@socketio.on('join')
+def join_a_room(data):
+    # users.append({session['user_id']: request.sid})
+    # print('WHO IS IN USERS', users)
+    room = data['room']
+    join_room(room)
+    #gets sent as a message
+    send(f"{session['user_id']} has entered the room #{room}", room=room)
+
+#flask socket io adds session id from request object using request.sid
+@socketio.on('message')
+def handle_message(data):
+    #need to createa message model in databse
+    # print('SESSION ID???????SESSION ID???????', request.sid)
+    print('Msg:' + data['message'])
+    message=data['message']
+    new_message= Message(content = message, sender = session['user_id'])
+    db.session.add(new_message)
+    db.session.commit()
+    send(message, broadcast=True)
+
+@socketio.on('leave')
+def leave_the_room(data):
+    #clearusers
+    room = data['room']
+    leave_room(room)
+    print('TEST USER LEAVE ROOM SERVER')
+    # print(users,'TEST WHOS IN THEUSER AFTERLEAVE')
+    send(f"{session['user_id']} has LEFT the room #{room}", room=room)
+
 
 if __name__ == "__main__":
     connect_to_db(app, echo= False)
-    # socketio.run(app)
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    socketio.run(app,debug=True, host="0.0.0.0", port=5000)
+    # app.run(debug=True, host="0.0.0.0", port=5000)
+
+#pip3 install flask socketio andeventlet => and then need these 2 lines:
+## from flask_socketio import SocketIO, emit, send
+# socketio = SocketIO(app)
+#instead of app.run, socketio.run
+#map user ids to session ids (request.sid)
+
 
     
