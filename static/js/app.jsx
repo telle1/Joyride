@@ -50,9 +50,11 @@ function App(){
                             <PastTrips/>
                         </Route>
                         <Route path="/profile/:userId" render={(props) => <Profile {...props} user={user}/>}/>
-                        <Route path="/messages">
-                            <Messages/>
+                        <Route path="/messages/:convoId" render={(props) => <Messages {...props} user={user}/>}/>
+                        <Route path="/all-messages">
+                            <AllMessages/>
                         </Route>
+                 
                     </Switch>
                     <Footer/>
                 </UserContext.Provider> 

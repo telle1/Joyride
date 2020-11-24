@@ -116,7 +116,7 @@ class UserProfile(db.Model):
 # class Conversation(db.Model):
 #     __tablename__ = 'conversations'
 
-#     conversation_id = db.Column(db.Integer, primary_key= True, autoincrement= True, unique = True)
+#     conversation_id = db.Column(db.Integer, primary_key= True, unique = True)
 #     user_1 = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
 #     user_2 = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
 

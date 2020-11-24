@@ -479,13 +479,33 @@ def logout_user():
     return jsonify({'msg': 'Logged out'})
 
 #SOCKET.IO ROUTES---SOCKET.IO ROUTES---SOCKET.IO ROUTES---SOCKET.IO ROUTES
-@app.route('/messages')
-def get_user_messages():
-    message_list = []
-    user_messages = Message.query.filter(Message.sender == session['user_id']).all()
-    for msg in user_messages:
-        message_list.append(msg)
-    return jsonify({'msgs': message_list})
+@app.route('/messages/<convo_id>')
+def get_user_messages(convo_id):
+
+    # is_convo_present = Conversation.query.filter(Conversation.conversation_id == convo_id).all()
+    # message_list = []
+
+    # if is_convo_present: #then get the messages for that convo
+    #     convo_messages = Message.query.filter(Message.conversation_id == convo_id).all()
+    #     for msg in convo_messages:
+    #         message_list.append(msg.content)
+    # else: #no convresation yet #need to send the user profile to compare to the person loggedin 
+    #     new_conversation = Conversation(conversation_id = convo_id, user_1 =, user_2=)
+    #     db.session.add(new_conversation)
+    #     db.session.commit()
+
+
+    # print('MESAGGE LIST', message_list)
+    # return jsonify({'msgs': message_list})
+    return jsonify({'msgs': ['test']})
+
+    
+    # user_messages = Message.query.filter(Message.sender == session['user_id']).all()
+    # for msg in user_messages:
+    #     message_list.append(msg.content)
+    # print('MESAGGE LIST', message_list)
+    # return jsonify({'msgs': message_list})
+
 # @socketio.on('connect')
 # def handle_connect():
 #     users.append({session['user_id']: request.sid})
@@ -494,6 +514,7 @@ def get_user_messages():
 def join_a_room(data):
     # users.append({session['user_id']: request.sid})
     # print('WHO IS IN USERS', users)
+    print('WHAT ISIN THE SID', request.sid)
     room = data['room']
     join_room(room)
     #gets sent as a message
@@ -506,10 +527,11 @@ def handle_message(data):
     # print('SESSION ID???????SESSION ID???????', request.sid)
     print('Msg:' + data['message'])
     message=data['message']
+    room=data['room']
     new_message= Message(content = message, sender = session['user_id'])
     db.session.add(new_message)
     db.session.commit()
-    send(message, broadcast=True)
+    send(message, room=room)
 
 @socketio.on('leave')
 def leave_the_room(data):

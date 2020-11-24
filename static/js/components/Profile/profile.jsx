@@ -59,7 +59,8 @@ function UserCardInfo({user, match, profile, userInfo, fetchUserProfile}){
                     profile={profile} fetchUserProfile={fetchUserProfile}/>
             </React.Fragment>
             <div className="d-flex flex-column align-items-center text-center">
-                <UserBio imageSource={`../static/uploads/${profile.image}`} title={profile.title} userInfo={userInfo}/>
+                <UserBio imageSource={`../static/uploads/${profile.image}`} 
+                    title={profile.title} userInfo={userInfo} match={match}/>
             </div>  
             <div>  
                 <i className="fas fa-envelope fa-2x mr-3 ml-3 mb-2" data-fa-transform="left-2 down-5" style={{color: "#BEBEBE"}}/>
@@ -69,19 +70,33 @@ function UserCardInfo({user, match, profile, userInfo, fetchUserProfile}){
                 <i className="fas fa-map-pin fa-2x mr-4  ml-3 mb-2" data-fa-transform="down-5" style={{color: "#BEBEBE"}}/>
                 <span>{profile.location}</span><br/>     
             </div>
-            <Link to="/messages" className="btn btn-theme shadow-none">Message</Link>
         </Card.Body>  
     </Card>  
     )
 }
 
-function UserBio({imageSource, title, userInfo}){
+function UserBio({imageSource, title, userInfo, match}){
+
+    const {user} = useContext(UserContext)
+    console.log('PROFILE OF USER', match.params.userId)
+    console.log('LOGGED IN USER', user)
+    let convoId;
+    if (user < match.params.userId){
+        convoId = Number(user.toString() + match.params.userId.toString())
+        console.log('WHATS IN CONVO ID', convoId)
+    } else {
+        convoId = Number(match.params.userId.toString() + user.toString())
+        console.log('WHATSIN CONVO ID', convoId)
+        // console.log('WHATSIN CONVO ID', typeof(convoId))
+    }
+
     return (
         <React.Fragment>
             <img src={imageSource} alt="Profile picture" className="profile-image" width="170" height="170"/>
             <div className="mt-3">
                 <h4>{userInfo.first_name} {userInfo.last_name}</h4>
                 <p className="text-secondary mb-1">{title}</p>
+                <Link to={`/messages/${convoId}`} className="btn btn-yellow">Message</Link>
             </div>
         </React.Fragment> 
     )
