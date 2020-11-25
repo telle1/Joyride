@@ -99,7 +99,11 @@ function UserBio({imageSource, title, userInfo, match}){
                 <h4>{userInfo.first_name} {userInfo.last_name}</h4>
                 <p className="text-secondary mb-1">{title}</p>
                 {user != match.params.userId ? 
-                <Link to={{ pathname: `/messages/${convoId}`, state: {otherUserId: match.params.userId} }} className="btn btn-yellow">Message</Link>
+                    <Link to={{ pathname: `/messages/${convoId}`, 
+                    state: {otherUserId: match.params.userId, 
+                        otherUserName: [userInfo.first_name, userInfo.last_name]} }} 
+                        className="btn btn-yellow">Message
+                    </Link>
                 : null }
             </div>
         </React.Fragment> 

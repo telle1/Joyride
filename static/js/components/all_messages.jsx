@@ -2,7 +2,7 @@ const {useState, useEffect} = React
 
 function AllMessages(){
 
-    const [conversations, setConversations] = useState([{convo_id: '', other_user: ''}])
+    const [conversations, setConversations] = useState([{convo_id: '', other_user: '', other_user_name: ""}])
 
     const fetchUserMessages = () => {
         fetch('/all-messages')
@@ -22,8 +22,16 @@ function AllMessages(){
             <h3 className="yellow">All Conversations</h3>
             {conversations.length > 0 ? 
                 conversations.map(conversation => (
-                <p><Link to={{ pathname: `/messages/${conversation.convo_id}`, state:{otherUserId: conversation.other_user} }}> OTHER USER ID {conversation.other_user} </Link></p>
-            )) : null }
+                <p>
+                    <Link to={{ pathname: `/messages/${conversation.convo_id}`, 
+                    state:{otherUserId: conversation.other_user,
+                        otherUserName: [conversation.other_user_name[0], conversation.other_user_name[1]]
+                    } }}> 
+                        {conversation.other_user_name[0]} {conversation.other_user_name[1]} 
+                    </Link>
+                </p>
+            )) 
+            : null }
 
         </div>
         </Container>

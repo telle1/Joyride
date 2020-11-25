@@ -20,6 +20,7 @@ class User(db.Model):
     request = db.relationship('Request')
     ride = db.relationship('Ride')
     profile = db.relationship('UserProfile', uselist=False)
+    messages = db.relationship('Message')
 
     def serialize(self):
         return {'first_name': self.first_name, 'last_name': self.last_name, 'email': self.email, 'phone_num': self.phone_num}
@@ -120,6 +121,9 @@ class Conversation(db.Model):
     user_1 = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
     user_2 = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
 
+    user1_userinfo = db.relationship('User', foreign_keys= [user_1])
+    user2_userinfo = db.relationship('User', foreign_keys=[user_2])
+
     def __repr__(self):
         return f"<Conversation id={self.conversation_id}>"
 
@@ -131,6 +135,8 @@ class Message(db.Model):
     sender = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
     content = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, nullable = False)
+
+    # user = db.relationship('User')
 
 def connect_to_db(flask_app, db_uri='postgresql:///joyride', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri

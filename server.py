@@ -488,9 +488,15 @@ def get_all_user_messages():
     for convo in all_user_convos:
         if convo.user_1 == session['user_id']:
             other_user = convo.user_2
+            other_user_name = [convo.user2_userinfo.first_name, convo.user2_userinfo.last_name]
+            print(other_user_name)
         else:
             other_user = convo.user_1
-        all_user_convo_ids.append({'convo_id': convo.conversation_id, 'other_user': other_user})
+            other_user_name = [convo.user1_userinfo.first_name, convo.user1_userinfo.last_name]
+            print(other_user_name)
+
+        all_user_convo_ids.append({'convo_id': convo.conversation_id, 'other_user': other_user,
+        'other_user_name': other_user_name})
     return jsonify({'conversation_ids': all_user_convo_ids})
 
 #SOCKET.IO ROUTES---SOCKET.IO ROUTES---SOCKET.IO ROUTES---SOCKET.IO ROUTES

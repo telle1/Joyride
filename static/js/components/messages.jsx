@@ -7,6 +7,7 @@ function Messages({match}){
 
         const location = useLocation();
         const otherUserId = location.state.otherUserId 
+        const otherUserName = location.state.otherUserName
 
         const [messages, setMessages] = useState([{sender: "", content:"", time:""}])
         // const [messages, setMessages] = useState([])
@@ -72,7 +73,7 @@ function Messages({match}){
     
         return (
             <Container className="top-padding">
-                <h4 className="yellow font-weight-bold">Chat with user name</h4>
+                <h4 className="yellow font-weight-bold">Chat with {otherUserName[0]} {otherUserName[1]}</h4>
                 <div className="message-box">
                 {messages.length > 0 ? 
                     (messages.map((singleMessage,i) => (
