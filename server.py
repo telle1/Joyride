@@ -507,14 +507,13 @@ def get_user_messages(convo_id):
     if is_convo_present: #then get the messages for that convo
         convo_messages = Message.query.filter(Message.conversation_id == convo_id).all()
         for msg in convo_messages: #if message was sent by me -> put it on the right
-            # message_list.append({'sender': msg.sender, 'content': msg.content})
-            message_list.append(msg.content)
+            message_list.append({'sender': msg.sender, 'content': msg.content, 'time': msg.timestamp})
+            # message_list.append(msg.content)
     else: #no convresation yet #need to send the user profile to compare to the person loggedin 
         new_conversation = Conversation(conversation_id = convo_id, 
             user_1 =session['user_id'], user_2= other_user_id)
         db.session.add(new_conversation)
         db.session.commit()
-
 
     # print('MESAGGE LIST', message_list)
     return jsonify({'msgs': message_list})
@@ -539,7 +538,9 @@ def join_a_room(data):
     room = data['room']
     join_room(room)
     #gets sent as a message
-    send(f"{session['user_id']} has entered the room #{room}", room=room)
+    # message = {'sender': session['user_id'], 'content': f"{session['user_id']} has entered the room #{room}", 'time': datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}
+    # send(f"{session['user_id']} has entered the room #{room}", room=room)
+    # send(message, room=room)
 
 #flask socket io adds session id from request object using request.sid
 @socketio.on('message')
@@ -549,10 +550,13 @@ def handle_message(data):
     print('Msg:' + data['message'])
     message=data['message']
     room=data['room']
-    new_message= Message(conversation_id = room, content = message, sender = session['user_id'])
+    new_message= Message(conversation_id = room, content = message, 
+        sender = session['user_id'], timestamp= datetime.now())
     db.session.add(new_message)
     db.session.commit()
-    send(message, room=room)
+    # message_object = {'sender': session['user_id'], 'content': message}
+    message_object = {'sender': session['user_id'], 'content': message, 'time': new_message.timestamp.strftime("%m/%d/%Y, %H:%M:%S")}
+    send(message_object, room=room)
 
 @socketio.on('leave')
 def leave_the_room(data):

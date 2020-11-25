@@ -129,9 +129,8 @@ class Message(db.Model):
     message_id = db.Column(db.Integer, primary_key= True, autoincrement = True, unique = True)
     conversation_id = db.Column(db.Integer, db.ForeignKey('conversations.conversation_id'), nullable= False)
     sender = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
-    # recipient = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
     content = db.Column(db.Text)
-    #timestamp?
+    timestamp = db.Column(db.DateTime, nullable = False)
 
 def connect_to_db(flask_app, db_uri='postgresql:///joyride', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
