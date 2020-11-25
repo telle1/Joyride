@@ -39,6 +39,7 @@ socketio = SocketIO(app)
 # This configuration option makes the Flask interactive debugger
 # more useful (you should remove this line in production though)
 current_time = datetime.now()
+print('tHIS IS THE CURRENT TIME', current_time)
 #for some reason, using this variable to update timestamp in my databse does not work;
 #instead, i just have to call datetime.now() directly
 
@@ -506,6 +507,7 @@ def get_user_messages(convo_id):
     if is_convo_present: #then get the messages for that convo
         convo_messages = Message.query.filter(Message.conversation_id == convo_id).all()
         for msg in convo_messages: #if message was sent by me -> put it on the right
+            # message_list.append({'sender': msg.sender, 'content': msg.content})
             message_list.append(msg.content)
     else: #no convresation yet #need to send the user profile to compare to the person loggedin 
         new_conversation = Conversation(conversation_id = convo_id, 

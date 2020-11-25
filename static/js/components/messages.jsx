@@ -68,8 +68,9 @@ function Messages({match}){
             <Container className="top-padding">
                 <div className="message-box">
                 {messages.length > 0 ? 
-                    messages.map((message,i) => (
-                        <div className="d-flex d-column"><MessageText key={i} message={message}/><br/></div>)) : null
+                    messages.map((singleMessage,i) => (
+                        <div key={i} className="d-flex d-column"><MessageText key={i} singleMessage={singleMessage}/><br/></div>)) 
+                        : null
                 }
                 </div>
                 <br/>
@@ -86,14 +87,15 @@ function Messages({match}){
         )
 }
 
-function MessageText({message}){
+function MessageText({singleMessage}){
 
     const {user} = useContext(UserContext)
 
     return (
         <React.Fragment>
-            {message == 'hi' ? <div>test</div> : 
-                <React.Fragment><div className="float-right">hi</div></React.Fragment>}
+            {/* {user == message.sender ? <div className="float-right yellow">{message.content}</div> : 
+                <React.Fragment><div>{message.content}</div></React.Fragment>} */}
+            {singleMessage}
         </React.Fragment>
     )
 }
