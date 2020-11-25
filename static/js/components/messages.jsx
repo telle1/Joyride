@@ -3,14 +3,11 @@ const {InputGroup, FormControl} = ReactBootstrap
 
 function Messages({match}){
 
-        // const {user} = useContext(UserContext)
-
         const location = useLocation();
         const otherUserId = location.state.otherUserId 
         const otherUserName = location.state.otherUserName
 
         const [messages, setMessages] = useState([{sender: "", content:"", time:""}])
-        // const [messages, setMessages] = useState([])
         const [message, setMessage] = useState("")
 
         const socket = io.connect('http://localhost:5000/')
@@ -64,35 +61,49 @@ function Messages({match}){
             socket.emit('message', {
                 room: match.params.convoId,
                 message: message,
-                // sender: user
             })
             //CLEAR MESSAGE FIELD
             setMessage("")
-            // fetchAllMessages(); // without this the individal message does not show?
        }
     
         return (
             <Container className="top-padding">
+                <Row>
+                <Col xs={3}>
+                    <Table bordered striped style={{height: '598px'}}>
+                        <tr>
+                            <td>test</td>
+                        </tr>
+                    </Table>
+                </Col>
+
+                <Col xs={9}>
                 <h4 className="yellow font-weight-bold">Chat with {otherUserName[0]} {otherUserName[1]}</h4>
-                <div className="message-box">
-                {messages.length > 0 ? 
-                    (messages.map((singleMessage,i) => (
-                        <div key={i}>
-                            <MessageText key={i} singleMessage={singleMessage}/><br/></div>
-                    )))
-                    : null
-                }
+                <div className="message-container">
+                    <div className="message-box">
+                    {messages.length > 0 ? 
+                        (messages.map((singleMessage,i) => (
+                            <div key={i}>
+                                <MessageText key={i} singleMessage={singleMessage}/><br/></div>
+                        )))
+                        : null
+                    }
+                    </div>
+                    <br/>
+                    <Form onSubmit={handleMessage}>
+                        <InputGroup>
+                            <FormControl as="textarea"rows="1" name="message" value={message} 
+                                onChange={(e)=> setMessage(e.target.value)}/>
+                            <InputGroup.Append>
+                                <button type="submit" className="btn" style={{backgroundColor: "#79C7C4", color:"white"}}>Send</button>
+                            </InputGroup.Append>
+                        </InputGroup>
+                    </Form>
+                
                 </div>
-                <br/>
-                <form onSubmit={handleMessage}>
-                <InputGroup>
-                    <FormControl as="textarea"rows="1" name="message" value={message} 
-                        onChange={(e)=> setMessage(e.target.value)}/>
-                    <InputGroup.Append>
-                        <button type="submit" className="btn" style={{backgroundColor: "#79C7C4", color:"white"}}>Send</button>
-                    </InputGroup.Append>
-                </InputGroup>
-                </form>
+                </Col>
+                </Row>
+
             </Container>
         )
 }
@@ -108,19 +119,19 @@ function MessageText({singleMessage}){
                 {user == singleMessage.sender ? 
                     null
                     : 
-                    <div>
+                    <React.Fragment>
                         <span className="other-user-message">{singleMessage.content}</span>    
                         <div className="small-text">{singleMessage.time}</div>
-                    </div>
+                    </React.Fragment>
                 }
             </div>
             <div className="col-md-3 offset-md-9">
                 {user == singleMessage.sender ? 
-                    <div>
+                    <React.Fragment>
                         <div className="user-message float-right">{singleMessage.content}</div>
                         <br/><br/>
                         <div className="float-right small-text">{singleMessage.time}</div>
-                    </div> 
+                    </React.Fragment>
                     : 
                     null
                 }

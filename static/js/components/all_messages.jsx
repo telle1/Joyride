@@ -32,7 +32,6 @@ function AllMessages(){
                 </p>
             )) 
             : null }
-
         </div>
         </Container>
     )
