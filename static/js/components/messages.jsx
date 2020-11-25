@@ -1,3 +1,6 @@
+const {InputGroup, FormControl} = ReactBootstrap
+
+
 function Messages({match}){
 
         const location = useLocation();
@@ -63,21 +66,21 @@ function Messages({match}){
     
         return (
             <Container className="top-padding">
-                <h5>test chat log</h5>
-
-                {/* {messages.length > 0 ? 
-                    messages.map((message,i) => (
-                   <p key={i}>{message}</p> 
-                )) : null } */}
+                <div className="message-box">
                 {messages.length > 0 ? 
                     messages.map((message,i) => (
-                        <MessageText key={i} message={message}/>)) : null
+                        <div className="d-flex d-column"><MessageText key={i} message={message}/><br/></div>)) : null
                 }
-
-                <form onSubmit={handleMessage} className="float-right">
-                    <textarea name="message" value={message} 
-                    onChange={(e)=> setMessage(e.target.value)}></textarea>
-                    <button type="submit" className="btn btn-theme">Message</button>
+                </div>
+                <br/>
+                <form onSubmit={handleMessage}>
+                <InputGroup>
+                    <FormControl as="textarea"rows="1" name="message" value={message} 
+                        onChange={(e)=> setMessage(e.target.value)}/>
+                    <InputGroup.Append>
+                        <button type="submit" className="btn btn-theme">Send</button>
+                    </InputGroup.Append>
+                </InputGroup>
                 </form>
             </Container>
         )
@@ -90,7 +93,7 @@ function MessageText({message}){
     return (
         <React.Fragment>
             {message == 'hi' ? <div>test</div> : 
-                <React.Fragment><div className="float-right">hi</div><br/></React.Fragment>}
+                <React.Fragment><div className="float-right">hi</div></React.Fragment>}
         </React.Fragment>
     )
 }
