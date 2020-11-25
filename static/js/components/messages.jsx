@@ -18,6 +18,19 @@ function Messages({match}){
                 console.log(messages, 'MESSAGE HISTORY')
             })
 
+
+            //sit.com/conversation?from=89378&to=893
+            {/* <Link to="/account?name=tifayfay"> Tiffany </Link>
+            history.push(/account?name=${user_name})
+            `
+            useLocation().search
+            new URLSearchParams(useLocation().search)
+            queryObject = new URLSearchParams(useLocation().search)
+            queryObject.get("name")
+            queryObject.get("from")
+            queryObject.get("to")
+            sit.com/conversation?from=89378&to=893 */}
+            
             //CONNECT TO SOCKET
             socketRef.current = socket
             socket.on('connect', () => {

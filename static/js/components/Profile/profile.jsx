@@ -78,8 +78,10 @@ function UserCardInfo({user, match, profile, userInfo, fetchUserProfile}){
 function UserBio({imageSource, title, userInfo, match}){
 
     const {user} = useContext(UserContext)
+
     console.log('PROFILE OF USER', match.params.userId)
     console.log('LOGGED IN USER', user)
+
     let convoId;
     if (user < match.params.userId){
         convoId = Number(user.toString() + match.params.userId.toString())

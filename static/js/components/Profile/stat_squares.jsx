@@ -32,7 +32,7 @@ function StatSquares({match, user}){
                 {statSquares.map(statSquare => 
                     (<StatSquare key={statSquare.id} stat={statSquare.stat} 
                         description={statSquare.description} color={statSquare.color}
-                        match={match} user={user} />)
+                        match={match} user={user}/>)
                 )}
             </Row>
         </Container>
@@ -40,6 +40,7 @@ function StatSquares({match, user}){
 }
 
 function StatSquare({stat, description, color, match, user}){
+    
     return (
         <Col className="stats">
             <div className={color}>

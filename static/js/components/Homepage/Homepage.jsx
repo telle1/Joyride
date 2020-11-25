@@ -110,10 +110,10 @@ function HowItWorks(){
         <Row className="py-5 align-items-center">
           <Col className= "d-none d-md-block">
             <div className = "how-steps">
-              <HowStep key="1" icon="fas fa-search fa-4x mr-4" description={["Simply ", <span className="yellow font-weight-bold">check</span>, " for rides travelling to your destination."]}/>
-              <HowStep key="2" icon="fas fa-car fa-4x mr-4" description={[<span className="yellow font-weight-bold">Match</span>, " with a driver."]}/>
-              <HowStep key="3" icon="far fa-handshake fa-4x mr-2" description={[<span className="yellow font-weight-bold">Negotiate</span>, " on a great price."]}/>
-              <HowStep key="4" icon="fas fa-flag-checkered fa-4x mr-4" description={["Happily ", <span className="yellow font-weight-bold">reach</span>, " your destination."]}/>
+              <HowStep key={1} icon="fas fa-search fa-4x mr-4" description={["Simply ", <span className="yellow font-weight-bold">check</span>, " for rides travelling to your destination."]}/>
+              <HowStep key={2} icon="fas fa-car fa-4x mr-4" description={[<span className="yellow font-weight-bold">Match</span>, " with a driver."]}/>
+              <HowStep key={3} icon="far fa-handshake fa-4x mr-2" description={[<span className="yellow font-weight-bold">Negotiate</span>, " on a great price."]}/>
+              <HowStep key={4} icon="fas fa-flag-checkered fa-4x mr-4" description={["Happily ", <span className="yellow font-weight-bold">reach</span>, " your destination."]}/>
               {/* {howSteps.map(howStep => 
                 (<HowStep key={howSteps.id} icon={howSteps.icon} description={howSteps.description}/>)
               )} */}

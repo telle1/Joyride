@@ -478,6 +478,13 @@ def logout_user():
     print(session)
     return jsonify({'msg': 'Logged out'})
 
+
+@app.route('/all-messages')
+def get_all_user_messages():
+
+    #get all the user conversations
+    return jsonify({'conversations': ['test']})
+
 #SOCKET.IO ROUTES---SOCKET.IO ROUTES---SOCKET.IO ROUTES---SOCKET.IO ROUTES
 @app.route('/messages/<convo_id>')
 def get_user_messages(convo_id):

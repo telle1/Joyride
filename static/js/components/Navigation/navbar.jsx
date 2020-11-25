@@ -101,7 +101,7 @@ function NavBarUser({setShowAlert}){
                   </Dropdown.Menu>
                 </Dropdown>
                 <Nav.Link as={Link} to='/all-messages'>
-                  <i class="far fa-comments white-icon"></i>
+                  <i className="far fa-comments white-icon"></i>
                 </Nav.Link>
                 <Nav.Link as={Link} to={`/profile/${user}`} className="btn navbar-btn shadow-none">
                   <i className="fas fa-home white-icon"></i>
