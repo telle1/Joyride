@@ -1,7 +1,11 @@
 function Messages({match}){
 
+        const location = useLocation();
+        const otherUserId = location.state.otherUserId
+
+        console.log('WHAT IS IN OTHER USER ID', otherUserId)
         console.log('WHATS THE CONVO ID', match.params.convoId)
-        console.log('WHT IS IN MATCH', match)
+        
         const [messages, setMessages] = useState([])
         const [message, setMessage] = useState("")
 
@@ -11,26 +15,21 @@ function Messages({match}){
         console.log(messages, 'MESSAGE HISTORY')
 
         useEffect(() => {         
-            fetch(`/messages/${match.params.convoId}`)
+            fetch(`/messages/${match.params.convoId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    otherUserId: otherUserId
+                }) 
+            })
             .then(res => res.json())
             .then(data => {
                 setMessages(data.msgs)
                 console.log(messages, 'MESSAGE HISTORY')
             })
 
-
-            //sit.com/conversation?from=89378&to=893
-            {/* <Link to="/account?name=tifayfay"> Tiffany </Link>
-            history.push(/account?name=${user_name})
-            `
-            useLocation().search
-            new URLSearchParams(useLocation().search)
-            queryObject = new URLSearchParams(useLocation().search)
-            queryObject.get("name")
-            queryObject.get("from")
-            queryObject.get("to")
-            sit.com/conversation?from=89378&to=893 */}
-            
             //CONNECT TO SOCKET
             socketRef.current = socket
             socket.on('connect', () => {
@@ -65,9 +64,7 @@ function Messages({match}){
         return (
             <Container className="top-padding">
                 <h5>test chat log</h5>
-                {/* {messages.map((message,i) => (
-                   <p key={i}>{message}</p> 
-                ))} */}
+                
                 {messages.length > 0 ? 
                     messages.map((message,i) => (
                    <p key={i}>{message}</p> 

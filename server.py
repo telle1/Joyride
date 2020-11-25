@@ -2,7 +2,7 @@
 from flask import Flask, render_template, session, request, jsonify
 from flask_socketio import SocketIO, emit, send, join_room, leave_room
 from functools import wraps #for log-inrequired
-from model import db, User, Ride, Request, Feedback, Message, connect_to_db
+from model import db, User, Ride, Request, Feedback, Message, Conversation, connect_to_db
 from werkzeug.utils import secure_filename #to upload files securely
 import crud
 from twilio.rest import Client
@@ -478,33 +478,45 @@ def logout_user():
     print(session)
     return jsonify({'msg': 'Logged out'})
 
-
 @app.route('/all-messages')
 def get_all_user_messages():
 
     #get all the user conversations
-    return jsonify({'conversations': ['test']})
+    all_user_convo_ids= []
+    all_user_convos = Conversation.query.filter((Conversation.user_1 == session['user_id']) | (Conversation.user_2 == session['user_id'])).all()
+    for convo in all_user_convos:
+        if convo.user_1 == session['user_id']:
+            other_user = convo.user_2
+        else:
+            other_user = convo.user_1
+        all_user_convo_ids.append({'convo_id': convo.conversation_id, 'other_user': other_user})
+    return jsonify({'conversation_ids': all_user_convo_ids})
 
 #SOCKET.IO ROUTES---SOCKET.IO ROUTES---SOCKET.IO ROUTES---SOCKET.IO ROUTES
-@app.route('/messages/<convo_id>')
+@app.route('/messages/<convo_id>', methods=['POST'])
 def get_user_messages(convo_id):
 
-    # is_convo_present = Conversation.query.filter(Conversation.conversation_id == convo_id).all()
-    # message_list = []
+    data = request.json
+    other_user_id = data['otherUserId']
+    print(other_user_id, 'OTHER USER ID BACHEKDN')
 
-    # if is_convo_present: #then get the messages for that convo
-    #     convo_messages = Message.query.filter(Message.conversation_id == convo_id).all()
-    #     for msg in convo_messages:
-    #         message_list.append(msg.content)
-    # else: #no convresation yet #need to send the user profile to compare to the person loggedin 
-    #     new_conversation = Conversation(conversation_id = convo_id, user_1 =, user_2=)
-    #     db.session.add(new_conversation)
-    #     db.session.commit()
+    is_convo_present = Conversation.query.filter(Conversation.conversation_id == convo_id).all()
+    message_list = []
+
+    if is_convo_present: #then get the messages for that convo
+        convo_messages = Message.query.filter(Message.conversation_id == convo_id).all()
+        for msg in convo_messages: #if message was sent by me -> put it on the right
+            message_list.append(msg.content)
+    else: #no convresation yet #need to send the user profile to compare to the person loggedin 
+        new_conversation = Conversation(conversation_id = convo_id, 
+            user_1 =session['user_id'], user_2= other_user_id)
+        db.session.add(new_conversation)
+        db.session.commit()
 
 
     # print('MESAGGE LIST', message_list)
-    # return jsonify({'msgs': message_list})
-    return jsonify({'msgs': ['test']})
+    return jsonify({'msgs': message_list})
+    # return jsonify({'msgs': ['test']})
 
     
     # user_messages = Message.query.filter(Message.sender == session['user_id']).all()
@@ -535,7 +547,7 @@ def handle_message(data):
     print('Msg:' + data['message'])
     message=data['message']
     room=data['room']
-    new_message= Message(content = message, sender = session['user_id'])
+    new_message= Message(conversation_id = room, content = message, sender = session['user_id'])
     db.session.add(new_message)
     db.session.commit()
     send(message, room=room)

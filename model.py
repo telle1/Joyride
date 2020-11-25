@@ -113,18 +113,21 @@ class UserProfile(db.Model):
     def __repr__(self):
         return f"<Profile id={self.profile_id} location={self.location} title={self.title}>"
 
-# class Conversation(db.Model):
-#     __tablename__ = 'conversations'
+class Conversation(db.Model):
+    __tablename__ = 'conversations'
 
-#     conversation_id = db.Column(db.Integer, primary_key= True, unique = True)
-#     user_1 = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
-#     user_2 = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
+    conversation_id = db.Column(db.Integer, primary_key= True, unique = True)
+    user_1 = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
+    user_2 = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
+
+    def __repr__(self):
+        return f"<Conversation id={self.conversation_id}>"
 
 class Message(db.Model):
     __tablename__ = 'messages'
 
     message_id = db.Column(db.Integer, primary_key= True, autoincrement = True, unique = True)
-    # conversation_id = db.Column(db.Integer, db.ForeignKey('conversations.conversation_id'), nullable= False)
+    conversation_id = db.Column(db.Integer, db.ForeignKey('conversations.conversation_id'), nullable= False)
     sender = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
     # recipient = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
     content = db.Column(db.Text)

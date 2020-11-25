@@ -98,11 +98,23 @@ function UserBio({imageSource, title, userInfo, match}){
             <div className="mt-3">
                 <h4>{userInfo.first_name} {userInfo.last_name}</h4>
                 <p className="text-secondary mb-1">{title}</p>
-                <Link to={`/messages/${convoId}`} className="btn btn-yellow">Message</Link>
+                {/* <Link to={`/messages/${convoId}`} className="btn btn-yellow">Message</Link> */}
+                <Link to={{ pathname: `/messages/${convoId}`, state: {otherUserId: match.params.userId} }} className="btn btn-yellow">Message</Link>
             </div>
         </React.Fragment> 
     )
 }
+
+//<Link to="/account?name=tifayfay"> Tiffany </Link>
+// history.push(/account?name=${user_name})
+// `
+// useLocation().search
+// new URLSearchParams(useLocation().search)
+// queryObject = new URLSearchParams(useLocation().search)
+// queryObject.get("name")
+// queryObject.get("from")
+// queryObject.get("to")
+// sit.com/conversation?from=89378&to=893
 
 function UserCardStats({cardStats}){
     return (
