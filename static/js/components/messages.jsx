@@ -64,17 +64,33 @@ function Messages({match}){
         return (
             <Container className="top-padding">
                 <h5>test chat log</h5>
-                
-                {messages.length > 0 ? 
+
+                {/* {messages.length > 0 ? 
                     messages.map((message,i) => (
                    <p key={i}>{message}</p> 
-                )) : null }
-                <form onSubmit={handleMessage}>
+                )) : null } */}
+                {messages.length > 0 ? 
+                    messages.map((message,i) => (
+                        <MessageText key={i} message={message}/>)) : null
+                }
+
+                <form onSubmit={handleMessage} className="float-right">
                     <textarea name="message" value={message} 
                     onChange={(e)=> setMessage(e.target.value)}></textarea>
                     <button type="submit" className="btn btn-theme">Message</button>
                 </form>
             </Container>
         )
+}
 
+function MessageText({message}){
+
+    const {user} = useContext(UserContext)
+
+    return (
+        <React.Fragment>
+            {message == 'hi' ? <div>test</div> : 
+                <React.Fragment><div className="float-right">hi</div><br/></React.Fragment>}
+        </React.Fragment>
+    )
 }
