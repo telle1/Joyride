@@ -47,7 +47,7 @@ return(
         </Modal.Header>
         <Modal.Body> 
         <form onSubmit={editRide} className="ml-3 mr-3" method="post">
-            {currentDrive.passengers  ? null : 
+            {currentDrive.passengers.length > 0 ? null : 
                     <div>
                         <div className="form-group row">
                             <div className = "col-md-3 col-form-label">

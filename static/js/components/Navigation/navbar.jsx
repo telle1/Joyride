@@ -1,6 +1,3 @@
-const { useState, useContext } = React 
-const {Modal, Button, Alert, Dropdown, Container, Navbar, Nav} = ReactBootstrap
-
 function NavBar(){
 
     const [showAlert, setShowAlert] = useState(false)
@@ -101,6 +98,11 @@ function NavBarUser({setShowAlert}){
                   </Dropdown.Menu>
                 </Dropdown>
                 <Nav.Link as={Link} to='/all-messages'>
+                  <i className="far fa-comments white-icon"></i>
+                </Nav.Link>
+                <Nav.Link as={Link} to={{ pathname: `/messages/${user}`, 
+                      state: {otherUserId: user, 
+                      otherUserName: ["My", "Inbox"]} }}>
                   <i className="far fa-comments white-icon"></i>
                 </Nav.Link>
                 <Nav.Link as={Link} to={`/profile/${user}`} className="btn navbar-btn shadow-none">

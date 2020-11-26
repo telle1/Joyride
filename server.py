@@ -494,9 +494,19 @@ def get_all_user_messages():
             other_user = convo.user_1
             other_user_name = [convo.user1_userinfo.first_name, convo.user1_userinfo.last_name]
             print(other_user_name)
+        if len(convo.message) > 0:
+            last_message = convo.message[-1].content
+            print('THIS IS LAST MESSAGE', last_message)
+            last_message_timestamp = convo.message[-1].timestamp
+            print(last_message_timestamp)
+        else:
+            last_message = ""
+            last_message_timestamp = ""
+        #get the last message from that convo...convo.message.content = > last one
+        all_user_convo_ids.append({'convo_id': convo.conversation_id, 
+            'other_user': other_user, 'other_user_name': other_user_name, 
+            'last_message': last_message, 'last_message_timestamp': last_message_timestamp})
 
-        all_user_convo_ids.append({'convo_id': convo.conversation_id, 'other_user': other_user,
-        'other_user_name': other_user_name})
     return jsonify({'conversation_ids': all_user_convo_ids})
 
 #SOCKET.IO ROUTES---SOCKET.IO ROUTES---SOCKET.IO ROUTES---SOCKET.IO ROUTES

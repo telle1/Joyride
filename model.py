@@ -123,6 +123,7 @@ class Conversation(db.Model):
 
     user1_userinfo = db.relationship('User', foreign_keys= [user_1])
     user2_userinfo = db.relationship('User', foreign_keys=[user_2])
+    message = db.relationship('Message')
 
     def __repr__(self):
         return f"<Conversation id={self.conversation_id}>"
@@ -137,6 +138,7 @@ class Message(db.Model):
     timestamp = db.Column(db.DateTime, nullable = False)
 
     # user = db.relationship('User')
+    conversation = db.relationship('Conversation')
 
 def connect_to_db(flask_app, db_uri='postgresql:///joyride', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
@@ -160,11 +162,11 @@ if __name__ == '__main__':
 
 
 
-# test = Feedback(feedback = 'test123', rating = 3, feedback_giver=2, feedback_receiver=5, ride_id=54)
+# test = Feedback(feedback = 'great driver', rating = 4, feedback_giver=2, feedback_receiver=6, ride_id=54)
 # db.session.add(test)
 # db.session.commit()
 
-# request = Request(ride_id = 61, rider_id = 1, seats_requested = 1, status='Approved', date= datetime.now())
+# request = Request(ride_id = 53, rider_id = 9, seats_requested = 1, status='Pending', date= datetime.now())
 # db.session.add(request)
 # db.session.commit()
 

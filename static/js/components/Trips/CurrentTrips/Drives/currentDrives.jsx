@@ -77,8 +77,9 @@ function RequestsList({currentDrive, setShowAlert, fetchDrives}){
  
     return (
         <React.Fragment>
-        {currentDrive.requests ? currentDrive.requests.map(request => 
-            <Request request={request} fetchDrives={fetchDrives} setShowAlert={setShowAlert}/>) : null}
+        {currentDrive.requests.map(request => 
+            <Request request={request} fetchDrives={fetchDrives} setShowAlert={setShowAlert}/>)
+        }
         </React.Fragment>
     )}
 
@@ -101,7 +102,7 @@ function Request({request, setShowAlert, fetchDrives}){
 function PassengersList({currentDrive}){
     return (
         <React.Fragment>
-        {currentDrive.passengers ? currentDrive.passengers.map(passenger => <Passenger passenger={passenger}/>) : null}   
+        {currentDrive.passengers.map(passenger => <Passenger passenger={passenger}/>)}   
         </React.Fragment>
     )}
 

@@ -4,14 +4,14 @@ function AllMessages(){
 
     const [conversations, setConversations] = useState([{convo_id: '', other_user: '', other_user_name: ""}])
 
-    const fetchUserMessages = () => {
+    const fetchConversations = () => {
         fetch('/all-messages')
         .then(res => res.json())
         .then(data => setConversations(data.conversation_ids))
     }
 
     useEffect(() => {
-        fetchUserMessages();
+        fetchConversations();
     }, [])
 
     console.log(conversations)
