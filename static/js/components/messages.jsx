@@ -1,6 +1,3 @@
-const {InputGroup, FormControl} = ReactBootstrap
-
-
 function Messages({match}){
         const {user} = useContext(UserContext)
 

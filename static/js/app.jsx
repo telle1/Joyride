@@ -2,9 +2,9 @@ const Router = ReactRouterDOM.BrowserRouter;
 const { useHistory, useParams, Redirect, Switch, Prompt, Link, Route, useLocation} = ReactRouterDOM;
 const { useState, useContext, useEffect, useRef, createContext} = React 
 const {useForm} = ReactHookForm
-const {Carousel, Container, Row, Col, 
-    Modal, Button, Alert, Dropdown, 
-    Navbar, Nav, InputGroup} = ReactBootstrap
+const {Carousel, Container, Row, Col, Table,
+    Modal, Button, Alert, Dropdown, Card, Tab, Tabs,
+    Navbar, Nav, InputGroup, Form, FormControl} = ReactBootstrap
 
 const UserContext = createContext(null)
 

@@ -1,7 +1,3 @@
-const { useState, useEffect, useContext } = React 
-const {useForm} = ReactHookForm
-const {Form} = ReactBootstrap
-
 function Post(){
     const {alertStatus, alertColor} = useContext(UserContext);
     const [showAlert, setShowAlert] = useState('')

@@ -1,6 +1,3 @@
-const { useEffect } = React
-const {Container, Tab, Tabs} = ReactBootstrap
-
 //use for both current and past tables
 function AllTrips(props){
     return(

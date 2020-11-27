@@ -1,5 +1,3 @@
-const {useRef, useEffect} = React;
-
 function MyGoogleMap(){
 
     const mapRef = useRef(null);

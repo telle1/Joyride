@@ -1,6 +1,3 @@
-const { useState, useEffect } = React 
-const {Button, Modal } = ReactBootstrap
-
 function CurrentRides({setShowAlert, setAlertColor, setAlertStatus}){
 
     const [currentRides, setCurrentRides] = useState([])

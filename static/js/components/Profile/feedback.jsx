@@ -1,16 +1,4 @@
-const {Table} = ReactBootstrap
-
 function FeedbackContainer({feedbacks}){
-
-    // const [feedbacks, setFeedbacks] = useState([])
-
-    // useEffect(() => {
-    //     fetch(`/get-user-feedback/${match.params.userId}`)
-    //     .then(res => res.json())
-    //     .then(data => {
-    //         setFeedbacks(data.feedback)
-    //     })
-    // })
 
     return (
         <React.Fragment>

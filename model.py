@@ -102,6 +102,8 @@ class Feedback(db.Model):
         return f"<Feedback msg={self.feedback} rating={self.rating} giver={self.feedback_giver} receiver={self.feedback_receiver} ride_id={self.ride_id}>"
 
 class UserProfile(db.Model):
+    """User profiles."""
+
     __tablename__ = 'profiles'
 
     profile_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), primary_key = True)
@@ -115,6 +117,8 @@ class UserProfile(db.Model):
         return f"<Profile id={self.profile_id} location={self.location} title={self.title}>"
 
 class Conversation(db.Model):
+    """Conversation between two users."""
+
     __tablename__ = 'conversations'
 
     conversation_id = db.Column(db.Integer, primary_key= True, unique = True)
@@ -129,6 +133,8 @@ class Conversation(db.Model):
         return f"<Conversation id={self.conversation_id}>"
 
 class Message(db.Model):
+    """All messages for a given conversation."""
+
     __tablename__ = 'messages'
 
     message_id = db.Column(db.Integer, primary_key= True, autoincrement = True, unique = True)
@@ -170,10 +176,3 @@ if __name__ == '__main__':
 # db.session.add(request)
 # db.session.commit()
 
-
-
-    # request_id = db.Column(db.Integer, primary_key = True, autoincrement = True, unique = True)
-    # ride_id = db.Column(db.Integer, db.ForeignKey('rides.ride_id'), nullable = False)
-    # rider_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
-    # seats_requested = db.Column(db.Integer, nullable=False)
-    # status = db.Column(db.String)

@@ -1,5 +1,3 @@
-const {Container, Row, Col} = ReactBootstrap
-
 function Footer(){
     return (
         <footer className= "footer">

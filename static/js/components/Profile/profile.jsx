@@ -1,6 +1,3 @@
-const { useEffect, useState } = React
-const {Container, Row, Col, Card} = ReactBootstrap
-
 function Profile({match, user}){
 
     const [feedbacks, setFeedbacks] = useState([])

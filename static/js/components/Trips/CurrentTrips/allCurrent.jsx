@@ -1,5 +1,4 @@
 function AllCurrentTrips(){
-    //{alertColor, alertStatus, setAlertColor, setAlertStatus}
     const {alertStatus, alertColor} = useContext(UserContext)
     const [showAlert, setShowAlert] = useState(false)
     

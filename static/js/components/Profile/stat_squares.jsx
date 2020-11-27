@@ -1,6 +1,3 @@
-const { Container, Row, Col } = ReactBootstrap
-const { useEffect, useState } = React
-
 function StatSquares({match, user}){
 
     const [destinations, setDestinations] = useState(0)

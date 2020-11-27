@@ -1,5 +1,3 @@
-const {useState, useEffect} = React
-
 function AllMessages(){
 
     const [conversations, setConversations] = useState([{convo_id: '', other_user: '', other_user_name: ""}])

@@ -1,5 +1,5 @@
 # from flask import Flask, render_template, redirect, flash, session, request, jsonify, url_for
-from flask import Flask, render_template, session, request, jsonify
+from flask import Flask, render_template, session, request, jsonify, flash
 from flask_socketio import SocketIO, emit, send, join_room, leave_room
 from functools import wraps #for log-inrequired
 from model import db, User, Ride, Request, Feedback, Message, Conversation, connect_to_db
@@ -12,46 +12,34 @@ import json
 import os
 
 app = Flask(__name__)
+socketio = SocketIO(app)
+app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
 
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
-
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(APP_ROOT, 'static/uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
 
 # A secret key is needed to use Flask sessioning features
-#access by source secrets.sh
 app.secret_key = os.environ['secret_key']
 account_sid = os.environ['account_sid']
 auth_token  = os.environ['auth_token']
 client = Client(account_sid, auth_token)
 twilio_phone_num = os.environ['twilio_phone_num']
 
-socketio = SocketIO(app)
-
-# Normally, if you refer to an undefined variable in a Jinja template,
-# Jinja silently ignores this. This makes debugging difficult, so we'll
-# set an attribute of the Jinja environment that says to make this an
-# error.
-# app.jinja_env.undefined = jinja2.StrictUndefined
-
-# This configuration option makes the Flask interactive debugger
-# more useful (you should remove this line in production though)
 current_time = datetime.now()
-print('tHIS IS THE CURRENT TIME', current_time)
-#for some reason, using this variable to update timestamp in my databse does not work;
-#instead, i just have to call datetime.now() directly
+#For some reason, using this variable to update timestamp database does not work;
+#instead, just call datetime.now() directly
 
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if 'user_id' in session:
-            return f(*args, **kwargs)
-        else:
-            flash("You must be logged in first.")
-            return redirect('/')
-    return decorated_function
+# def login_required(f):
+#     @wraps(f)
+#     def decorated_function(*args, **kwargs):
+#         if 'user_id' in session:
+#             return f(*args, **kwargs)
+#         else:
+#             flash("You must be logged in first.")
+#             return redirect('/')
+#     return decorated_function
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -110,7 +98,7 @@ def register_user():
     return resp
 
 @app.route('/post-complete', methods =['POST'])
-@login_required
+# @login_required
 def post_ride_to_database():
 
     data = request.json
@@ -134,7 +122,7 @@ def post_search_to_page():
     return jsonify({'res': matching_rides})
 
 @app.route('/request-ride', methods = ['POST'])
-@login_required #returns undefined, but does not redirect
+# @login_required #returns undefined, but does not redirect
 def request_ride():
 
     data = request.json
@@ -171,7 +159,7 @@ def request_ride():
     return resp
 
 @app.route('/current-drives')
-@login_required
+# @login_required
 def get_user_current_drives():
     """Return current trips page."""
     current_user_drives = crud.get_current_user_drives(driver_id = session['user_id'])
@@ -220,7 +208,7 @@ def get_notifications():
     return jsonify({'notifications': notifications_list})
 
 @app.route('/past-drives')
-@login_required
+# @login_required
 def get_user_past_drives():
 
     past_user_drives = crud.get_past_user_drives(driver_id = session['user_id'])
@@ -387,7 +375,7 @@ def give_passenger_feedback():
     return resp
 
 @app.route('/dashboard/<user_id>')
-@login_required
+# @login_required
 def get_user_dashboard(user_id):
     """Return dashboard page."""
     user_info = crud.get_dashboard_info(user_id = user_id)
@@ -520,49 +508,28 @@ def get_user_messages(convo_id):
     is_convo_present = Conversation.query.filter(Conversation.conversation_id == convo_id).all()
     message_list = []
 
-    if is_convo_present: #then get the messages for that convo
+    if is_convo_present: 
         convo_messages = Message.query.filter(Message.conversation_id == convo_id).all()
-        for msg in convo_messages: #if message was sent by me -> put it on the right
+        for msg in convo_messages: 
             message_list.append({'sender': msg.sender, 'content': msg.content, 'time': msg.timestamp})
-            # message_list.append(msg.content)
-    else: #no convresation yet #need to send the user profile to compare to the person loggedin 
+    else: 
         new_conversation = Conversation(conversation_id = convo_id, 
             user_1 =session['user_id'], user_2= other_user_id)
         db.session.add(new_conversation)
         db.session.commit()
 
-    # print('MESAGGE LIST', message_list)
     return jsonify({'msgs': message_list})
-    # return jsonify({'msgs': ['test']})
 
-    
-    # user_messages = Message.query.filter(Message.sender == session['user_id']).all()
-    # for msg in user_messages:
-    #     message_list.append(msg.content)
-    # print('MESAGGE LIST', message_list)
-    # return jsonify({'msgs': message_list})
-
-# @socketio.on('connect')
-# def handle_connect():
-#     users.append({session['user_id']: request.sid})
-#     print('WHO IS IN USERS', users)
 @socketio.on('join')
 def join_a_room(data):
-    # users.append({session['user_id']: request.sid})
-    # print('WHO IS IN USERS', users)
-    print('WHAT ISIN THE SID', request.sid)
     room = data['room']
     join_room(room)
-    #gets sent as a message
     # message = {'sender': session['user_id'], 'content': f"{session['user_id']} has entered the room #{room}", 'time': datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}
     # send(f"{session['user_id']} has entered the room #{room}", room=room)
     # send(message, room=room)
 
-#flask socket io adds session id from request object using request.sid
 @socketio.on('message')
 def handle_message(data):
-    #need to createa message model in databse
-    # print('SESSION ID???????SESSION ID???????', request.sid)
     print('Msg:' + data['message'])
     message=data['message']
     room=data['room']
@@ -570,8 +537,8 @@ def handle_message(data):
         sender = session['user_id'], timestamp= datetime.now())
     db.session.add(new_message)
     db.session.commit()
-    # message_object = {'sender': session['user_id'], 'content': message}
-    message_object = {'sender': session['user_id'], 'content': message, 'time': new_message.timestamp.strftime("%m/%d/%Y, %H:%M:%S")}
+    message_object = {'sender': session['user_id'], 
+        'content': message, 'time': new_message.timestamp.strftime("%m/%d/%Y, %H:%M:%S")}
     send(message_object, room=room)
 
 @socketio.on('leave')
@@ -580,9 +547,7 @@ def leave_the_room(data):
     room = data['room']
     leave_room(room)
     print('TEST USER LEAVE ROOM SERVER')
-    # print(users,'TEST WHOS IN THEUSER AFTERLEAVE')
-    send(f"{session['user_id']} has LEFT the room #{room}", room=room)
-
+    # send(f"{session['user_id']} has LEFT the room #{room}", room=room)
 
 if __name__ == "__main__":
     connect_to_db(app, echo= False)
@@ -593,7 +558,6 @@ if __name__ == "__main__":
 ## from flask_socketio import SocketIO, emit, send
 # socketio = SocketIO(app)
 #instead of app.run, socketio.run
-#map user ids to session ids (request.sid)
 
 
     

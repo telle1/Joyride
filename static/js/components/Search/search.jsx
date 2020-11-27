@@ -1,6 +1,3 @@
-const { useState, useEffect, useContext } = React 
-const { Col, Accordion } = ReactBootstrap
-
 function Search(){
     const { alertStatus, alertColor} = useContext(UserContext)
 

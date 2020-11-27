@@ -1,5 +1,3 @@
-const { useState, useEffect } = React 
-
 function CurrentDrives({setShowAlert}){
 
     const [currentDrives, setCurrentDrives] = useState([])

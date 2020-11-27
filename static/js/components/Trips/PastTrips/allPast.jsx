@@ -1,6 +1,3 @@
-const { useEffect } = React
-const {Container, Tab, Tabs} = ReactBootstrap
-
 function PastTrips(){
     const [showAlert, setShowAlert] = useState(false)
     const {alertColor, alertStatus} = useContext(UserContext)
@@ -15,7 +12,3 @@ function PastTrips(){
         </React.Fragment>
     )
 }
-
-// past drives user={user} setShowAlert={setShowAlert} 
-// setAlertColor={setAlertColor} setAlertStatus={setAlertStatus}
-// past rides  user={user}/>
