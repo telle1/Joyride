@@ -13,9 +13,12 @@ function HomePage(){
             <Features/>
             <HowItWorks/>
             <ControlledCarousel/>
+            <Test/>
+
             <Footer/>
         </div>
     )}
+
 
 function Heading({header}){
   return(
@@ -44,20 +47,16 @@ function TypedText({strings}){
 
   useEffect(() => {  
     const typed = new Typed(typeRef.current, options);
-    return () => {
+    //cleanup (prevent memory leaks)
+    return (() => {
       typed.destroy();  
-    };
+    });
   }, [])
 
   return (
     <span ref={typeRef}></span>
   );
 };
-
-
-
-
-
 
 function InfoSquares(){
   return (
@@ -70,8 +69,9 @@ function InfoSquares(){
         </Container>
       </section>   
   )}
-  
-function InfoSquare({imageClass, header, text, dataAos}){
+
+
+  function InfoSquare({imageClass, header, text, dataAos}){
   return (
     
       <Col xs={6} data-aos={dataAos} data-aos-duration="600" className="info-square">
@@ -117,15 +117,6 @@ function Feature({icon, header, paragraph, dataAos}){
 
 function HowItWorks(){
 
-
-  // const howSteps = [
-  //   {id: 1, icon: "fas fa-search fa-4x mr-4", description:["Simply" <span className="yellow font-weight-bold">check</span> "for rides travelling to your destination"]},
-  //   {id: 2, icon: "fas fa-car fa-4x mr-4",  description: [<span className="yellow font-weight-bold">Match</span> "with a driver."]},
-  //   {id: 3, icon: "far fa-handshake fa-4x mr-2", description:["<span className="yellow font-weight-bold">Negotiate</span> "on a great price."]},
-  //   {id: 4, icon: "fas fa-flag-checkered fa-4x mr-4", description:["Happily <span className="yellow font-weight-bold">reach</span> your destination."]}
-  // ]
-
-
   return (
     <section id = "how" data-aos="fade-up" data-aos-anchor-placement="center-bottom" data-aos-duration="1000">
       <Container>
@@ -133,13 +124,10 @@ function HowItWorks(){
         <Row className="py-5 align-items-center">
           <Col className= "d-none d-md-block">
             <div className = "how-steps">
-              <HowStep key={1} icon="fas fa-search fa-4x mr-4" description={["Simply ", <span className="yellow font-weight-bold">check</span>, " for rides travelling to your destination."]}/>
-              <HowStep key={2} icon="fas fa-car fa-4x mr-4" description={[<span className="yellow font-weight-bold">Match</span>, " with a driver."]}/>
-              <HowStep key={3} icon="far fa-handshake fa-4x mr-2" description={[<span className="yellow font-weight-bold">Negotiate</span>, " on a great price."]}/>
-              <HowStep key={4} icon="fas fa-flag-checkered fa-4x mr-4" description={["Happily ", <span className="yellow font-weight-bold">reach</span>, " your destination."]}/>
-              {/* {howSteps.map(howStep => 
-                (<HowStep key={howSteps.id} icon={howSteps.icon} description={howSteps.description}/>)
-              )} */}
+              <HowStep key={1} icon="fas fa-search fa-4x mr-4" description={["Simply ", <span key="1" className="yellow font-weight-bold">check</span>, " for rides travelling to your destination."]}/>
+              <HowStep key={2} icon="fas fa-car fa-4x mr-4" description={[<span key="2" className="yellow font-weight-bold">Match</span>, " with a driver."]}/>
+              <HowStep key={3} icon="far fa-handshake fa-4x mr-2" description={[<span key="3" className="yellow font-weight-bold">Negotiate</span>, " on a great price."]}/>
+              <HowStep key={4} icon="fas fa-flag-checkered fa-4x mr-4" description={["Happily ", <span key="4" className="yellow font-weight-bold">reach</span>, " your destination."]}/>
             </div>
           </Col>
           <Col className= "vid">

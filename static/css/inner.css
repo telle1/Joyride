@@ -9,6 +9,47 @@
 }
 
 
+/*About me*/
+.about-me{
+    font-family: 'Pacifico', cursive;
+}
+
+.about-me-par{
+    text-indent: 30px;
+}
+
+.blue{
+    color: #2C66BE; 
+}
+
+
+.about-me-header{
+    background-color: #E3CBC1;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    width: 100px;
+    font-size: 150px;
+    font-weight: bold;
+    text-shadow: 6px 6px 0px rgba(0,0,0,0.2);
+}
+
+
+.test-smaller{
+    width: 40px;
+}
+
+.test-bigger{
+    width: 132px;
+    font-size: 140px;
+}
+
+.test-ends{
+    width: 119px;
+}
+
 /*Star---*Star---*Star---*Star---*Star---*Star---*Star---*Star---*Star---*Star---*/
 .rating-star-radio{
     display: none;

@@ -7,11 +7,11 @@ function NavBar(){
       return <NavBarUser setShowAlert={setShowAlert}/>
     } else {
       return (
-        <div>
+        <React.Fragment>
             <NavBarNoUser setShowAlert={setShowAlert}/> 
             {showAlert ? <UserAlert text={alertStatus} color={alertColor} setShowAlert={setShowAlert}/> 
               : null}
-        </div> )
+        </React.Fragment> )
     }
 }
 
@@ -27,12 +27,15 @@ function NavBarNoUser({setShowAlert}){
   const handleRegisterShow = () => setShowRegister(true);
 
   return (
-    <div>
+    <React.Fragment>
       <Navbar expand="lg" className="fixed-top navbar-custom">
         <Container>
           <Navbar.Brand as={Link} to="/home" className="navbar-brand">Joyride</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">  
+              <Nav className="mr-auto">
+                <Nav.Link as={Link} to="/about" className="text-white">About</Nav.Link>
+              </Nav>
               <Nav className="ml-auto">
                 <Nav.Link><button className="btn btn-theme" onClick={handleLoginShow}>Log In</button>
                 </Nav.Link>
@@ -45,7 +48,7 @@ function NavBarNoUser({setShowAlert}){
           setShowAlert={setShowAlert}/>
       <RegisterModal handleRegisterClose={handleRegisterClose} showRegister={showRegister} 
           setShowAlert={setShowAlert}/>
-    </div>
+    </React.Fragment>
   )
 }
 
@@ -94,7 +97,7 @@ function NavBarUser({setShowAlert}){
                   <i className="fas fa-bell white-icon"></i>
                   </Dropdown.Toggle>
                   <Dropdown.Menu> 
-                    <Dropdown.Item style={{width: '400px'}}><Notifications colSize="2"/></Dropdown.Item>
+                    <Dropdown.Item style={{width: '380px'}}><Notifications colSize="2"/></Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
                 {/* <Nav.Link as={Link} to='/all-messages'>

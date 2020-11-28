@@ -1,4 +1,4 @@
-function CurrentRides({setShowAlert, setAlertColor, setAlertStatus}){
+function CurrentRides({setShowAlert}){
 
     const [currentRides, setCurrentRides] = useState([])
  
@@ -24,8 +24,7 @@ function CurrentRides({setShowAlert, setAlertColor, setAlertStatus}){
                 <tbody>
                     {currentRides.map(currentRide => (
                         <RideListItem key={currentRide.request_id} currentRide={currentRide} 
-                        fetchRides={fetchRides} setAlertColor={setAlertColor} 
-                        setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/>
+                        fetchRides={fetchRides} setShowAlert={setShowAlert}/>
                     ))}
                 </tbody>
             </Table>
@@ -34,7 +33,7 @@ function CurrentRides({setShowAlert, setAlertColor, setAlertStatus}){
 }
 
 
-function RideListItem({currentRide, setAlertColor, setAlertStatus, setShowAlert, fetchRides}){
+function RideListItem({currentRide, setShowAlert, fetchRides}){
     //Cancel ride/Delete ride modal
     const [show, setShow] = useState(false)
     const handleShow = () => setShow(true)
@@ -57,7 +56,7 @@ function RideListItem({currentRide, setAlertColor, setAlertStatus, setShowAlert,
                 <React.Fragment><button className="btn btn-yellow mr-2" onClick={handleEditShow}>Edit Seats</button> 
                     <SeatsModal showEdit={showEdit} handleEditClose={handleEditClose} fetchRides={fetchRides}
                     request_id={currentRide.request_id} oldSeats={currentRide.seats_requested} seatsAvailable={currentRide.seats_available}
-                    setAlertColor={setAlertColor} setAlertStatus={setAlertStatus} setShowAlert={setShowAlert}/></React.Fragment>
+                    setShowAlert={setShowAlert}/></React.Fragment>
             : <button className="btn btn-yellow mr-2" disabled={true}>Edit Seats</button> }
             {/* Cancel Ride Modal */}
             {(currentRide.status === 'Pending' || currentRide.status === 'Approved') ?

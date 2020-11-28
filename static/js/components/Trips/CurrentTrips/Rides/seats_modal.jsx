@@ -1,5 +1,5 @@
-function SeatsModal({showEdit, handleEditClose, request_id, oldSeats, seatsAvailable, setShowAlert, setAlertColor, setAlertStatus, fetchRides}){
-
+function SeatsModal({showEdit, handleEditClose, request_id, oldSeats, seatsAvailable, setShowAlert, fetchRides}){
+    const {setAlertColor, setAlertStatus} = useContext(UserContext)
     const [seats, setSeats]= useState(oldSeats)
 
     const editSeats = (evt) => {

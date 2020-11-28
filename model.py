@@ -168,11 +168,11 @@ if __name__ == '__main__':
 
 
 
-# test = Feedback(feedback = 'great driver', rating = 4, feedback_giver=2, feedback_receiver=6, ride_id=54)
+# test = Feedback(feedback = 'Smooth ride', rating = 5, feedback_giver=2, feedback_receiver=6, ride_id=54)
 # db.session.add(test)
 # db.session.commit()
 
-# request = Request(ride_id = 53, rider_id = 9, seats_requested = 1, status='Pending', date= datetime.now())
+# request = Request(ride_id = 28, rider_id = 6, seats_requested = 1, status='Denied', date= datetime.now())
 # db.session.add(request)
 # db.session.commit()
 

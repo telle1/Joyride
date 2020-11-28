@@ -42,6 +42,9 @@ function App(){
                         <Route path="/home">
                             <HomePage/>
                         </Route>
+                        <Route path="/about">
+                            <Test/>
+                        </Route>
                         <Route path="/search">
                             <Search/>
                         </Route>

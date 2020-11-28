@@ -59,10 +59,10 @@ function PastDrive({pastDrive, setShowAlert, fetchPastDrives}){
 }
 
 function PastPassengersList({pastDrive, setShowAlert, fetchPastDrives}){
-
+    // Try not to use the index as the key
     return (
         <React.Fragment>
-            {pastDrive.passengers.map(passenger => <PastPassenger pastDrive={pastDrive} 
+            {pastDrive.passengers.map((passenger,i) => <PastPassenger key={i} pastDrive={pastDrive} 
                 fetchPastDrives={fetchPastDrives} passenger={passenger}
                 setShowAlert={setShowAlert}/>)}
         </React.Fragment>
