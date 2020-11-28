@@ -97,9 +97,9 @@ function NavBarUser({setShowAlert}){
                     <Dropdown.Item style={{width: '400px'}}><Notifications colSize="2"/></Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
-                <Nav.Link as={Link} to='/all-messages'>
+                {/* <Nav.Link as={Link} to='/all-messages'>
                   <i className="far fa-comments white-icon"></i>
-                </Nav.Link>
+                </Nav.Link> */}
                 <Nav.Link as={Link} to={{ pathname: `/messages/${user}`, 
                       state: {otherUserId: user, 
                       otherUserName: ["My", "Inbox"]} }}>

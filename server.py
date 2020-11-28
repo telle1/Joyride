@@ -8,6 +8,7 @@ import crud
 from twilio.rest import Client
 from sqlalchemy import func, distinct
 from datetime import datetime
+import time 
 import json
 import os
 
@@ -114,8 +115,8 @@ def post_search_to_page():
 
     data = request.json
 
-    matching_rides = crud.get_matching_rides(start_loc = data['startInput'], end_loc = data['endInput'],
-        sort = data['sort'])
+    matching_rides = crud.get_matching_rides(start_loc = data['startInput'], 
+        end_loc = data['endInput'], sort = data['sort'])
 
     print(matching_rides)
     
@@ -470,9 +471,10 @@ def logout_user():
 @app.route('/all-messages')
 def get_all_user_messages():
 
-    #get all the user conversations
     all_user_convo_ids= []
-    all_user_convos = Conversation.query.filter((Conversation.user_1 == session['user_id']) | (Conversation.user_2 == session['user_id'])).all()
+    all_user_convos = Conversation.query.filter((Conversation.user_1 == session['user_id']) | 
+        (Conversation.user_2 == session['user_id'])).all()
+
     for convo in all_user_convos:
         if convo.user_1 == session['user_id']:
             other_user = convo.user_2
@@ -484,18 +486,19 @@ def get_all_user_messages():
             print(other_user_name)
         if len(convo.message) > 0:
             last_message = convo.message[-1].content
-            print('THIS IS LAST MESSAGE', last_message)
+            if len(last_message) > 20:
+                last_message = last_message[:20] + "..."
             last_message_timestamp = convo.message[-1].timestamp
-            print(last_message_timestamp)
         else:
             last_message = ""
             last_message_timestamp = ""
-        #get the last message from that convo...convo.message.content = > last one
+
         all_user_convo_ids.append({'convo_id': convo.conversation_id, 
             'other_user': other_user, 'other_user_name': other_user_name, 
-            'last_message': last_message, 'last_message_timestamp': last_message_timestamp})
+            'last_message': last_message, 
+            'last_message_timestamp': last_message_timestamp.strftime("%m/%d/%Y, %H:%M")})
 
-    return jsonify({'conversation_ids': all_user_convo_ids})
+    return jsonify({'conversation_ids': sorted(all_user_convo_ids, key = lambda i: i['last_message_timestamp'], reverse=True)})
 
 #SOCKET.IO ROUTES---SOCKET.IO ROUTES---SOCKET.IO ROUTES---SOCKET.IO ROUTES
 @app.route('/messages/<convo_id>', methods=['POST'])
@@ -511,7 +514,8 @@ def get_user_messages(convo_id):
     if is_convo_present: 
         convo_messages = Message.query.filter(Message.conversation_id == convo_id).all()
         for msg in convo_messages: 
-            message_list.append({'sender': msg.sender, 'content': msg.content, 'time': msg.timestamp})
+            message_list.append({'sender': msg.sender, 
+                'content': msg.content, 'time': msg.timestamp.strftime("%m/%d/%Y, %H:%M")})
     else: 
         new_conversation = Conversation(conversation_id = convo_id, 
             user_1 =session['user_id'], user_2= other_user_id)
@@ -538,7 +542,7 @@ def handle_message(data):
     db.session.add(new_message)
     db.session.commit()
     message_object = {'sender': session['user_id'], 
-        'content': message, 'time': new_message.timestamp.strftime("%m/%d/%Y, %H:%M:%S")}
+        'content': message, 'time': new_message.timestamp.strftime("%m/%d/%Y, %H:%M")}
     send(message_object, room=room)
 
 @socketio.on('leave')

@@ -97,6 +97,8 @@ function MessageBox({match, otherUserName, otherUserId, fetchConversations}){
                     )))
                     : null
                 }
+                <FixMessageScrollBottom/>
+
             </div>
             <br/>
             <MessageInput match={match} message={message} fetchConversations={fetchConversations}
@@ -105,6 +107,15 @@ function MessageBox({match, otherUserName, otherUserId, fetchConversations}){
         </React.Fragment>
     )
 }
+
+function FixMessageScrollBottom(){
+    const lastMessageViewRef = useRef();
+    useEffect(() => {
+        lastMessageViewRef.current.scrollIntoView();
+    })
+    return <div ref={lastMessageViewRef} />;
+};
+  
 
 function MessageInput({match, message, setMessage, socket, fetchConversations}){
         
@@ -171,43 +182,36 @@ function MessageSideBar({fetchConversations, conversations}){
 
     const {user} = useContext(UserContext)
 
-    // const [conversations, setConversations] = useState([{convo_id: '', other_user: '', 
-    //     other_user_name: '', last_message: '', last_message_timestamp: ''}])
-
-    // const fetchConversations = () => {
-    //     fetch('/all-messages')
-    //     .then(res => res.json())
-    //     .then(data => setConversations(data.conversation_ids))
-    // }
-
     useEffect(() => {
         fetchConversations();
     }, [])
 
     return (
+    <div class="table-responsive format-data">
     <div className="convos-table">
     <Table hover className="border border-bottom">
         <tbody>
             {(conversations.length > 0) ? conversations.map(conversation => (
                 conversation.convo_id != user ? 
-                (<tr key={conversation.convo_id} className="convos-row-height">
+                (<tr key={conversation.convo_id}>
                     <td>
                         <Link to={{ pathname: `/messages/${conversation.convo_id}`, 
                             state:{otherUserId: conversation.other_user,
                                 otherUserName: [conversation.other_user_name[0], 
-                                conversation.other_user_name[1]]}}} className="font-weight-bold text-dark"> 
+                                conversation.other_user_name[1]]}}} className="h5 font-weight-bold text-dark"> 
                             {conversation.other_user_name[0]} {conversation.other_user_name[1]} 
                         </Link>
-                        <br/>
-                        <sup>{conversation.last_message}</sup>
-                        <span className="float-right">{conversation.last_message_timestamp}</span>
+                        <small className="float-right">{conversation.last_message_timestamp}</small>
 
+                        <br/>
+                        <span>{conversation.last_message}</span>
                     </td>
                 </tr>) : null
                 )) 
             : null }
         </tbody>
     </Table>
+    </div>
     </div>
     )
 }

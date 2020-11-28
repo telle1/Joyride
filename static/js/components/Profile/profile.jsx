@@ -63,9 +63,9 @@ function UserCardInfo({user, match, profile, userInfo, fetchUserProfile}){
                 <i className="fas fa-envelope fa-2x mr-3 ml-3 mb-2" data-fa-transform="left-2 down-5" style={{color: "#BEBEBE"}}/>
                 <span>{userInfo.email}</span><br/>
                 <i className="fas fa-phone fa-2x mr-3 ml-3 mb-2" data-fa-transform="left-2 down-5" style={{color: "#BEBEBE"}}/>
-                <span>{userInfo.phone_num}</span> <br/>
-                <i className="fas fa-map-pin fa-2x mr-4  ml-3 mb-2" data-fa-transform="down-5" style={{color: "#BEBEBE"}}/>
-                <span>{profile.location}</span><br/>     
+                <span>{userInfo.phone_num}</span><br/>
+                <i className="fas fa-map-pin fa-2x mr-3 ml-3 mb-2" data-fa-transform="right-1 down-5" style={{color: "#BEBEBE"}}/>
+                <span className="map-pin-align">{profile.location}</span><br/> 
             </div>
         </Card.Body>  
     </Card>  

@@ -28,6 +28,7 @@ function Footer(){
                     </Col>
                 </Row> 
             </Container> 
+     
         </footer>
     )
 }

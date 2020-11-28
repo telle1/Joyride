@@ -55,3 +55,4 @@ function MatchingRide({matchingRide, setShowAlert}){
             </Card>
             </React.Fragment>
     )
+}

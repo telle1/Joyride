@@ -13,6 +13,7 @@ function HomePage(){
             <Features/>
             <HowItWorks/>
             <ControlledCarousel/>
+            <Footer/>
         </div>
     )}
 
@@ -27,9 +28,35 @@ function Heading({header}){
 function Hero(){
     return (
         <section id="homesection">
-           <h1>Enjoy the <span className="animate">ride</span></h1>
+           <h1 className="mr-1">Enjoy the <TypedText strings={['ride.', 'company.', 'savings.']} /> </h1>
         </section>
     )}
+
+function TypedText({strings}){
+
+  const typeRef = useRef("");
+  const options = {
+    strings: strings,
+    typeSpeed: 70,
+    backSpeed: 70,
+    loop: true,
+  };
+
+  useEffect(() => {  
+    const typed = new Typed(typeRef.current, options);
+    return () => {
+      typed.destroy();  
+    };
+  }, [])
+
+  return (
+    <span ref={typeRef}></span>
+  );
+};
+
+
+
+
 
 
 function InfoSquares(){
@@ -79,7 +106,7 @@ function Features(){
 
 function Feature({icon, header, paragraph, dataAos}){
   return (
-    <Col data-aos={dataAos} data-aos-duration="1000">
+    <Col data-aos={dataAos} data-aos-duration="1000" data-aos-anchor-placement="center-bottom">
       <div className="feature py-4">
         <i className={icon} style={{color: "#388087"}} data-fa-transform="shrink-3 up-4"></i>
         <h3>{header}</h3>
@@ -100,7 +127,7 @@ function HowItWorks(){
 
 
   return (
-    <section id = "how" data-aos="zoom-in-up" data-aos-anchor-placement="center-bottom" data-aos-duration="1000">
+    <section id = "how" data-aos="fade-up" data-aos-anchor-placement="center-bottom" data-aos-duration="1000">
       <Container>
         <Heading header="How It Works"/>
         <Row className="py-5 align-items-center">
@@ -126,7 +153,7 @@ function HowItWorks(){
 
 function HowStep({icon, description}){
   return (
-    <div className="how-step">
+    <div className="d-flex align-items-center ml-5">
       <i className={icon} style={{color: "#eba92a"}} data-fa-transform="shrink-3 up-2"></i>
       <h4>{description}</h4>
     </div>

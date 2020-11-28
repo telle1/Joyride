@@ -61,7 +61,7 @@ function App(){
                         </Route>
                  
                     </Switch>
-                    <Footer/>
+                    {/* <Footer/> */}
                 </UserContext.Provider> 
         </Router>
     )

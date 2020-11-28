@@ -1,9 +1,8 @@
-body {
+html, body {
     overflow-x: hidden;
     color: black;
     font-family: 'Karla', sans-serif;
-  }
-
+ }
 
 .btn-theme {
     color: white;
@@ -77,11 +76,12 @@ footer {
     color: white;
     padding: 20px;
     opacity: 0.8;
-    margin-top: 50px;
-    /* position: fixed;
+    /* position: absolute;
     bottom: 0;
-    left: 0; */
+    left: 0;
+    height: 200px;
     width: 100%;
+    z-index: -1; */
   }
   
   footer h3 {
@@ -96,3 +96,5 @@ footer {
     font-family: 'Pacifico', cursive;
     font-size: 30px;
   }
+
+  

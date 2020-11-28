@@ -1,15 +1,14 @@
+const { useEffect } = require("react")
+
 function Search(){
     const { alertStatus, alertColor} = useContext(UserContext)
 
-    const [matchingRides, setMatchingRides] = useState([])
-    const [search, setSearch] = useState(false) //prevent "No matching rides" from showing on initial render
-    const [startInput, setStartInput] = useState("")
-    const [endInput, setEndInput] = useState("")
-    const [showAlert, setShowAlert] = useState("")
-    const [sort, setSort] = useState("date")
-
-    console.log('START INPUT', startInput)
-    console.log('END INPUT', endInput)
+    const [ matchingRides, setMatchingRides ] = useState([])
+    const [ search, setSearch ] = useState(false) //prevent "No matching rides" from showing on initial render
+    const [ startInput, setStartInput ] = useState("")
+    const [ endInput, setEndInput ] = useState("")
+    const [ showAlert, setShowAlert ] = useState("")
+    const [ sort, setSort ] = useState("date")
 
     const fetchRides = () => {
         fetch("/search-results", {
@@ -36,12 +35,12 @@ function Search(){
         fetchRides();
     }
 
-    const sortRides = (evt) => {
-        evt.preventDefault();
-        setSort(evt.target.value)
-        console.log('tHIS IS WHATS IN SORT', sort)
-        fetchRides();
-    }
+    useEffect(()=> {
+        if (startInput && endInput != ""){
+            fetchRides();
+        }
+    }, [sort])
+
 
     return (
         <React.Fragment>
@@ -61,7 +60,7 @@ function Search(){
                     {(matchingRides.length !== 0 && search == true) ? 
                         <form className="ml-3">
                             <label htmlFor="options" className="mr-1">Sort By</label>
-                            <select name="options" onChange={evt => sortRides(evt)}>
+                            <select name="options" onChange={(evt) => setSort(evt.target.value)}>
                                 <option value="date">Date</option>
                                 <option value="price">Price</option>
                                 <option value="seats">Seats Available</option>
