@@ -10,7 +10,7 @@
 
 
 /*About me*/
-.about-me{
+.about-me-hi {
     font-family: 'Pacifico', cursive;
 }
 
@@ -22,8 +22,7 @@
     color: #2C66BE; 
 }
 
-
-.about-me-header{
+.about-me-header h1{
     background-color: #E3CBC1;
     color: white;
     display: flex;
@@ -36,17 +35,16 @@
     text-shadow: 6px 6px 0px rgba(0,0,0,0.2);
 }
 
-
-.test-smaller{
+.about-me-header .header-space{
     width: 40px;
 }
 
-.test-bigger{
+.about-me-header .header-w{
     width: 132px;
     font-size: 140px;
 }
 
-.test-ends{
+.about-me-header .header-end{
     width: 119px;
 }
 

@@ -43,7 +43,7 @@ function App(){
                             <HomePage/>
                         </Route>
                         <Route path="/about">
-                            <Test/>
+                        {user ? <Redirect to={`/profile/${user}`}/> : <AboutMe/>}
                         </Route>
                         <Route path="/search">
                             <Search/>

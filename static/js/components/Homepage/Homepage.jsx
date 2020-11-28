@@ -13,8 +13,6 @@ function HomePage(){
             <Features/>
             <HowItWorks/>
             <ControlledCarousel/>
-            <Test/>
-
             <Footer/>
         </div>
     )}
