@@ -149,6 +149,8 @@ function MessageInput({match, message, setMessage, socket, fetchConversations}){
 function MessageText({singleMessage}){
 
     const {user} = useContext(UserContext)
+
+
     return (
         <React.Fragment>
             <Row>
@@ -158,7 +160,7 @@ function MessageText({singleMessage}){
                     : 
                     <React.Fragment>
                         <span className="other-user-message">{singleMessage.content}</span>    
-                        <div className="small-text">{singleMessage.time}</div>
+                        <div className="small-text">{<LocalTime date={singleMessage.time}/>}</div>
                     </React.Fragment>
                 }
             </div>
@@ -167,7 +169,7 @@ function MessageText({singleMessage}){
                     <React.Fragment>
                         <div className="user-message float-right">{singleMessage.content}</div>
                         <br/><br/>
-                        <div className="float-right small-text">{singleMessage.time}</div>
+                        <div className="float-right small-text">{<LocalTime date={singleMessage.time}/>}</div>
                     </React.Fragment>
                     : 
                     null
@@ -201,7 +203,7 @@ function MessageSideBar({fetchConversations, conversations}){
                                 conversation.other_user_name[1]]}}} className="h5 font-weight-bold text-dark"> 
                             {conversation.other_user_name[0]} {conversation.other_user_name[1]} 
                         </Link>
-                        <small className="float-right">{conversation.last_message_timestamp}</small>
+                            <small className="float-right">{<LocalTime date={conversation.last_message_timestamp}/>}</small>
 
                         <br/>
                         <span>{conversation.last_message}</span>
@@ -215,3 +217,13 @@ function MessageSideBar({fetchConversations, conversations}){
     </div>
     )
 }
+
+function LocalTime ({date}){
+    return moment.utc(date).local().format('MM/DD/YY hh:mm a')
+}
+
+//    var date = moment.utc().format('MM/DD/YY HH:mm');
+
+// const localTime = (date) => {
+//     return moment.utc(date).local().format('MM/DD/YY HH:mm')
+// }

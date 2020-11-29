@@ -1,6 +1,7 @@
 # from flask import Flask, render_template, redirect, flash, session, request, jsonify, url_for
 from flask import Flask, render_template, session, request, jsonify, flash
 from flask_socketio import SocketIO, emit, send, join_room, leave_room
+from flask_bcrypt import Bcrypt
 from functools import wraps #for log-inrequired
 from model import db, User, Ride, Request, Feedback, Message, Conversation, connect_to_db
 from werkzeug.utils import secure_filename #to upload files securely
@@ -8,12 +9,14 @@ import crud
 from twilio.rest import Client
 from sqlalchemy import func, distinct
 from datetime import datetime
+import pytz
 import time 
 import json
 import os
 
 app = Flask(__name__)
 socketio = SocketIO(app)
+bcrypt = Bcrypt(app)
 app.config['PRESERVE_CONTEXT_ON_EXCEPTION'] = True
 
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
@@ -29,6 +32,10 @@ client = Client(account_sid, auth_token)
 twilio_phone_num = os.environ['twilio_phone_num']
 
 current_time = datetime.now()
+print(current_time)
+pacific = pytz.timezone('US/Pacific')
+d = datetime.now(pacific)
+print(d)
 #For some reason, using this variable to update timestamp database does not work;
 #instead, just call datetime.now() directly
 
@@ -62,6 +69,21 @@ def index():
     print(session)
     return render_template('react.html')
 
+@app.route('/process-signup', methods = ["POST"])
+def register_user():
+    """Allow new users to register."""
+    data = request.json
+    user = crud.get_user_by_email(data['email'])
+    password = bcrypt.generate_password_hash(data['password']).decode("utf-8")
+    if user is None:
+        crud.create_user(first_name = data['firstName'], last_name = data['lastName'], 
+            email = data['email'], password = password, phone_num = data['phoneNumber'])
+        resp = jsonify({'msg': 'You have successfully registered! Log in to continue.', 'color': 'success'})
+    else:
+        resp = jsonify({'msg': 'A user with that email has already been registered.', 'color': 'danger'})
+
+    return resp
+
 @app.route('/process-login', methods = ["POST"])
 def login_user():
     """Allow user to login."""
@@ -74,27 +96,11 @@ def login_user():
     if not user:
         resp = jsonify({'msg': 'No users exist under this email. Please register.'})
     if user:
-        if password == user.password:
+        if bcrypt.check_password_hash(user.password, password):
             session['user_id'] = user.user_id
             resp = jsonify({'msg': 'Successfully logged in!', 'user_id': user.user_id})
         else:
             resp = jsonify({'msg': 'Incorrect password. Please try again.'})
-
-    return resp
-
-@app.route('/process-signup', methods = ["POST"])
-def register_user():
-    """Allow new users to register."""
-    data = request.json
-
-    user = crud.get_user_by_email(data['email'])
-    #hash password
-    if user is None:
-        crud.create_user(first_name = data['firstName'], last_name = data['lastName'], 
-            email = data['email'], password = data['password'], phone_num = data['phoneNumber'])
-        resp = jsonify({'msg': 'You have successfully registered! Log in to continue.', 'color': 'success'})
-    else:
-        resp = jsonify({'msg': 'A user with that email has already been registered.', 'color': 'danger'})
 
     return resp
 
@@ -496,7 +502,7 @@ def get_all_user_messages():
         all_user_convo_ids.append({'convo_id': convo.conversation_id, 
             'other_user': other_user, 'other_user_name': other_user_name, 
             'last_message': last_message, 
-            'last_message_timestamp': last_message_timestamp.strftime("%m/%d/%Y, %H:%M")})
+            'last_message_timestamp': last_message_timestamp})
 
     return jsonify({'conversation_ids': sorted(all_user_convo_ids, key = lambda i: i['last_message_timestamp'], reverse=True)})
 

@@ -20,7 +20,6 @@ function Profile({match, user}){
         fetchUserProfile();
     }, [])
 
-
     return (
         <Container className="top-padding">
             <Row>

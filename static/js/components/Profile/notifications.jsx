@@ -62,7 +62,7 @@ function NotificationRow({req, colSize}){
                     </Col>
                     <Col style={{backgroundColor: textBgColor}}>
                         <span className="float-right pt-2 text-muted">
-                            <sup>{date}</sup>
+                        <sup>{<LocalTime date={date}/>}</sup>
                         </span>
                         <h5 className="py-3 mb-0 gray-text">
                             <span style={{color: iconBgColor}}>{req.status}</span>

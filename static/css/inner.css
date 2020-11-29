@@ -12,10 +12,12 @@
 /*About me*/
 .about-me-hi {
     font-family: 'Pacifico', cursive;
+    color: #E3CBC1;
 }
 
 .about-me-par{
     text-indent: 30px;
+    font-style: italic;
 }
 
 .blue{
@@ -47,6 +49,7 @@
 .about-me-header .header-end{
     width: 119px;
 }
+
 
 /*Star---*Star---*Star---*Star---*Star---*Star---*Star---*Star---*Star---*Star---*/
 .rating-star-radio{

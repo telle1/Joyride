@@ -14,15 +14,15 @@ function Footer(){
                         </p>
                         <p>
                         <i className="fab fa-linkedin fa-2x mr-2" data-fa-transform="down-3"></i>
-                        <a href="https://www.linkedin.com/in/tiffany-luu-088b07143/" target="_blank">Click here</a>
+                        <a href="https://www.linkedin.com/in/tiffany-luu0/" target="_blank">tiffany-luu0</a>
                         </p>
                         <p><i className="fab fa-github fa-2x mr-1" data-fa-transform="down-3 left-2"></i>
-                        <a href="https://github.com/telle1" target="_blank">Click here</a>
+                        <a href="https://github.com/telle1" target="_blank">telle1</a>
                         </p>
                     </Col>
                     <Col>
                         <h3>About Us</h3>
-                        <p>Joyride was created in November 2020 by <a href="https://www.linkedin.com/in/tiffany-luu-088b07143/" target="_blank">Tiffany Luu</a>, 
+                        <p>Joyride was created in November 2020 by <a href="https://www.linkedin.com/in/tiffany-luu0/" target="_blank">Tiffany Luu</a>, 
                         a student of Hackbright Academy, with the aim of increasing affordability for long-distance travel.
                         </p>
                     </Col>
