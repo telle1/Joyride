@@ -95,6 +95,8 @@ function DriverFeedbackModal({show, handleClose, pastDrive, passenger, setShowAl
 
     const [rating, setRating] = useState(0)
     const [feedback, setFeedback] = useState("")
+    const [hoverRating, setHoverRating] = useState(0);
+
 
     const sendFeedback = (e) => {
         e.preventDefault();
@@ -127,7 +129,8 @@ function DriverFeedbackModal({show, handleClose, pastDrive, passenger, setShowAl
             <Form onSubmit={sendFeedback} method="post">  
                     <Link to={`/profile/${passenger.id}`}>{passenger.first_name} {passenger.last_name}</Link>
                     <div>
-                        <StarRating rating={rating} setRating={setRating} cursor="cursor-pointer"/>
+                        <StarRating rating={rating} setRating={setRating} cursor="cursor-pointer"
+                        hoverRating={hoverRating} setHoverRating={setHoverRating}/>
                     </div>
                     <div className="form-group mb-4 mt-2">
                         <textarea className="form-control" placeholder="Feedback" rows="3" value={feedback} onChange={(e) => setFeedback(e.target.value)}></textarea>  

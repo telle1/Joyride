@@ -73,6 +73,8 @@ function FeedbackModal({show, handleClose, pastRide, fetchPastRides}){
     const {user} = useContext(UserContext)
 
     const [rating, setRating] = useState(0)
+    const [hoverRating, setHoverRating] = useState(0);
+
     const [feedback, setFeedback] = useState("")
 
     const sendFeedback = (e) => {
@@ -103,7 +105,8 @@ function FeedbackModal({show, handleClose, pastRide, fetchPastRides}){
                 <Form onSubmit={sendFeedback} method="post">  
                         <p> {pastRide.driver.first_name} {pastRide.driver.last_name} </p>
                         <div>
-                            <StarRating rating={rating} setRating={setRating} cursor="cursor-pointer"/>
+                            <StarRating rating={rating} setRating={setRating} cursor="cursor-pointer"
+                            hoverRating={hoverRating} setHoverRating={setHoverRating} />
                         </div>
                         <div className="form-group mb-4 mt-2">
                             <textarea className="form-control" placeholder="Feedback for driver" rows="3" 

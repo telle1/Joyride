@@ -23,6 +23,7 @@ function Profile({match, user}){
     return (
         <Container className="top-padding">
             <Row>
+            <Test/>
             <StatSquares match={match} user={user}/>
             <Col xs={4}>
                 <UserCardInfo profile={profile} userInfo={userInfo} user={user} match={match}
@@ -37,6 +38,27 @@ function Profile({match, user}){
         </Container>
     )
 }
+
+class Test extends React.Component {
+    state = {
+      showBox: false
+    };
+  
+    handleBoxToggle = () => this.setState({ showBox: !this.state.showBox });
+  
+    render() {
+      return (
+        <div
+          onMouseEnter={() => console.log("hi")}
+          className={`container${this.state.showBox ? " show" : ""}`}
+        >hi
+          <div className="wrapper">
+            <div className="innerBox" />
+          </div>
+        </div>
+      );
+    }
+  }
 
 function UserCardInfo({user, match, profile, userInfo, fetchUserProfile}){
 
