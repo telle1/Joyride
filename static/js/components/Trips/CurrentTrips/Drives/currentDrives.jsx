@@ -89,7 +89,7 @@ function Request({request, setShowAlert, fetchDrives}){
 
     return (
         <React.Fragment>
-            <button className="btn-transparent mr-2" onClick={handleInfoShow}>{request.name[0]} {request.name[1]} ({request.seats_requested}) ID:{request.id}</button>
+            <a href="#" onClick={handleInfoShow}>{request.name[0]} {request.name[1]} ({request.seats_requested}) ID:{request.id}</a>
             <ContactInfoModal showInfo={showInfo} handleInfoClose={handleInfoClose} request={request}/>
             <RadioButton request_id={request.req_id} seats={request.seats_requested} 
                 fetchDrives={fetchDrives} setShowAlert={setShowAlert}/>
@@ -111,7 +111,7 @@ function Passenger({passenger}){
 
     return (
         <React.Fragment>
-        <button className="btn-transparent shadow-none" onClick={handleInfoShow}>{passenger.name[0]} {passenger.name[1]} ({passenger.seats_requested})</button>
+         <a href="#" onClick={handleInfoShow}>{passenger.name[0]} {passenger.name[1]} ({passenger.seats_requested})</a>
         <ContactInfoModal showInfo={showInfo} handleInfoClose={handleInfoClose} request={passenger}/>
         <br/>
         </React.Fragment>

@@ -77,9 +77,9 @@ function PastPassenger({passenger, pastDrive, setShowAlert, fetchPastDrives}){
 
     return (
         <React.Fragment>
-            <button className="btn-transparent" onClick={handleShow}>
+            <a href="#" onClick={handleShow}>
                 {passenger.first_name} {passenger.last_name}
-            </button>
+            </a>
             <br/>
             <DriverFeedbackModal show={show} handleClose={handleClose} pastDrive={pastDrive} 
                 fetchPastDrives={fetchPastDrives} passenger={passenger} 

@@ -123,7 +123,7 @@ function HowItWorks(){
           <Col className= "d-none d-md-block">
             <div className = "how-steps">
               <HowStep key={1} icon="fas fa-search fa-4x mr-4" description={["Simply ", <span key="1" className="yellow font-weight-bold">check</span>, " for rides travelling to your destination."]}/>
-              <HowStep key={2} icon="fas fa-car fa-4x mr-4" description={[<span key="2" className="yellow font-weight-bold">Match</span>, " with a driver."]}/>
+              <HowStep key={2} icon="fas fa-car fa-4x mr-4" description={[<span key="2" className="yellow font-weight-bold">Request</span>, " a ride."]}/>
               <HowStep key={3} icon="far fa-handshake fa-4x mr-2" description={[<span key="3" className="yellow font-weight-bold">Negotiate</span>, " on a great price."]}/>
               <HowStep key={4} icon="fas fa-flag-checkered fa-4x mr-4" description={["Happily ", <span key="4" className="yellow font-weight-bold">reach</span>, " your destination."]}/>
             </div>
@@ -160,23 +160,23 @@ function ControlledCarousel() {
             <Carousel.Item>
               <div className="row">
                 <TestimonialPerson imageSource='../static/images/testimonial_1.jpg' text="This is exactly the kind of app I was looking for as a fellow money-conscious traveller. 
-                  I've met so many cool people along the way." name="User Name"/>
+                  I've met so many cool people along the way." name="Michael Wong"/>
                 <TestimonialPerson imageSource='../static/images/testimonial_2.jpg' text="Joyride has one of the best communities I'ev ever been apart of. All my rides
-                have been extremely welcoming and on time." name="User Name"/>
+                have been extremely welcoming and on time." name="Brandon Smith"/>
                 <TestimonialPerson imageSource='../static/images/testimonial_3.jpg' text="I've taken Joyride whenever I've needed to travel for work. I didn't see the point
-                of paying for a flight when there's a service like this instead. I have absolutely loved my experience." name="User Name"/>
+                of paying for a flight when there's a service like this instead. I have absolutely loved my experience." name="Clay Jackson"/>
               </div>
             </Carousel.Item>
             <Carousel.Item>
             <div className="row">
               <TestimonialPerson imageSource='../static/images/testimonial_4.jpg' text="I started using this app a year ago and I absolutely love it! It's a super convenient way
-                    to travel long distances while meeting new people and splitting the cost." name="User Name"/>
+                    to travel long distances while meeting new people and splitting the cost." name="Alexis Bradley"/>
               <TestimonialPerson imageSource='../static/images/testimonial_5.jpg' text="I often travel to SF from LA almost every week. I used to take one of the buses that would
                     take almost 8 hours and was often poorly ventilated and very uncomfortabe. But then my friend introduced
-                    me to Joyride and my life has since changed!" name="User Name"/>
+                    me to Joyride and my life has since changed!" name="Rebecca Rogers"/>
               <TestimonialPerson imageSource='../static/images/testimonial_6.jpg' text="Joyride is literally the Uber equivalent for long distance rides. Its so convenient
                     and has really helped me save money while travelling. The team is very responsive and the
-                    app is super user friendly as well!" name="User Name"/>
+                    app is super user friendly as well!" name="Makayla Kim"/>
             </div>
             </Carousel.Item>
         </Carousel>
@@ -191,7 +191,7 @@ function TestimonialPerson({imageSource, text, name}){
       <div className="profile">
         <img src={imageSource} alt="user"/>
         <blockquote>{text}</blockquote>
-        <h3>{name}</h3>
+        <h3 className="mt-0">{name}</h3>
       </div>
     </Col>
   )}

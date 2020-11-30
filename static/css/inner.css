@@ -20,11 +20,15 @@
     font-style: italic;
 }
 
+.unitalic {
+    font-style: normal;
+}
+
 .blue{
     color: #2C66BE; 
 }
 
-.about-me-header h1{
+.about-me-header h1, .about-me-footer h1{
     background-color: #E3CBC1;
     color: white;
     display: flex;
@@ -34,7 +38,14 @@
     width: 100px;
     font-size: 150px;
     font-weight: bold;
-    text-shadow: 6px 6px 0px rgba(0,0,0,0.2);
+    text-shadow: 6px 6px 0px rgba(0,0,0,0.2); 
+    /* background-image: url('../images/holo.png');
+    -webkit-background-clip: text;
+    color: transparent; */
+}
+
+.about-me-footer h1{
+    width: 99px;
 }
 
 .about-me-header .header-space{
@@ -49,6 +60,8 @@
 .about-me-header .header-end{
     width: 119px;
 }
+
+
 
 
 /*Star---*Star---*Star---*Star---*Star---*Star---*Star---*Star---*Star---*Star---*/

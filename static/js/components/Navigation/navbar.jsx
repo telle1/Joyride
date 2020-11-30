@@ -28,7 +28,7 @@ function NavBarNoUser({setShowAlert}){
 
   return (
     <React.Fragment>
-      <Navbar expand="lg" className="fixed-top navbar-custom">
+      <Navbar expand="lg" className="fixed-top navbar-custom py-0">
         <Container>
           <Navbar.Brand as={Link} to="/home" className="navbar-brand">Joyride</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -45,12 +45,14 @@ function NavBarNoUser({setShowAlert}){
         </Container>
       </Navbar>
       <LogInModal handleLoginClose={handleLoginClose} showLogin={showLogin} 
-          setShowAlert={setShowAlert}/>
+        setShowAlert={setShowAlert}/>
       <RegisterModal handleRegisterClose={handleRegisterClose} showRegister={showRegister} 
-          setShowAlert={setShowAlert}/>
+        setShowAlert={setShowAlert}/> 
     </React.Fragment>
   )
 }
+
+
 
 function NavBarUser({setShowAlert}){
 

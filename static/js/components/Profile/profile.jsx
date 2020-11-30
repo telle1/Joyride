@@ -23,7 +23,6 @@ function Profile({match, user}){
     return (
         <Container className="top-padding">
             <Row>
-            <Test/>
             <StatSquares match={match} user={user}/>
             <Col xs={4}>
                 <UserCardInfo profile={profile} userInfo={userInfo} user={user} match={match}
@@ -39,26 +38,6 @@ function Profile({match, user}){
     )
 }
 
-class Test extends React.Component {
-    state = {
-      showBox: false
-    };
-  
-    handleBoxToggle = () => this.setState({ showBox: !this.state.showBox });
-  
-    render() {
-      return (
-        <div
-          onMouseEnter={() => console.log("hi")}
-          className={`container${this.state.showBox ? " show" : ""}`}
-        >hi
-          <div className="wrapper">
-            <div className="innerBox" />
-          </div>
-        </div>
-      );
-    }
-  }
 
 function UserCardInfo({user, match, profile, userInfo, fetchUserProfile}){
 
@@ -71,7 +50,7 @@ function UserCardInfo({user, match, profile, userInfo, fetchUserProfile}){
         <Card.Body>
             <React.Fragment>
                 {user == match.params.userId ? 
-                    <div><button className="btn-transparent float-right" onClick={handleEditShow}>Edit</button><br/><br/></div>
+                    <div><a href="#" className="float-right" onClick={handleEditShow}>Edit</a><br/><br/></div>
                     : null}
                 <EditProfileModal showEdit={showEdit} handleEditClose={handleEditClose} user={user} 
                     profile={profile} fetchUserProfile={fetchUserProfile}/>

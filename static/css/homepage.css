@@ -194,7 +194,7 @@ h3.heading {
 
 blockquote {
   border-left: 10px solid #388087;
-  margin: 1.5em 10px;
+  margin: 1.5em 10px 0px 10px;
   padding: 0.5em 10px;
 }
 blockquote:before {

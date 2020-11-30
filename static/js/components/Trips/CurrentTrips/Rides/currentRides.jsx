@@ -68,9 +68,9 @@ function RideListItem({currentRide, setShowAlert, fetchRides}){
         </td>
         <td> {currentRide.start_loc} -> {currentRide.end_loc}</td>
         <td>
-            <button className="btn-transparent mr-2" onClick={handleInfoShow}>
+            <a href="#" onClick={handleInfoShow}>
                 {currentRide.driver.first_name} {currentRide.driver.last_name}
-            </button>
+            </a>
             <ContactInfoModal showInfo={showInfo} handleInfoClose={handleInfoClose} request={currentRide.driver}/>
         </td>
         <td> {currentRide.seats_requested} </td>
