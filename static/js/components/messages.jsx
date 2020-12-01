@@ -18,8 +18,8 @@ function Messages({match}){
      
         return (
             <Container className="top-padding">
-                <Row className="test-border">
-                    <Col xs={3} className="px-0">
+                <Row className="convo-border pb-2">
+                    <Col xs={3} className="px-0" style={{height: '500px'}}>
                         <MessageSideBar fetchConversations={fetchConversations} 
                             conversations={conversations}/>
                     </Col>                    

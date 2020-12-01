@@ -84,7 +84,7 @@ function NavBarUser({setShowAlert}){
               <Nav.Link as={Link} to="/search" className="btn navbar-btn shadow-none">Search</Nav.Link>
               <Nav.Link as={Link} to="/post" className="btn navbar-btn shadow-none">Post</Nav.Link>
             </Nav>
-            <Nav className="ml-auto">       
+            <Nav className="ml-auto">  
                 <Dropdown>
                   <Dropdown.Toggle variant="info" className="mr-1" id="rides-dropdown">
                     My Rides
@@ -96,12 +96,12 @@ function NavBarUser({setShowAlert}){
                 </Dropdown>
                 <Dropdown>
                   <Dropdown.Toggle variant="info">
-                  <i className="fas fa-bell white-icon"></i>
+                    <i className="fas fa-bell white-icon"></i>
                   </Dropdown.Toggle>
                   <Dropdown.Menu> 
-                    <Dropdown.Item style={{width: '380px'}}><Notifications colSize="2"/></Dropdown.Item>
+                    <Dropdown.Item style={{width: '350px'}}><Notifications colSize="2"/></Dropdown.Item>
                   </Dropdown.Menu>
-                </Dropdown>
+                </Dropdown>     
                 {/* <Nav.Link as={Link} to='/all-messages'>
                   <i className="far fa-comments white-icon"></i>
                 </Nav.Link> */}

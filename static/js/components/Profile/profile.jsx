@@ -21,7 +21,7 @@ function Profile({match, user}){
     }, [])
 
     return (
-        <Container className="top-padding">
+        <Container className="top-padding mb-4">
             <Row>
             <StatSquares match={match} user={user}/>
             <Col xs={4}>

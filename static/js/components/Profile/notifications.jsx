@@ -57,13 +57,14 @@ function NotificationRow({req, colSize}){
         <tr>
             <td className="py-0"> 
                 <Row>
-                    <Col xs={colSize} className="d-flex justify-content-center align-items-center" style={{backgroundColor: iconBgColor}} >
+                    <Col xs={colSize} className="d-flex justify-content-center align-items-center" 
+                    style={{backgroundColor: iconBgColor}} >
                         <i className={`${icon}`}></i>
                     </Col>
-                    <Col style={{backgroundColor: textBgColor}}>
-                        <span className="float-right pt-2 text-muted">
-                        <sup>{<LocalTime date={date}/>}</sup>
-                        </span>
+                    <Col xs={12-colSize} style={{backgroundColor: textBgColor}}>
+                        <div className="float-right d-inline pt-2 text-muted">
+                            <sup>{<LocalTime date={date}/>}</sup>
+                        </div>
                         <h5 className="py-3 mb-0 gray-text">
                             <span style={{color: iconBgColor}}>{req.status}</span>
                             <br/>
