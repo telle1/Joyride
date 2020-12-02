@@ -24,9 +24,10 @@ function Messages({match}){
                             conversations={conversations}/>
                     </Col>                    
                     {user == otherUserId ? 
-                    <Col xs={9} className="py-2 d-flex align-items-center justify-content-center">
-                        <h2 className="yellow font-weight-bold"> Select A Conversation </h2>
-                    </Col> 
+                    <div className="py-2 d-flex justify-content-center align-items-center">
+                        <i className="fas fa-3x fa-angle-left arrow-bounce mr-2" data-fa-transform="up-1"></i>
+                        <h2 className="font-weight-bold yellow"> Select A Conversation </h2>
+                    </div>
                     : 
                     <Col xs={9} className="py-2">
                         <MessageBox match={match} fetchConversations={fetchConversations}
@@ -79,7 +80,7 @@ function MessageBox({match, otherUserName, otherUserId, fetchConversations}){
     }, [match.params.convoId]) //THIS MUST RUN EVERYTIME CONVO ID CHANGES
 
     return (
-        <React.Fragment>
+        <div>
         <Row>
         <h5 className="yellow font-weight-bold px-3">
             To: {otherUserName[0]} {otherUserName[1]}
@@ -104,7 +105,7 @@ function MessageBox({match, otherUserName, otherUserId, fetchConversations}){
             <MessageInput match={match} message={message} fetchConversations={fetchConversations}
                 setMessage={setMessage} socket={socketRef.current}/>
         </div>
-        </React.Fragment>
+        </div>
     )
 }
 
@@ -154,7 +155,7 @@ function MessageText({singleMessage}){
     return (
         <React.Fragment>
             <Row>
-            <div className="col-md-3">
+            <div className="col-md-6">
                 {user == singleMessage.sender ? 
                     null
                     : 
@@ -189,7 +190,7 @@ function MessageSideBar({fetchConversations, conversations}){
     }, [])
 
     return (
-    <div class="table-responsive format-data">
+    <div className="table-responsive format-data">
     <div className="convos-table">
     <Table hover className="border border-bottom">
         <tbody>

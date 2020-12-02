@@ -168,11 +168,30 @@ if __name__ == '__main__':
 
 
 
-# test = Feedback(feedback = 'Smooth ride', rating = 5, feedback_giver=2, feedback_receiver=11, ride_id=2)
+# test = Feedback(feedback = 'Thank you for the ride! :)', rating = 5, feedback_giver=2, feedback_receiver=5, ride_id=1)
 # db.session.add(test)
 # db.session.commit()
 
-# request = Request(ride_id = 2, rider_id = 11, seats_requested = 1, status='Removed', date= datetime.now())
+# request = Request(ride_id = 22, rider_id = 11, seats_requested = 1, status='Approved', date= datetime.now())
 # db.session.add(request)
 # db.session.commit()
 
+# message = Message(conversation_id=611, sender=11, content="Hi. Are you stopping along the way?", timestamp= ('2020-11-30 20:58:23'))
+# db.session.add(message)
+# db.session.commit()
+
+# ride = Ride(driver_id = 13, date = ('2020-11-28 16:58:23'), end_loc = "San Luis Obispo, CA, USA", start_loc="Fremont, CA, USA", seats=3, price=20)
+# db.session.add(ride)
+# db.session.commit()
+
+
+    # driver_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable = False)
+    # date = db.Column(db.DateTime, nullable = False)
+    # start_loc = db.Column(db.String, nullable = False)
+    # end_loc = db.Column(db.String, nullable = False)
+    # seats = db.Column(db.Integer, nullable = False)
+    # price = db.Column(db.Integer, nullable = False)
+    # comments = db.Column(db.Text, nullable = True)
+    # deleted_at = db.Column(db.DateTime, nullable = True)
+
+   # update requests set date=(timestamp '2017-10-12 21:22:23') where request_id = 3;

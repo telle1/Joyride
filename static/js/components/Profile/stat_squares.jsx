@@ -6,9 +6,9 @@ function StatSquares({match, user}){
 
     const statSquares = [
         {id:1, stat: destinations, description: "destinations discovered", color:"inner inner-0"},
-        {id:2, stat: peopleMet, description: "new adventurers met.", color:"inner inner-1"},
-        {id:3, stat: dollars, description: "dollars earned.", color:"inner inner-2"},
-        {id:4, stat: "100", description: "percent pure JOY.", color:"inner inner-3"}
+        {id:2, stat: peopleMet, description: "new adventurers met", color:"inner inner-1"},
+        {id:3, stat: dollars, description: "dollars earned", color:"inner inner-2"},
+        {id:4, stat: "100", description: "percent pure JOY", color:"inner inner-3"}
     ]
 
     useEffect(() =>{
@@ -72,6 +72,8 @@ function NumberCounter({stat}){
                     clearInterval(counter);
                 }
             }, frameLength);
+        //this gets rid of the error "cant perform a update on an unmounted component"
+        return (() => clearInterval(counter))
 	}, [stat]);
 
 	return Math.floor(count);

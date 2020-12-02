@@ -18,13 +18,13 @@ db.create_all()
 fake = Faker() #initiate a faker object    
 #Create 10 fake users
 for i in range(1,11):
-    email = f'user{i}@test.com'
-    password = bcrypt.generate_password_hash('test').decode("utf-8")
+    # email = f'user{i}@test.com'
     # first_name = f'test{i}'
     # last_name = f'test{i}'
     # fake_user = User(first_name = first_name, last_name = last_name, password= password, email= email, phone_num = '4088893883') 
     first_name = fake.first_name()
     phone_num = randint(1000000000,9999999999)
+    password = bcrypt.generate_password_hash('test').decode("utf-8")
     fake_user = User(first_name = first_name, last_name = fake.last_name(), password= password, email= f"{first_name}{i}@gmail.com", phone_num = phone_num)
     db.session.add(fake_user)
     db.session.commit()

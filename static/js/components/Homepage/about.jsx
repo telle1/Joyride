@@ -50,6 +50,11 @@ function AboutMe(){
                     data-aos="zoom-in" data-aos-delay="2600" data-aos-easing="ease-in-sine" data-aos-anchor="#anchor-0">
                     Here is my LinkedIn: tiffany-luu0
                 </a>
+                {/* <div>
+                    <i className="fab fa-3x fa-linkedin text-primary" data-aos="zoom-in"  data-aos-anchor="#anchor-0" data-aos-delay="2700"></i>
+                    <i className="fab fa-3x fa-github" ></i>
+                    <i className="fab fa-3x fa-google"></i>
+                </div> */}
             </Col>
             <Col className="pl-0 ml-n3">
                 <h1 className="about-me-hi" id="anchor" 
@@ -97,7 +102,6 @@ function AboutMe(){
             <h1 data-aos="fade-up-right" data-aos-delay="2150" data-aos-anchor="#anchor" data-aos-placement="bottom bottom">U</h1>
             <h1 data-aos="fade-up-right" data-aos-delay="2100" data-aos-anchor="#anchor" data-aos-placement="bottom bottom">U</h1>
             <h1 data-aos="fade-up-right" data-aos-delay="2000" data-aos-anchor="#anchor" data-aos-placement="bottom bottom" className="header-end">0</h1>
-
         </Row>
       </Container>
     )

@@ -47,9 +47,10 @@ function CurrentDrive({currentDrive, setShowAlert, fetchDrives}){
 
     return(
         <tr>
-            <td>{currentDrive.date} 
+            <td><p>{currentDrive.date} </p>
                 <React.Fragment>
-                    <div>RIDE ID{currentDrive.ride_id}</div>
+               
+                    {/* <div>RIDE ID{currentDrive.ride_id}</div> */}
                     <button className="btn btn-theme mr-2" onClick={handleEditShow}>Edit</button>
                     <button className="btn btn-yellow mr-2" onClick={handleManageShow}>Manage</button>
                     <button className="btn btn-danger" onClick={handleShow}>Delete</button>
@@ -89,7 +90,8 @@ function Request({request, setShowAlert, fetchDrives}){
 
     return (
         <React.Fragment>
-            <a href="#" onClick={handleInfoShow}>{request.name[0]} {request.name[1]} ({request.seats_requested}) ID:{request.id}</a>
+            <a href="#" onClick={handleInfoShow}>{request.name[0]} {request.name[1]} ({request.seats_requested}) </a> 
+            {/* ID:{request.id} */}
             <ContactInfoModal showInfo={showInfo} handleInfoClose={handleInfoClose} request={request}/>
             <RadioButton request_id={request.req_id} seats={request.seats_requested} 
                 fetchDrives={fetchDrives} setShowAlert={setShowAlert}/>

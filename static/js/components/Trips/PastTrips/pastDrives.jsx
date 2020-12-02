@@ -42,13 +42,14 @@ function PastDrive({pastDrive, setShowAlert, fetchPastDrives}){
     return (
             <tr>
                 <td> 
-                    {pastDrive.date} {pastDrive.ride_id}
-                    <br/>
+                    <p>{pastDrive.date}</p> 
+                    {/* {pastDrive.ride_id} */}
+       
                     {pastDrive.passengers.length > 0 ? 
                     <span className="yellow"> {pastDrive.feedback_count} of {pastDrive.passengers.length} feedback received.</span> 
                         : null}
                 </td>
-                <td> {pastDrive.start_loc} -> {pastDrive.end_loc}</td>
+                <td> {pastDrive.start_loc} -> <br/>{pastDrive.end_loc}</td>
                 <td> {pastDrive.seats}</td>
                 <td> ${pastDrive.price}</td>
                 <td> <PastPassengersList key={pastDrive.ride_id} pastDrive={pastDrive} 

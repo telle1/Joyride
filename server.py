@@ -152,10 +152,10 @@ def request_ride():
             resp = jsonify({'msg': "Ride successfully requested.", 'alert': 'success'})
             #print('THIS IS THE DRIVERs FIRST NAME', add_req.ride.user.first_name)
             #print('THIS IS THE RIDERS PHONE NUM', add_req.user.phone_num)
-            # send_twilio_message = client.messages.create(
-            #     to= add_req.ride.user.phone_num, 
-            #     from_= twilio_phone_num , #(rider aka session['user_id']) add_req.user.phone_num
-            #     body= rider_msg)
+            send_twilio_message = client.messages.create(
+                to= add_req.ride.user.phone_num, 
+                from_= twilio_phone_num , #(rider aka session['user_id']) add_req.user.phone_num
+                body= rider_msg)
         elif seats > ride.seats or seats <= 0:
             resp = jsonify({'msg': "You cannot request that number of seats.", 'alert': 'danger'})
         else:

@@ -18,7 +18,8 @@ function MatchingRide({matchingRide, setShowAlert}){
 
                         <Col>
                             <Card.Title className="h4 font-weight-bold">
-                             {matchingRide.driver_fname} {matchingRide.driver_lname} ID{matchingRide.ride_id}
+                             {matchingRide.driver_fname} {matchingRide.driver_lname} 
+                             {/* ID{matchingRide.ride_id} */}
                              </Card.Title>
                              <Card.Text>Driver comments: {matchingRide.comments}</Card.Text>
                         </Col>

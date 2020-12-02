@@ -51,7 +51,8 @@ function RideListItem({currentRide, setShowAlert, fetchRides}){
     <tr key={currentRide.request_id}> 
         <td>
             {/* Edit Seats Request Modal */}
-            {currentRide.date} <p>REQUEST{currentRide.request_id} RIDER ID{currentRide.rider_id} FOR RIDE{currentRide.ride_id}</p>
+            <p>{currentRide.date} </p>
+            {/* <p>REQUEST{currentRide.request_id} RIDER ID{currentRide.rider_id} FOR RIDE{currentRide.ride_id}</p> */}
             {currentRide.status === 'Pending' ? 
                 <React.Fragment><button className="btn btn-yellow mr-2" onClick={handleEditShow}>Edit Seats</button> 
                     <SeatsModal showEdit={showEdit} handleEditClose={handleEditClose} fetchRides={fetchRides}
@@ -66,7 +67,7 @@ function RideListItem({currentRide, setShowAlert, fetchRides}){
             <CnclModal key={currentRide.request_id} show={show} handleClose={handleClose} fetchRides={fetchRides}
             request_id={currentRide.request_id} seats={currentRide.seats_requested} status={currentRide.status}/>
         </td>
-        <td> {currentRide.start_loc} -> {currentRide.end_loc}</td>
+        <td> {currentRide.start_loc} -> <br/> {currentRide.end_loc}</td>
         <td>
             <a href="#" onClick={handleInfoShow}>
                 {currentRide.driver.first_name} {currentRide.driver.last_name}

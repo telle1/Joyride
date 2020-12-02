@@ -129,8 +129,10 @@ function HowItWorks(){
             </div>
           </Col>
           <Col className= "vid">
-            <iframe width="520" height="420" src="https://www.youtube.com/embed/V_lAhqLXT9A"
-              style = {{border: "none", marginLeft: "30px"}}></iframe>
+            {/* <iframe width="520" height="420" src="https://www.youtube.com/embed/V_lAhqLXT9A"
+              style = {{border: "none", marginLeft: "30px"}}></iframe> */}
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/irE6ehmoL3E" 
+             style = {{border: "none", marginLeft: "30px"}}></iframe>
           </Col>
         </Row>
       </Container>
