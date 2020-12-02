@@ -7,5 +7,8 @@ message the driver. Drivers will get a text message notification when someone re
 can navigate to their rides page where they can check, edit, or delete current drives and rides and approve rider requests. The 
 rides page also shows the driver/rider's contact info and links to their profile. Users can rate their ride in the past ride section.
 
+**Techstack: Javascript, React, Bootstrap, CSS, Python,  Flask, SQLAlchemy , socketio
+APIS: Google Maps/Place, Twilio**
+
 ## Homepage
 ![Homepage](static/gifs/Homepage.gif)
