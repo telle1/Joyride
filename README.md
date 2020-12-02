@@ -1,4 +1,4 @@
-#Joyride
+Joyride
 
 Joyride is a long-distance community-based rideshare application built with React on the front-end and Python on the back-end. 
 Users have a profile page where they can upload an image, description, and location, and check notifications as well as recent 
