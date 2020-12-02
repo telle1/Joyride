@@ -168,7 +168,7 @@ if __name__ == '__main__':
 
 
 
-# test = Feedback(feedback = 'Thank you for the ride! :)', rating = 5, feedback_giver=2, feedback_receiver=5, ride_id=1)
+# test = Feedback(feedback = 'Cool, but not so cool music taste', rating = 4, feedback_giver=2, feedback_receiver=11, ride_id=1)
 # db.session.add(test)
 # db.session.commit()
 

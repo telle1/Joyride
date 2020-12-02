@@ -48,6 +48,7 @@ function PastRide({pastRide, fetchPastRides}){
         <tr>
             <td>
                 <p>{pastRide.date}</p>
+                {/* {pastRide.ride_id} */}
                 <React.Fragment>
                     <div> {pastRide.feedback ? <p className="yellow">Feedback received.</p> 
                         : <button className="btn btn-yellow" onClick={handleShow}>Feedback</button>}

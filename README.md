@@ -12,3 +12,17 @@ APIS: Google Maps/Place, Twilio**
 
 ## Homepage
 ![Homepage](static/gifs/Homepage.gif)
+
+## About Me
+![About Me](static/gifs/About_me.gif)
+## Profile/Dashboard
+
+## Post
+
+## Search
+
+## Messaging
+
+## Current Drives/Rides
+
+## Past Drives/Rides
