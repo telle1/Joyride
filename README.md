@@ -1,9 +1,11 @@
 # Joyride
-Joyride is a long-distance community-based rideshare application. 
+Joyride is a long-distance community-based rideshare application. <br/>
+**My LinkedIn:** https://www.linkedin.com/in/tiffany-luu0/ <br/>
 
 ## Table of Contents
 * [Overview](#overview)
 * [Tech Stack](#techstack)
+* [Installation](#installation)
 * [Preview](#preview)
 
 ## Overview
@@ -12,14 +14,37 @@ Users have a profile page where they can upload an image, description, and locat
 feedback from rides and drives. Users can search or post a ride with the aid of Google autocomplete, or use the chat feature to
 message the driver. Drivers will get a text message notification when someone requests their ride through the Twilio API. They 
 can navigate to their rides page where they can check, edit, or delete current drives and rides and approve rider requests. The 
-rides page also shows the driver/rider's contact info and links to their profile. Users can rate their ride in the past ride section.
+rides page also shows the driver/rider's contact info and links to their profile. Users can rate their ride in the past ride section. <br/>
 
 ## Techstack
 **Frontend:** React, Javascript, HTML/CSS, AOS, Bootstrap <br/>
 **Backend**: Python, Flask, SQLAlchemy, PostgreSQL <br/> 
-**APIs:** Google Maps/Place, Twilio\ <br/>
+**APIs:** Google Maps/Place, Twilio <br/>
 **Libraries**: Faker, Socket.IO, Moment.js, Typed.js <br/>
-**My LinkedIn:** https://www.linkedin.com/in/tiffany-luu0/ <br/>
+
+
+## Installation
+(Optional) Obtain an API key for Google Maps/Places (for Google autocomplete) and Twilio (for text message notifications).
+
+1. Clone the repo in the desired directory.
+    ```
+    git clone https://github.com/telle1/hb-project.git
+    ```
+2. Create a virtual environment and activate it.
+    ```
+    virtualenv env
+    ```
+
+    ```
+    source env/bin/activate
+    ```
+3. Install Joyride's dependencies from requirements.txt.
+
+    ```
+    pip3 install -r requirements.txt
+    ```
+
+
 
 ## Preview
 ## Homepage
