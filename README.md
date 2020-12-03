@@ -11,18 +11,58 @@ rides page also shows the driver/rider's contact info and links to their profile
 APIS: Google Maps/Place, Twilio**
 
 ## Homepage
+* designed with CSS and Bootstrap\
+<br/>
 ![Homepage](static/gifs/Homepage.gif)
 
+
 ## About Me
+* made with manipulating CSS animation delays\
+<br/>
 ![About Me](static/gifs/About_me.gif)
+
 ## Profile/Dashboard
+* Signup/Login with React client-side form validation\
+* Editable profile with changes automatically reflected\
+* Notifications designed with Bootstrap\
+<br/>
+![Profile](static/gifs/Profile.gif)
 
 ## Post
+* Google autocomplete/map implemented with useRef hook\
+<br/>
+![PostForm](static/gifs/PostRide.gif)
 
 ## Search
+* User experience enhanced with Google Autocomplete\
+* Optional message to send driver via Twilio API\
+* Server side form validation to prevent an invalid seat request\
+<br/>
+![Search](static/gifs/SearchRides.gif)
 
 ## Messaging
+* In-app messaging made with Flask socket.io\
+<br/>
+![Search](static/gifs/Messaging.gif)
 
 ## Current Drives/Rides
+**Current Drives** 
+* Edit, manage, and delete functionality
+* Approve rider's requests \
+<br/>
+![CurrentDrives](static/gifs/CurrentDrives.gif)
+
+**Current Rides**
+* Ternary operators used to edit seats only if request is still pending
+* Delete or cancel request depending on status\
+<br/>
+![CurrentRides](static/gifs/CurrentRides.gif)
+
+**Both rides and drives** have modals to easily access driver/passenger contact info, also includes a link to view user's profile\
+<br/>
+![ContactModal](static/gifs/ContactModal.gif)
 
 ## Past Drives/Rides
+* rating star component made with React\
+<br/>
+![PastRides](static/gifs/PastRides.gif)
