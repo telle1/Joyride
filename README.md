@@ -1,4 +1,5 @@
 # Joyride
+Joyride is a long-distance community-based rideshare application. 
 
 ## Table of Contents
 * [Overview](#overview)
@@ -6,7 +7,7 @@
 * [Preview](#preview)
 
 ## Overview
-Joyride is a long-distance community-based rideshare application built with React on the front-end and Python on the back-end. 
+Joyride is a long-distance community-based rideshare application. 
 Users have a profile page where they can upload an image, description, and location, and check notifications as well as recent 
 feedback from rides and drives. Users can search or post a ride with the aid of Google autocomplete, or use the chat feature to
 message the driver. Drivers will get a text message notification when someone requests their ride through the Twilio API. They 
@@ -38,7 +39,7 @@ rides page also shows the driver/rider's contact info and links to their profile
 ## Profile/Dashboard
 * Signup/Login with React client-side form validation
 * Editable profile with changes automatically reflected
-* Notifications designed with Bootstrap\
+* Notifications designed with Bootstrap
 <br/>
 
 ![Profile](static/gifs/Profile.gif)
