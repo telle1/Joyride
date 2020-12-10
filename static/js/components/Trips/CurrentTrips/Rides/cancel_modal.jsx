@@ -1,4 +1,6 @@
-function CnclModal({show, handleClose, request_id, status, seats, fetchRides}){
+function CnclModal({show, handleClose, request_id, status, seats, fetchRides, setShowAlert}){
+
+    const {setAlertColor, setAlertStatus} = useContext(UserContext)
 
     const handleRemove = (evt) => {
         evt.preventDefault()     
@@ -17,6 +19,9 @@ function CnclModal({show, handleClose, request_id, status, seats, fetchRides}){
         .then(data => {
             console.log(data.msg) 
             fetchRides();
+            setAlertColor(data.color)
+            setAlertStatus(data.msg)
+            setShowAlert(true)
         })      
     }
 

@@ -1,4 +1,6 @@
-function ManageRideModal({showManage, handleManageClose, currentDrive, fetchDrives}){
+const { useContext } = require("react");
+
+function ManageRideModal({showManage, handleManageClose, currentDrive, fetchDrives, setShowAlert}){
 
     return(
         <Modal show={showManage} onHide={handleManageClose}>
@@ -7,13 +9,15 @@ function ManageRideModal({showManage, handleManageClose, currentDrive, fetchDriv
             </Modal.Header>
             <Modal.Body> 
                 {currentDrive.passengers ? 
-                    currentDrive.passengers.map(passenger => <PassengerEntry passenger={passenger} fetchDrives={fetchDrives}/>) : null}
+                    currentDrive.passengers.map(passenger => <PassengerEntry passenger={passenger} setShowAlert={setShowAlert} fetchDrives={fetchDrives}/>) : null}
             </Modal.Body>
             <Modal.Footer> Double click to remove a passenger. This action is <span className="font-weight-bold">permanent.</span> </Modal.Footer>
         </Modal>
     )}
 
-function PassengerEntry({passenger, fetchDrives}){
+function PassengerEntry({passenger, fetchDrives, setShowAlert}){
+
+    const {setAlertColor, setAlertStatus} = useContext(UserContext)
 
     const removePassenger = (id, seats) => {
 
@@ -30,14 +34,18 @@ function PassengerEntry({passenger, fetchDrives}){
         })
         .then(res => res.json())
         .then(data => {
-            fetchDrives()
+            fetchDrives();
+            setShowAlert(true);
+            setAlertStatus(data.msg)
+            setAlertColor(data.color)
         })      
     }
 
     return (
     <React.Fragment>
         <Container><Row>
-            <Col><p className="ml-4 pt-2">{passenger.name[0]} {passenger.name[1]} {passenger.req_id}</p></Col> 
+            <Col><p className="ml-4 pt-2">{passenger.name[0]} {passenger.name[1]} ({passenger.seats_requested}) </p></Col> 
+            {/* {passenger.req_id} */}
             <Col><button className="btn btn-theme" onDoubleClick={() => removePassenger(passenger.req_id, passenger.seats_requested)}>Remove from ride</button></Col>
         </Row></Container>
     </React.Fragment>

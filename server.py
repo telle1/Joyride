@@ -316,7 +316,7 @@ def remove_passenger():
     db.session.commit()
     print('INCREMENTED SEATS', ride_of_req.seats)
 
-    return jsonify({'msg': 'Successfully removed passenger.', 'color': 'success'})
+    return jsonify({'msg': 'Passenger successfully removed.', 'color': 'success'})
     
 @app.route('/delete-ride', methods=['POST'])
 def delete_ride():
@@ -334,7 +334,7 @@ def delete_request():
 
     crud.delete_user_request(request_id = data['request_id'], seats_to_add = data['seats'])
 
-    return jsonify({'msg': 'Request deleted.'})
+    return jsonify({'msg': 'Request successfully cancelled.', 'color': 'success'})
 
 @app.route('/edit-seats-request', methods=['POST'])
 def edit_seats_request():
