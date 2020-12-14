@@ -47,7 +47,7 @@ rides page also shows the driver/rider's contact info and links to their profile
 
 
 
-## Preview
+## Preview - Note: Please check youtube link above for higher quality demo
 ## Homepage
 * designed with CSS and Bootstrap
 * React useRef hook to implement Typed.JS text animation <br/>
