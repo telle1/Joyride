@@ -13,7 +13,7 @@ function Post(){
                     <PostContainer setShowAlert={setShowAlert}/>
                 </Col>
                 <Col>
-                    <MyGoogleMap/>
+                    {/* <MyGoogleMap/> */}
                 </Col>
             </Row>
         </Container>
@@ -61,13 +61,15 @@ function PostContainer({setShowAlert}){
             <Form.Group as={Row} controlId="startingLocation">
                 <Form.Label column xs="3"> From </Form.Label>
                 <Col xs="9">
-                    <SearchBar input={startInput} setInput={setStartInput} placeholder="Start Location" required/>
+                    {/* <SearchBar input={startInput} setInput={setStartInput} placeholder="Start Location" required/> */}
+                    <input type="text" className="form-control"  value={startInput} onChange={(e)=>setStartInput(e.target.value)}/>
                 </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="endLocation">
                 <Form.Label column xs="3"> To </Form.Label>
                 <Col xs="9">
-                    <SearchBar input={endInput} setInput={setEndInput} placeholder="End Location" required/>
+                    {/* <SearchBar input={endInput} setInput={setEndInput} placeholder="End Location" required/> */}
+                    <input type="text" className="form-control"  value={endInput} onChange={(e)=>setEndInput(e.target.value)}/>
                 </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="Date">

@@ -51,8 +51,10 @@ function Search(){
             <Container> 
                 <Row>
                     <form onSubmit={getMatchingRides} className="form-inline mx-auto" id="search-rides" method="post">
-                        <SearchBar key="start" input={startInput} setInput={setStartInput} placeholder="Start Location"/>
-                        <SearchBar key="end" input={endInput} setInput={setEndInput} placeholder="End Location"/>
+                        <input type="text" className="form-control mr-2" value={startInput} onChange={(e)=>setStartInput(e.target.value)} placeholder="Start Location"/>
+                        <input type="text" className="form-control mr-2" value={endInput} onChange={(e)=>setEndInput(e.target.value)} placeholder="End Location"/>
+
+                        {/* <SearchBar key="end" input={endInput} setInput={setEndInput} placeholder="End Location"/> */}
                         <button type="submit" className="btn btn-theme my-1">Search</button>
                     </form>
                 </Row>
